@@ -12,6 +12,11 @@ This application is available at: INSERT LINK
 **Local data storage** – No account needed. Data is stored locally.
 **Responsive design** – Adaptive to different screens.
 
+### Tech-stack
+- Webcomponents with HTML/CSS/Javascript
+- Vite for building the application
+- pie-render package for visualizing the budget as a pie chart.
+
 ## Usage and Examples
 
 ## Getting Started
