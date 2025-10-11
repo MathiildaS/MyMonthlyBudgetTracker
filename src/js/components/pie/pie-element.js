@@ -40,6 +40,8 @@ this.setColourOfPie('#000000')
 
  this.setColoursOfWarningAndDangerBoundaries('#e89a4c', '#d45c4a')
 
+ this.displayTextOnCanvas(true)
+
 
 }
 
@@ -65,6 +67,10 @@ setColourOfPie(colourOfPie) {
 
 setColourOfSlicesOnPie(colourOfSlice) {
   this.pieRender.setSliceColour(colourOfSlice)
+}
+
+displayTextOnCanvas(boolean) {
+  this.pieRender.displayPercentText(boolean)
 }
   }
 )
