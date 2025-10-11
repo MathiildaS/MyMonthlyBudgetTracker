@@ -15,5 +15,8 @@
   "type": "module",
   "devDependencies": {
     "vite": "^7.1.9"
+  },
+  "dependencies": {
+    "pie-render": "^1.0.1"
   }
 }

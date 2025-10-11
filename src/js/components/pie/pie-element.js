@@ -3,10 +3,13 @@
  * @version 1.0.0
  */
 
+import { PieRender } from 'pie-render'
+
 const pieTemplate = document.createElement('template')
 pieTemplate.innerHTML = `
 <style>
 </style>
+<canvas id="canvasElement" width="300" height="300"></canvas>
 `
 
 customElements.define('pie-element',
@@ -19,6 +22,15 @@ customElements.define('pie-element',
       super()
 
       this.attachShadow({ mode: 'open' }).appendChild(pieTemplate.content.cloneNode(true))
+      this.canvas = this.shadowRoot.querySelector('#canvasElement')
+    }
+
+connectedCallback() {
+    this.createElement()
+}
+
+    createElement() {
+        const pieRender = new PieRender(this.canvas, 400)
     }
   }
 )
