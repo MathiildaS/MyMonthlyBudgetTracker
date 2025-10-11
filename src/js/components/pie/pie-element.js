@@ -30,8 +30,12 @@ connectedCallback() {
     this.initializePieRenderModuleWithBaseAmount(400)
 
 this.displaySliceOnPieBasedOnInput(100)
- 
 this.setWarningAndDangerBoundariesForPie(20, 10)
+
+this.setColourOfPie('#000000')
+ this.displaySliceOnPieBasedOnInput(200)
+
+
 }
 
     initializePieRenderModuleWithBaseAmount(baseAmountOfBudget) {
@@ -43,8 +47,11 @@ displaySliceOnPieBasedOnInput(expenseAmount) {
 }
 
 setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
-  this.pieRender.setWarningAndDangerBoundaries(warningBoundary, dangerBoundary)
+  this.pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
 }
 
+setColourOfPie(colourOfPie) {
+  this.pieRender.setPieColour(colourOfPie)
+}
   }
 )
