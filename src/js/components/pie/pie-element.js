@@ -42,6 +42,7 @@ this.setColourOfPie('#000000')
 
  this.displayTextOnCanvas(true)
 
+ this.setColourOfTextOnCanvas('#000000')
 
 }
 
@@ -71,6 +72,10 @@ setColourOfSlicesOnPie(colourOfSlice) {
 
 displayTextOnCanvas(boolean) {
   this.pieRender.displayPercentText(boolean)
+}
+
+setColourOfTextOnCanvas(colourOfText) {
+  this.pieRender.setFontColour(colourOfText)
 }
   }
 )
