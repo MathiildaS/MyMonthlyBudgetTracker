@@ -13,7 +13,7 @@ The test cases has been documented during the development of the project.
 
 ## pie-element
 
-| **Test case** | Test initialization of PieRender module   |
+| **Test case** | Initialization of PieRender module |
 | **Main scenario** | Application is running and the default pie is displayed on the frontpage |
 | **Preconditions** | * A development server installed and running * Support of ES Modules |
 | **Input data** | --- |
