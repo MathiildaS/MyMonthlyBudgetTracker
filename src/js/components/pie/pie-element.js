@@ -44,6 +44,8 @@ this.setColourOfPie('#000000')
 
  this.setColourOfTextOnCanvas('#000000')
 
+this.setSizeOfTextOnCanvas(30)
+
 }
 
     initializePieRenderModuleWithBaseAmount(baseAmountOfBudget) {
@@ -76,6 +78,10 @@ displayTextOnCanvas(boolean) {
 
 setColourOfTextOnCanvas(colourOfText) {
   this.pieRender.setFontColour(colourOfText)
+}
+
+setSizeOfTextOnCanvas(sizeOfText) {
+  this.pieRender.setFontSize(sizeOfText)
 }
   }
 )
