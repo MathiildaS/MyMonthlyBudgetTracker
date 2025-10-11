@@ -35,7 +35,11 @@ this.setWarningAndDangerBoundariesForPie(20, 10)
 this.setColourOfPie('#000000')
  this.displaySliceOnPieBasedOnInput(200)
 
+ 
  this.setColourOfSlicesOnPie('#c1529d')
+
+ this.setColoursOfWarningAndDangerBoundaries('#e89a4c', '#d45c4a')
+
 
 }
 
@@ -49,6 +53,10 @@ displaySliceOnPieBasedOnInput(expenseAmount) {
 
 setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
   this.pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
+}
+
+setColoursOfWarningAndDangerBoundaries(warningColour, dangerColour) {
+  this.pieRender.setStateColours(warningColour, dangerColour)
 }
 
 setColourOfPie(colourOfPie) {
