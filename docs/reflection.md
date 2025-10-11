@@ -70,16 +70,49 @@ Minskar risken för förvirring och buggar
 * Javadocs in NonPublic Code, slöseri med tid i icke-publik kod
 
 ## Kapitel 5 - Formatting
-
+Gör koden läsbar, konsekvent och professionell. Andra ska förstå strukturen. 
+Enkla, gemensamma regler ska tillämpas konsekvent. 
+Vertical formatting, håll filer små, under 500 rader kod
+* The Newspaper Methaphor, klassnamn (titel) avslöjar innehåll, början ger överblick och längre ner följer detaljer/implementationer
+* Vertical Openness Between Concepts, olika logiska delar ska separeras av tomma rader
+* Vertical Density, Kod som hör nära samman ska ligga nära varandra (inte skiljas med kommentarer/radbrytning)
+* Vertical Distance, Relaterade delar ska placeras nära varandra. Variabel deklareras där den används, funktion nära där den anropas
+* Vertical Order, Koden ska läsas uppifrån och ner. Hög nivå överst, detaljer längre ner
+Horizontal Formatting, håll rader korta
+* Horizontal Openness and Density, använd mellanslag för att gruppera eller separera. t ex mellan + och variabel, men inte mellan metod och ()
+* Horizontal Alignment, lita på indentering och inte kolumnjustering
+* Indentering, varje nivår ska ett steg åt höger. klass, metod, block
+* Dummy-scopes, undvik tomma loop-kroppar
+* Teamrules, alla i samma projekt ska följa samma stil
 
 ## Kapitel 6 - Objects and Data Structures
-
+Hur vi representerar data och vilket ansvar klasserna ska ha för att hantera den.
+Objekt - döljer data och exponerar beteenden, Datastruktur - Exponerar data och saknar beteende
+* Data Abstraction, använda fel nivå av abstraktion. T ex i publika metoder, metodanrop till privata hjälpmetoder.
+* Data/Object Anti-Symmetry , blanda inte objekt och datastrukturer i samma klass
+* The Law of Dementer, undvik train wrecks (kedjor av anrop) t ex a.getB().getC().doSomething(). Ett objekt ska tala med sig själv
+* Hybrider, undvik klasser som delvis exponerar data och som delvis har logik
+* Data Transfer Object, har bara fält och getters/setters, ingen affärslogik, används vid kommunikation mellan controller och service. Ofarliga, öppna behållare för data
+* Active Record, hybrid mellan DTO och objekt, används vid CRUD
 
 ## Kapitel 7 - Error Handling
-
+* Exceptions instead of Returns, returnera inte felkoder. använd undantag
+* Provide Context with Exceptions, Lägg till kontext när fel kastas, ska kunna svara på "Vad gick fel", "Var hände det" och "Varför är det relevant"
+* Define Exception Classes, Extenda Exception och skapa egna domänspecifika typer
+* Define the normal flow
+* Don't return Null * Don't Pass Null
+Om det går att undvika att checka != null t ex, gör det. använd annat eller skapa ett Null Objekt 
+* Fånga fel så nära källan som möjligt
+* Testa felhanteringen, lika viktigt som koden
 
 ## Kapitel 8 - Boundaries
-
+* Using Third-Party Code, ett bibliotek kan erbjuda fler funktioner än man behöver och kan göra koden svår att begränsa/skydda
+* Exploring and Learning Boundaries, Använd third-party-code i klass som använder det
+* Learning log4j, * Learning tests are better than free,
+learning test är isolerade test som används för att förstå ett tredjeparts API innan det ingereras i produktionen. 
+När nya versioner släpps av APIt kan du använda learning testerna för att se om det uppstått buggar.
+* Using code that does not yet exist, 
+* Clean Boundaries, håll kod separerad från externa APIer, få platser i systemet som refererar till det, skriv boundary tests
 
 ## Kapitel 9 - Unit Tests
 
