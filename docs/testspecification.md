@@ -10,3 +10,12 @@ The test cases has been documented during the development of the project.
 | **Input data** | Values, dates, amounts… |
 | **Steps** | 1) …  2) …  3) … |
 | **Expected result** | What should happen |
+
+## pie-element
+
+| **Test case** | Test initialization of PieRender module   |
+| **Main scenario** | Application is running and the default pie is displayed on the frontpage |
+| **Preconditions** | * A development server installed and running * Support of ES Modules |
+| **Input data** | --- |
+| **Steps** | 1) Run the application `npm run dev`  2) Open the page |
+| **Expected result** | The default pie is displayed on the front page without errors |
