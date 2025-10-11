@@ -35,6 +35,7 @@ this.setWarningAndDangerBoundariesForPie(20, 10)
 this.setColourOfPie('#000000')
  this.displaySliceOnPieBasedOnInput(200)
 
+ this.setColourOfSlicesOnPie('#c1529d')
 
 }
 
@@ -52,6 +53,10 @@ setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
 
 setColourOfPie(colourOfPie) {
   this.pieRender.setPieColour(colourOfPie)
+}
+
+setColourOfSlicesOnPie(colourOfSlice) {
+  this.pieRender.setSliceColour(colourOfSlice)
 }
   }
 )
