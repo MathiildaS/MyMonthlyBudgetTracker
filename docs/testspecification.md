@@ -17,5 +17,12 @@ The test cases has been documented during the development of the project.
 | **Main scenario** | Application is running and the default pie is displayed on the frontpage |
 | **Preconditions** | * A development server installed and running * Support of ES Modules |
 | **Input data** | --- |
-| **Steps** | 1) Run the application `npm run dev`  2) Open the page |
+| **Steps** | 1) Run the application `npm run dev`  2) Open localhost |
+| **Expected result** | The default pie is displayed on the front page without errors |
+
+| **Test case** | Initialization of PieRender module |
+| **Main scenario** | Application is running and the default pie is displayed on the frontpage |
+| **Preconditions** | * A development server installed and running * Support of ES Modules |
+| **Input data** | --- |
+| **Steps** | 1) Run the application `npm run dev`  2) Open localhost |
 | **Expected result** | The default pie is displayed on the front page without errors |

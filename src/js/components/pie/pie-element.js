@@ -23,14 +23,22 @@ customElements.define('pie-element',
 
       this.attachShadow({ mode: 'open' }).appendChild(pieTemplate.content.cloneNode(true))
       this.canvas = this.shadowRoot.querySelector('#canvasElement')
+      this.pieRender
     }
 
 connectedCallback() {
-    this.createElement()
+    this.initializePieRenderModuleWithBaseAmount(400)
+
+this.displaySliceOnPieBasedOnInput(100)
+  }
+
+    initializePieRenderModuleWithBaseAmount(baseAmountOfBudget) {
+        this.pieRender = new PieRender(this.canvas, baseAmountOfBudget)
+    }
+
+displaySliceOnPieBasedOnInput(expenseAmount) {
+  this.pieRender.createSlice(expenseAmount)
 }
 
-    createElement() {
-        const pieRender = new PieRender(this.canvas, 400)
-    }
   }
 )
