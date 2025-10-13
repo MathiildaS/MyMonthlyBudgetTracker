@@ -61,4 +61,10 @@ describe("test pie-element component", () => {
     pieElement.setSizeOfTextOnCanvas(45)
     expect(pieElement.pieRender.setFontSize).toHaveBeenCalledWith(45)
   })
+
+  it("should return information of the state of the pie", () => {
+    pieElement.pieRender = { getCurrentStateOfPie: vi.fn() }
+    pieElement.getStateOfPie()
+    expect(pieElement.pieRender.getCurrentStateOfPie).toHaveBeenCalled
+  })
 })
