@@ -18,10 +18,12 @@ display: block;
 <div class="budgetForm">
 <budget-form-element></budget-form-element>
 </div>
+<div class="budgetPie">
+<pie-element></pie-element>
+</div>
 <div class="expenseForm">
 <expense-form-element></expense-form-element>
 </div>
-<pie-element></pie-element>
 `
 
 customElements.define('food-budget-element',
