@@ -3,19 +3,19 @@
  * @version 1.0.0
  */
 
-const expensesFormTemplate = document.createElement('template')
-expensesFormTemplate.innerHTML = `
+const expenseFormTemplate = document.createElement('template')
+expenseFormTemplate.innerHTML = `
 <style>
 </style>
 <div>
-<form id='expensesForm'>
+<form id='expenseForm'>
 <input type='text' name='expense' placeholder='Add your expense here' required />
 <button type='submit'>Add your expense</button>
 </form>
 </div>
 `
 
-customElements.define('expenses-form-element',
+customElements.define('expense-form-element',
 
   class extends HTMLElement {
     /**
@@ -24,9 +24,9 @@ customElements.define('expenses-form-element',
     constructor () {
       super()
 
-      this.attachShadow({ mode: 'open' }).appendChild(expensesFormTemplate.content.cloneNode(true))
+      this.attachShadow({ mode: 'open' }).appendChild(expenseFormTemplate.content.cloneNode(true))
 
-      this.form = this.shadowRoot.querySelector('#expensesForm')
+      this.form = this.shadowRoot.querySelector('#expenseForm')
       this.currentExpense = 0
       this.totalOfExpenses = []
     }
