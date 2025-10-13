@@ -6,6 +6,25 @@
 const foodBudgetTemplate = document.createElement('template')
 foodBudgetTemplate.innerHTML = `
 <style>
+.main {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  grid-template-areas: "left middle right";
+  gap: 1rem;
+}
+
+.left { 
+  grid-area: left; 
+}
+
+.middle { 
+  grid-area: middle; 
+}
+
+.right { 
+  grid-area: right; 
+}
+
 .budgetForm {
 display: block;
 }
@@ -34,6 +53,12 @@ button:hover {
     background-color: #9fa0d6;
 }
 </style>
+<div class="main">
+<section class="left">
+  <p>Change theme</p>
+</section>
+    <section class="middle">
+      
 <div class="budgetForm">
 <budget-form-element></budget-form-element>
 </div>
@@ -43,6 +68,10 @@ button:hover {
 </div>
 <div class="expenseForm">
 <expense-form-element></expense-form-element>
+</div>
+</section>
+<section class="right">
+</section>
 </div>
 `
 
