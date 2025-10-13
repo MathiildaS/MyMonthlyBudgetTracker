@@ -14,10 +14,15 @@ display: block;
   display: none;
 }
 
+.pieButton {
+display: none;
+}
+
 </style>
 <div class="budgetForm">
 <budget-form-element></budget-form-element>
 </div>
+<button class="pieButton">Display pie?</button>
 <div class="budgetPie">
 <pie-element></pie-element>
 </div>
@@ -43,20 +48,37 @@ customElements.define('food-budget-element',
 
       this.budgetFormDiv = this.shadowRoot.querySelector('.budgetForm')
       this.expenseFormDiv = this.shadowRoot.querySelector('.expenseForm')
+      this.pieButton = this.shadowRoot.querySelector('.pieButton')
+
+      this.budget
     }
 
   connectedCallback () {
   this.budgetForm.addEventListener('budgetAdded', (event) => {
-    const budget = Number(event.detail.budget)
-    this.hideBudgetForm()
-    this.pieElement.initializePieRenderModuleWithBaseAmount(budget)
-    this.displayExpenseForm()
+    this.budget = Number(event.detail.budget)
+
+this.hideBudgetFormDisplayExpenseForm()
+this.displayPieButton()
   })
 
   this.expenseForm.addEventListener('expenseAdded', (event) => {
     const expense = Number(event.detail.expense)
     this.pieElement.displaySliceOnPieBasedOnInput(expense)
   })
+
+this.pieButton.addEventListener('click', () => {
+  this.hidePieButton()
+  this.displayBudgetPie(this.budget)
+})
+}
+
+hideBudgetFormDisplayExpenseForm() {
+    this.hideBudgetForm()
+    this.displayExpenseForm()
+}
+
+displayBudgetPie(budget) {  
+  this.pieElement.initializePieRenderModuleWithBaseAmount(budget)
 }
 
 hideBudgetForm() {
@@ -66,5 +88,13 @@ this.budgetFormDiv.style.display = 'none'
 displayExpenseForm() {
 this.expenseFormDiv.style.display = 'block'
 }
-  }
+
+displayPieButton() {
+this.pieButton.style.display = 'block'
+}
+
+hidePieButton() {
+  this.pieButton.style.display = 'none'
+}
+}
 )
