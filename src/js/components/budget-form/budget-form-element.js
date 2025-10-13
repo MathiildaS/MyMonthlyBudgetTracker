@@ -7,6 +7,12 @@ const budgetFormTemplate = document.createElement('template')
 budgetFormTemplate.innerHTML = `
 <style>
 </style>
+<div>
+<form id="budgetForm">
+<input type="text" name="budget" placeholder="Add this months budget" required />
+<button type="submit">Add as budget</button>
+</form>
+</div>
 `
 
 customElements.define('budget-form-element',
