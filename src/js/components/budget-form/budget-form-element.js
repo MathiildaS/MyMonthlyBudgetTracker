@@ -6,11 +6,31 @@
 const budgetFormTemplate = document.createElement('template')
 budgetFormTemplate.innerHTML = `
 <style>
+  button {
+    font-family: 'DynaPuff';
+    background-color: #b0a8d6b9;
+    color:  #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9fa0d6;
+}
+
+input {
+  font-family: 'DynaPuff';
+  padding: 0.5rem 1rem;
+}
 </style>
 <div>
 <form id='budgetForm'>
 <input type='text' name='budget' placeholder='Add this months budget' required />
-<button type='submit'>Add your budget</button>
+<button type='submit'>ADD BUDGET</button>
 </form>
 </div>
 `

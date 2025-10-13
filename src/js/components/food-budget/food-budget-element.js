@@ -18,6 +18,21 @@ display: block;
 display: none;
 }
 
+  button {
+    font-family: 'DynaPuff';
+    background-color: #b0a8d6b9;
+    color:  #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9fa0d6;
+}
 </style>
 <div class="budgetForm">
 <budget-form-element></budget-form-element>
