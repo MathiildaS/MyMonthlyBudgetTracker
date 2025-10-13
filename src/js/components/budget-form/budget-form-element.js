@@ -3,20 +3,20 @@
  * @version 1.0.0
  */
 
-const budgetFormTemplate = document.createElement("template")
+const budgetFormTemplate = document.createElement('template')
 budgetFormTemplate.innerHTML = `
 <style>
 </style>
 <div>
-<form id="budgetForm">
-<input type="text" name="budget" placeholder="Add this months budget" required />
-<button type="submit">Add your budget</button>
+<form id='budgetForm'>
+<input type='text' name='budget' placeholder='Add this months budget' required />
+<button type='submit'>Add your budget</button>
 </form>
 </div>
 `
 
 customElements.define(
-  "budget-form-element",
+  'budget-form-element',
 
   class extends HTMLElement {
     /**
@@ -25,34 +25,35 @@ customElements.define(
     constructor() {
       super()
 
-      this.attachShadow({ mode: "open" }).appendChild(
+      this.attachShadow({ mode: 'open' }).appendChild(
         budgetFormTemplate.content.cloneNode(true)
       )
 
-      this.form = this.shadowRoot.querySelector("#budgetForm")
+      this.form = this.shadowRoot.querySelector('#budgetForm')
       this.budget = 0
     }
 
     connectedCallback() {
-      this.form.addEventListener("submit", (event) => {
+      this.form.addEventListener('submit', (event) => {
         event.preventDefault()
-        collectFormDataAndSendBudget(event)
+        this.collectFormDataAndSendBudget()
       })
     }
 
-    collectFormDataAndSendBudget(event) {
-      const formData = new FormData(event)
-      const budget = formData.get("budget")
+    collectFormDataAndSendBudget() {
+      const formData = new FormData(this.form)
+      const budget = formData.get('budget')
       this.sendAddedBudget(budget)
     }
 
     sendAddedBudget(budget) {
-      const budgetAdded = new CustomEvent("budgetAdded", {
+      const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
           budget: budget,
         },
+        bubbles: true,
       })
-this.dispatchEvent(budgetAdded)
+      this.dispatchEvent(budgetAdded)
     }
   }
 )
