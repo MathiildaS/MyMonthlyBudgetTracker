@@ -30,25 +30,7 @@ customElements.define(
     }
 
     connectedCallback() {
-      this.initializePieRenderModuleWithBaseAmount(400)
 
-      this.displaySliceOnPieBasedOnInput(100)
-      this.setWarningAndDangerBoundariesForPie(20, 10)
-
-      this.setColourOfPie("#000000")
-      this.displaySliceOnPieBasedOnInput(200)
-
-      this.setColourOfSlicesOnPie("#c1529d")
-
-      this.setColoursOfWarningAndDangerBoundaries("#e89a4c", "#d45c4a")
-
-      this.displayTextOnCanvas(true)
-
-      this.setColourOfTextOnCanvas("#000000")
-
-      this.setSizeOfTextOnCanvas(30)
-
-      this.getStateOfPie()
     }
 
     initializePieRenderModuleWithBaseAmount(baseAmountOfBudget) {
