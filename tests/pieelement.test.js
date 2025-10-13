@@ -55,4 +55,10 @@ describe("test pie-element component", () => {
     pieElement.setColourOfTextOnCanvas('#ffae00')
     expect(pieElement.pieRender.setFontColour).toHaveBeenCalledWith('#ffae00')
   })
+
+  it("should set font size of text on pie", () => {
+    pieElement.pieRender = { setFontSize: vi.fn() }
+    pieElement.setSizeOfTextOnCanvas(45)
+    expect(pieElement.pieRender.setFontSize).toHaveBeenCalledWith(45)
+  })
 })
