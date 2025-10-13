@@ -2,7 +2,6 @@
 Denna reflektion visar hur jag har arbetat utifrån ett "Clean Code" perspektiv i mitt projekt. 
 
 ## Kapitel 2 -  Meaningful Names
-* Use intention revealing names, namn som talar om varför den existerar, vad den gör och hur den används.
 * Avoid desinformation, använd inte ord som kan misstolkas, inte ord som är för lika varandra, inte ord som redan har betydelse för programmerare
 * Make meaningful distinctions, lägg inte till brusord (ord som inte tillför information)
 * Use pronouncable names, ord som går att uttala
@@ -18,8 +17,9 @@ Denna reflektion visar hur jag har arbetat utifrån ett "Clean Code" perspektiv 
 * Don't Pun, använd inte samma namn för två olika principer
 * Use Solution Domain Names, tekniska termer om relevant
 * Use Problem Domain Names, begrepp från problemområdet om tekniska termer inte finns
-* Add Meaningful Context, flera variabler tillsammans kan skapa förståelse, men man ska förstå syftet med de enskilda utifrån namnet
-* Don't Add Gratiuitous Context, lägg inte till onödiga ord/förkortningar. Blir för långt och svårt att läsa 
+* Don't Add Gratiuitous Context, lägg inte till onödiga ord/förkortningar. Blir för långt och svårt att läsa
+
+Innan namngivning av mina variabler och metoder har jag funderat tills namnet kunnat besvara frågorna varför metoden/funktionen finns, vad den gör och hur den används för att följa principen **Use Intention Revealing Names**. Mina variabler/funktioner visar nu sitt syfte genom namnet och följer därför principen **Add Meaningful Context**. Liksom under arbetet med modulen har detta bidragit till väldigt långa namn. Författaren menar dock att långa, beskrivande namn är bättre än korta och otydliga och bättre än "onödiga" kommentarer. Så jag behåller mina långa namn. 
 
 ## Kapitel 3 - Functions
 * Do One Thing, en funktion ska göra EN sak
