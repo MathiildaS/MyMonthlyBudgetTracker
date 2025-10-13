@@ -7,6 +7,7 @@ const foodBudgetTemplate = document.createElement('template')
 foodBudgetTemplate.innerHTML = `
 <style>
 </style>
+<budget-form-element></budget-form-element>
 `
 
 customElements.define('food-budget-element',
@@ -19,6 +20,14 @@ customElements.define('food-budget-element',
       super()
 
       this.attachShadow({ mode: 'open' }).appendChild(foodBudgetTemplate.content.cloneNode(true))
+
+      this.budgetForm = this.shadowRoot.querySelector('budget-form-element')
     }
+
+  connectedCallback () {
+  this.budgetForm.addEventListener('budgetAdded', (event) => {
+    console.log('Budget added: ', event.detail.budget)
+  })
+}
   }
 )
