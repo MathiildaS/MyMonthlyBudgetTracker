@@ -25,6 +25,21 @@ customElements.define('expenses-form-element',
       super()
 
       this.attachShadow({ mode: 'open' }).appendChild(expensesFormTemplate.content.cloneNode(true))
+
+      this.form = this.shadowRoot.querySelector('#expensesForm')
+      this.currentExpense = 0
+      this.totalOfExpenses = []
+    }
+
+    connectedCallback() {
+      this.form.addEventListener('submit', (event) => {
+        event.preventDefault()
+        this.collectFormDataAndSendExpense()
+      })
+    }
+
+    collectFormDataAndSendExpense() {
+        
     }
   }
 )
