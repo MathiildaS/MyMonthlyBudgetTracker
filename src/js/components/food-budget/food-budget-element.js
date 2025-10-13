@@ -10,6 +10,10 @@ foodBudgetTemplate.innerHTML = `
 display: block;
 }
 
+.expenseForm {
+  display: none;
+}
+
 </style>
 <div class="budgetForm">
 <budget-form-element></budget-form-element>
@@ -43,6 +47,11 @@ customElements.define('food-budget-element',
     const budget = Number(event.detail.budget)
     this.hideBudgetForm()
     this.pieElement.initializePieRenderModuleWithBaseAmount(budget)
+  })
+
+  this.expenseForm.addEventListener('expenseAdded', (event) => {
+    const expense = Number(event.detail.expense)
+    this.pieElement.displaySliceOnPieBasedOnInput(expense)
   })
 }
 
