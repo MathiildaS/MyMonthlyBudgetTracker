@@ -43,5 +43,15 @@ customElements.define('expenses-form-element',
       const expense = formData.get('expense')
       this.sendAddedExpense(expense)
     }
+
+    sendAddedExpense(expense) {
+      const expenseAdded = new CustomEvent('expenseAdded', {
+        detail: {
+          expense: expense,
+        },
+        bubbles: true,
+      })
+      this.dispatchEvent(expenseAdded)
+    }
   }
 )
