@@ -8,13 +8,16 @@ foodBudgetTemplate.innerHTML = `
 <style>
 .main {
   display: grid;
-  grid-template-columns: 280px 1fr 320px;
+  grid-template-columns: 280px 600px 320px;
   grid-template-areas: "left middle right";
   gap: 1rem;
 }
 
 .left { 
-  grid-area: left; 
+  grid-area: left;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
 }
 
 .middle { 
@@ -22,11 +25,16 @@ foodBudgetTemplate.innerHTML = `
 }
 
 .right { 
-  grid-area: right; 
+  grid-area: right;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .budgetForm {
-display: block;
+display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .expenseForm {
@@ -52,6 +60,12 @@ display: none;
 button:hover {
     background-color: #9fa0d6;
 }
+
+@media (max-width: 900px) {
+  .main{
+    grid-template-columns: 1fr;
+    grid-template-areas: "left middle right";
+  }
 </style>
 <div class="main">
 <section class="left">
@@ -71,6 +85,9 @@ button:hover {
 </div>
 </section>
 <section class="right">
+    <h3>Overview</h3>
+    <p><strong>Budget:</strong> <span id="budgetValue">—</span></p>
+    <ul id="expensesList"></ul>
 </section>
 </div>
 `
@@ -81,7 +98,7 @@ customElements.define('food-budget-element',
     /**
      * Create a shadow DOM for the food-budget-element and attach the template to its shadow root.
      */
-    constructor () {
+    constructor() {
       super()
 
       this.attachShadow({ mode: 'open' }).appendChild(foodBudgetTemplate.content.cloneNode(true))
@@ -97,48 +114,48 @@ customElements.define('food-budget-element',
       this.addedBudget
     }
 
-  connectedCallback () {
-  this.budgetForm.addEventListener('budgetAdded', (event) => {
-    this.addedBudget = Number(event.detail.budget)
+    connectedCallback() {
+      this.budgetForm.addEventListener('budgetAdded', (event) => {
+        this.addedBudget = Number(event.detail.budget)
 
-this.hideBudgetFormDisplayExpenseForm()
-this.displayPieButton()
-  })
+        this.hideBudgetFormDisplayExpenseForm()
+        this.displayPieButton()
+      })
 
-  this.expenseForm.addEventListener('expenseAdded', (event) => {
-    const expense = Number(event.detail.expense)
-    this.pieElement.displaySliceOnPieBasedOnInput(expense)
-  })
+      this.expenseForm.addEventListener('expenseAdded', (event) => {
+        const expense = Number(event.detail.expense)
+        this.pieElement.displaySliceOnPieBasedOnInput(expense)
+      })
 
-this.pieButton.addEventListener('click', () => {
-  this.hidePieButton()
-  this.displayBudgetPie(this.addedBudget)
-})
-}
+      this.pieButton.addEventListener('click', () => {
+        this.hidePieButton()
+        this.displayBudgetPie(this.addedBudget)
+      })
+    }
 
-hideBudgetFormDisplayExpenseForm() {
-    this.hideBudgetForm()
-    this.displayExpenseForm()
-}
+    hideBudgetFormDisplayExpenseForm() {
+      this.hideBudgetForm()
+      this.displayExpenseForm()
+    }
 
-displayBudgetPie(addedBudget) {  
-  this.pieElement.initializePieRenderModuleWithBaseAmount(addedBudget)
-}
+    displayBudgetPie(addedBudget) {
+      this.pieElement.initializePieRenderModuleWithBaseAmount(addedBudget)
+    }
 
-hideBudgetForm() {
-this.budgetFormDiv.style.display = 'none'
-}
+    hideBudgetForm() {
+      this.budgetFormDiv.style.display = 'none'
+    }
 
-displayExpenseForm() {
-this.expenseFormDiv.style.display = 'block'
-}
+    displayExpenseForm() {
+      this.expenseFormDiv.style.display = 'block'
+    }
 
-displayPieButton() {
-this.pieButton.style.display = 'block'
-}
+    displayPieButton() {
+      this.pieButton.style.display = 'block'
+    }
 
-hidePieButton() {
-  this.pieButton.style.display = 'none'
-}
-}
+    hidePieButton() {
+      this.pieButton.style.display = 'none'
+    }
+  }
 )
