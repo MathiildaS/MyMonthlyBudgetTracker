@@ -14,6 +14,9 @@ display: block;
 <div class="budgetForm">
 <budget-form-element></budget-form-element>
 </div>
+<div class="ExpenseForm">
+<expense-form-element></expense-form-element>
+</div>
 <pie-element></pie-element>
 `
 
@@ -29,6 +32,7 @@ customElements.define('food-budget-element',
       this.attachShadow({ mode: 'open' }).appendChild(foodBudgetTemplate.content.cloneNode(true))
 
       this.budgetForm = this.shadowRoot.querySelector('budget-form-element')
+      this.expenseForm = this.shadowRoot.querySelector('expense-form-element')
       this.pieElement = this.shadowRoot.querySelector('pie-element')
 
       this.budgetFormDiv = this.shadowRoot.querySelector('.budgetForm')
