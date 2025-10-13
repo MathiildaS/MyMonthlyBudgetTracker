@@ -50,5 +50,9 @@ describe("test pie-element component", () => {
     expect(pieElement.pieRender.displayPercentText).toHaveBeenCalledWith(true)
   })
 
-
+  it("should set font colour of text on pie", () => {
+    pieElement.pieRender = { setFontColour: vi.fn() }
+    pieElement.setColourOfTextOnCanvas('#ffae00')
+    expect(pieElement.pieRender.setFontColour).toHaveBeenCalledWith('#ffae00')
+  })
 })
