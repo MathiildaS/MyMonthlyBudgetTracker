@@ -6,8 +6,15 @@
 const foodBudgetTemplate = document.createElement('template')
 foodBudgetTemplate.innerHTML = `
 <style>
+.budgetForm {
+display: block;
+}
+
 </style>
+<div class="budgetForm">
 <budget-form-element></budget-form-element>
+</div>
+<pie-element></pie-element>
 `
 
 customElements.define('food-budget-element',
@@ -22,12 +29,21 @@ customElements.define('food-budget-element',
       this.attachShadow({ mode: 'open' }).appendChild(foodBudgetTemplate.content.cloneNode(true))
 
       this.budgetForm = this.shadowRoot.querySelector('budget-form-element')
+      this.pieElement = this.shadowRoot.querySelector('pie-element')
+
+      this.budgetFormDiv = this.shadowRoot.querySelector('.budgetForm')
     }
 
   connectedCallback () {
   this.budgetForm.addEventListener('budgetAdded', (event) => {
-    console.log('Budget added: ', event.detail.budget)
+    const budget = Number(event.detail.budget)
+    this.hideBudgetForm()
+    this.pieElement.initializePieRenderModuleWithBaseAmount(budget)
   })
+}
+
+hideBudgetForm() {
+this.budgetFormDiv.style.display = 'none'
 }
   }
 )
