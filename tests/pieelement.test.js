@@ -20,10 +20,16 @@ describe("test pie-element component", () => {
     expect(pieElement.pieRender.createSlice).toHaveBeenCalledWith(100)
   })
 
-  it("should change colour of pie", () => {
+  it("should set colour of pie", () => {
     pieElement.pieRender = { setPieColour: vi.fn() }
     pieElement.setColourOfPie('#FFFFFF')
     expect(pieElement.pieRender.setPieColour).toHaveBeenCalledWith('#FFFFFF')
+  })
+
+  it("should set colour of slice on pie", () => {
+    pieElement.pieRender = { setSliceColour: vi.fn() }
+    pieElement.setColourOfSlicesOnPie('#590000')
+    expect(pieElement.pieRender.setSliceColour).toHaveBeenCalledWith('#590000')
   })
 
   it("should set warning and dangerous boundaries of pie", () => {
@@ -32,9 +38,17 @@ describe("test pie-element component", () => {
     expect(pieElement.pieRender.setPieBoundaries).toHaveBeenCalledWith(25, 10)
   })
 
-  it("should set colour of warning and dangerous boundaries of pie", () => {
+  it("should set colour of pie when reaching warning and danger state", () => {
     pieElement.pieRender = { setStateColours: vi.fn() }
     pieElement.setColoursOfWarningAndDangerBoundaries('#ffae00', '#590000')
     expect(pieElement.pieRender.setStateColours).toHaveBeenCalledWith('#ffae00', '#590000')
   })
+
+  it("should display text next to pie", () => {
+    pieElement.pieRender = { displayPercentText: vi.fn() }
+    pieElement.displayTextOnCanvas(true)
+    expect(pieElement.pieRender.displayPercentText).toHaveBeenCalledWith(true)
+  })
+
+
 })
