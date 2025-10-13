@@ -7,6 +7,12 @@ const expensesFormTemplate = document.createElement('template')
 expensesFormTemplate.innerHTML = `
 <style>
 </style>
+<div>
+<form id='expensesForm'>
+<input type='text' name='expenses' placeholder='Add your expense here' required />
+<button type='submit'>Add your expense</button>
+</form>
+</div>
 `
 
 customElements.define('expenses-form-element',
