@@ -1,5 +1,5 @@
 
-export class dateHandler {
+export class DateHandler {
 #currentDate
 
 constructor() {
