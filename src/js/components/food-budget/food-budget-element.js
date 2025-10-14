@@ -15,11 +15,17 @@ foodBudgetTemplate.innerHTML = `
   gap: 1rem;
 }
 
+.left, .middle, .right {
+  min-height: 0;
+}
+
 .left { 
   grid-area: left;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
+  height: 70vh;
+  overflow: auto;
 }
 
 .middle { 
@@ -31,6 +37,8 @@ foodBudgetTemplate.innerHTML = `
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
+  height: 70vh;
+  overflow: auto;
 }
 
 .budgetForm {
@@ -61,6 +69,10 @@ display: none;
 
 button:hover {
     background-color: #9fa0d6;
+}
+
+.budgetPie {
+display: none;
 }
 
 .expenses-remaining {
@@ -120,15 +132,14 @@ grid-row: 2;
 }
 </style>
 <div class='main'>
-<section class='left'>
-  <p>Change theme</p>
+<section class='left'> 
+<p>Change theme</p>
 </section>
     <section class='middle'>
-      
+<button class='pieButton'>Display pie?</button> 
 <div class='budgetForm'>
 <budget-form-element></budget-form-element>
 </div>
-<button class='pieButton'>Display pie?</button>
 <div class='budgetPie'>
 <pie-element></pie-element>
 </div>
@@ -137,9 +148,8 @@ grid-row: 2;
 </div>
 </section>
 <section class='right'>
-<h1><span id='budgetYear'>—</span></h1>
-    <h2><span id='budgetMonth'>—</span></h2>
-    <p><strong>Budget:</strong> <span id='budgetValue'>—</span></p>
+<h1><span id='budgetYear'></span>  <span id='budgetMonth'></span></h1>
+    <h2><strong>Budget:</strong> <span id='budgetValue'></span></h2>
     <div class="expenses-remaining">
     <p id="expenses"><strong>Expenses:</strong></p>
     <p id="expensesValue">—</p>
@@ -170,6 +180,7 @@ customElements.define(
       this.expenseForm = this.shadowRoot.querySelector('expense-form-element')
       this.pieElement = this.shadowRoot.querySelector('pie-element')
 
+      this.budgetPie = this.shadowRoot.querySelector('.budgetPie')
       this.budgetFormDiv = this.shadowRoot.querySelector('.budgetForm')
       this.expenseFormDiv = this.shadowRoot.querySelector('.expenseForm')
       this.pieButton = this.shadowRoot.querySelector('.pieButton')
@@ -203,9 +214,8 @@ customElements.define(
       })
 
       this.pieButton.addEventListener('click', () => {
-        this.hidePieButton()
-        this.displayBudgetPie(this.addedBudget)
-        this.drawAddedExpensesOnPie()
+        this.toggleTextAndDisplayButton()
+
       })
     }
 
@@ -230,8 +240,17 @@ customElements.define(
       this.pieButton.style.display = 'block'
     }
 
-    hidePieButton() {
-      this.pieButton.style.display = 'none'
+    toggleTextAndDisplayButton() {
+      this.displayPieButton()
+ if (this.pieButton.textContent === 'Display pie?') {
+  this.pieButton.textContent = 'Hide pie?'
+  this.budgetPie.style.display = 'block'
+  this.displayBudgetPie(this.addedBudget)
+  this.drawAddedExpensesOnPie()
+ } else if (this.pieButton.textContent === 'Hide pie?') {
+  this.pieButton.textContent = 'Display pie?'
+  this.budgetPie.style.display = 'none'
+ }
     }
 
     getAndDisplayCurrentYearMonthBudget() {
