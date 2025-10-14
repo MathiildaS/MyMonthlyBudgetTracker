@@ -3,6 +3,8 @@
  * @version 1.0.0
  */
 
+import { DateHandler } from '../../utils/dateHandler.js'
+
 const foodBudgetTemplate = document.createElement('template')
 foodBudgetTemplate.innerHTML = `
 <style>
@@ -102,7 +104,7 @@ button:hover {
 </div>
 </section>
 <section class="right">
-<h3><span id="budgetYear">—</span></h3>
+<h1><span id="budgetYear">—</span></h1>
     <h2><span id="budgetMonth">—</span></h2>
     <p><strong>Budget:</strong> <span id="budgetValue">—</span></p>
     <p><strong>Expenses:</strong></p><ul id="expensesList"></ul>
@@ -121,6 +123,8 @@ customElements.define('food-budget-element',
 
       this.attachShadow({ mode: 'open' }).appendChild(foodBudgetTemplate.content.cloneNode(true))
 
+      this.dateHandler = new DateHandler()
+
       this.budgetForm = this.shadowRoot.querySelector('budget-form-element')
       this.expenseForm = this.shadowRoot.querySelector('expense-form-element')
       this.pieElement = this.shadowRoot.querySelector('pie-element')
@@ -128,6 +132,9 @@ customElements.define('food-budget-element',
       this.budgetFormDiv = this.shadowRoot.querySelector('.budgetForm')
       this.expenseFormDiv = this.shadowRoot.querySelector('.expenseForm')
       this.pieButton = this.shadowRoot.querySelector('.pieButton')
+      this.currentBudget = this.shadowRoot.querySelector('#budgetValue')
+      this.currentYear = this.shadowRoot.querySelector('#budgetYear')
+      this.currentMonth = this.shadowRoot.querySelector('#budgetMonth')
 
       this.addedBudget
     }
@@ -135,6 +142,7 @@ customElements.define('food-budget-element',
     connectedCallback() {
       this.budgetForm.addEventListener('budgetAdded', (event) => {
         this.addedBudget = Number(event.detail.budget)
+        this.getAndDisplayCurrentYearMonthBudget()
 
         this.hideBudgetFormDisplayExpenseForm()
         this.displayPieButton()
@@ -174,6 +182,12 @@ customElements.define('food-budget-element',
 
     hidePieButton() {
       this.pieButton.style.display = 'none'
+    }
+
+    getAndDisplayCurrentYearMonthBudget() {
+this.currentYear.textContent = this.dateHandler.getCurrentYear()    
+this.currentMonth.textContent = this.dateHandler.getCurrentMonth()
+this.currentBudget.textContent = this.addedBudget
     }
   }
 )
