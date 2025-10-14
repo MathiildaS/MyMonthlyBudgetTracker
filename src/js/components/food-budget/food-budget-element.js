@@ -102,7 +102,7 @@ button:hover {
 </div>
 </section>
 <section class="right">
-    <h3>Overview</h3>
+    <h3>Budget for</h3> <span id="budgetMonth">—</span></p>
     <p><strong>Budget:</strong> <span id="budgetValue">—</span></p>
     <ul id="expensesList"></ul>
 </section>
