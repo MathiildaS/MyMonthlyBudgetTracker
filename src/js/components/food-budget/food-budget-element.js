@@ -11,7 +11,7 @@ foodBudgetTemplate.innerHTML = `
 .main {
   display: grid;
   grid-template-columns: 250px 800px 300px;
-  grid-template-areas: "left middle right";
+  grid-template-areas: 'left middle right';
   gap: 1rem;
 }
 
@@ -23,14 +23,14 @@ foodBudgetTemplate.innerHTML = `
 }
 
 .middle { 
-  grid-area: middle; 
+  grid-area: middle;
 }
 
 .right { 
   grid-area: right;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
 }
 
 .budgetForm {
@@ -64,55 +64,56 @@ button:hover {
 }
 
 @media (max-width: 1200px) {
-  .main{
+  .main {
   grid-template-columns: 1fr 1.5fr 1fr;
-  grid-template-areas: "left middle right";
+  grid-template-areas: 'left middle right';
   }
 
 @media (max-width: 1000px) {
-  .main{
+  .main {
   grid-template-columns: 0.5fr 1fr 0.6fr;
-  grid-template-areas: "left middle right";
+  grid-template-areas: 'left middle right';
   }
 
 @media (max-width: 600px) {
-  .main{
+  .main {
   grid-template-columns: 1fr;
-  grid-template-areas: "left" "middle" "right";
+  grid-template-areas: 'left' 'middle' 'right';
   }
 
 @media (max-width: 400px) {
-  .main{
+  .main {
   gap: 0.5rem;
   }
 </style>
-<div class="main">
-<section class="left">
+<div class='main'>
+<section class='left'>
   <p>Change theme</p>
 </section>
-    <section class="middle">
+    <section class='middle'>
       
-<div class="budgetForm">
+<div class='budgetForm'>
 <budget-form-element></budget-form-element>
 </div>
-<button class="pieButton">Display pie?</button>
-<div class="budgetPie">
+<button class='pieButton'>Display pie?</button>
+<div class='budgetPie'>
 <pie-element></pie-element>
 </div>
-<div class="expenseForm">
+<div class='expenseForm'>
 <expense-form-element></expense-form-element>
 </div>
 </section>
-<section class="right">
-<h1><span id="budgetYear">—</span></h1>
-    <h2><span id="budgetMonth">—</span></h2>
-    <p><strong>Budget:</strong> <span id="budgetValue">—</span></p>
-    <p><strong>Expenses:</strong></p><ul id="expensesList"></ul>
+<section class='right'>
+<h1><span id='budgetYear'>—</span></h1>
+    <h2><span id='budgetMonth'>—</span></h2>
+    <p><strong>Budget:</strong> <span id='budgetValue'>—</span></p>
+    <p><strong>Expenses:</strong></p><ul id='expensesList'></ul>
 </section>
 </div>
 `
 
-customElements.define('food-budget-element',
+customElements.define(
+  'food-budget-element',
 
   class extends HTMLElement {
     /**
@@ -121,7 +122,9 @@ customElements.define('food-budget-element',
     constructor() {
       super()
 
-      this.attachShadow({ mode: 'open' }).appendChild(foodBudgetTemplate.content.cloneNode(true))
+      this.attachShadow({ mode: 'open' }).appendChild(
+        foodBudgetTemplate.content.cloneNode(true)
+      )
 
       this.dateHandler = new DateHandler()
 
@@ -135,8 +138,11 @@ customElements.define('food-budget-element',
       this.currentBudget = this.shadowRoot.querySelector('#budgetValue')
       this.currentYear = this.shadowRoot.querySelector('#budgetYear')
       this.currentMonth = this.shadowRoot.querySelector('#budgetMonth')
+      this.allAddedExpenses = this.shadowRoot.querySelector('#expensesList')
 
       this.addedBudget
+      this.addedExpense
+      this.collectedExpenses = []
     }
 
     connectedCallback() {
@@ -149,8 +155,10 @@ customElements.define('food-budget-element',
       })
 
       this.expenseForm.addEventListener('expenseAdded', (event) => {
-        const expense = Number(event.detail.expense)
-        this.pieElement.displaySliceOnPieBasedOnInput(expense)
+        this.addedExpense = Number(event.detail.expense)
+        this.addExpenseToCollection()
+        this.displayAddedExpenses()
+        this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
       })
 
       this.pieButton.addEventListener('click', () => {
@@ -185,9 +193,23 @@ customElements.define('food-budget-element',
     }
 
     getAndDisplayCurrentYearMonthBudget() {
-this.currentYear.textContent = this.dateHandler.getCurrentYear()    
-this.currentMonth.textContent = this.dateHandler.getCurrentMonth()
-this.currentBudget.textContent = this.addedBudget
+      this.currentYear.textContent = this.dateHandler.getCurrentYear()
+      this.currentMonth.textContent = this.dateHandler.getCurrentMonth()
+      this.currentBudget.textContent = this.addedBudget
+    }
+
+    displayAddedExpenses() {
+      this.allAddedExpenses.replaceChildren()
+
+      this.collectedExpenses.forEach((expense) => {
+        const liElement = document.createElement('li')
+        liElement.textContent = expense
+        this.allAddedExpenses.appendChild(liElement)
+      })
+    }
+
+    addExpenseToCollection() {
+      this.collectedExpenses.push(this.addedExpense)
     }
   }
 )
