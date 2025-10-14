@@ -12,8 +12,7 @@ pieTemplate.innerHTML = `
 <canvas id="canvasElement" width="300" height="300"></canvas>
 `
 
-customElements.define(
-  "pie-element",
+customElements.define("pie-element",
 
   class extends HTMLElement {
     /**
@@ -22,9 +21,8 @@ customElements.define(
     constructor() {
       super()
 
-      this.attachShadow({ mode: "open" }).appendChild(
-        pieTemplate.content.cloneNode(true)
-      )
+      this.attachShadow({ mode: "open" }).appendChild(pieTemplate.content.cloneNode(true))
+
       this.canvas = this.shadowRoot.querySelector("#canvasElement")
       this.pieRender
     }
@@ -38,6 +36,9 @@ customElements.define(
     }
 
     displaySliceOnPieBasedOnInput(expenseAmount) {
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.createSlice(expenseAmount)
     }
 
@@ -70,7 +71,7 @@ customElements.define(
     }
 
     getStateOfPie() {
-      this.pieRender.getCurrentStateOfPie()
+      return this.pieRender.getCurrentStateOfPie()
     }
   }
 )
