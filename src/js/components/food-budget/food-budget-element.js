@@ -8,7 +8,7 @@ foodBudgetTemplate.innerHTML = `
 <style>
 .main {
   display: grid;
-  grid-template-columns: 280px 600px 320px;
+  grid-template-columns: 250px 800px 300px;
   grid-template-areas: "left middle right";
   gap: 1rem;
 }
@@ -61,10 +61,27 @@ button:hover {
     background-color: #9fa0d6;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .main{
-    grid-template-columns: 1fr;
-    grid-template-areas: "left middle right";
+  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-areas: "left middle right";
+  }
+
+@media (max-width: 1000px) {
+  .main{
+  grid-template-columns: 0.5fr 1fr 0.6fr;
+  grid-template-areas: "left middle right";
+  }
+
+@media (max-width: 600px) {
+  .main{
+  grid-template-columns: 1fr;
+  grid-template-areas: "left" "middle" "right";
+  }
+
+@media (max-width: 400px) {
+  .main{
+  gap: 0.5rem;
   }
 </style>
 <div class="main">
