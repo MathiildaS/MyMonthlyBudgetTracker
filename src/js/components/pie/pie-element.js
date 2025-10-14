@@ -36,42 +36,54 @@ customElements.define("pie-element",
     }
 
     displaySliceOnPieBasedOnInput(expenseAmount) {
-      if (!this.pieRender) {
-        return
-      }
+      this.#validateInitializationOfPie()
       this.pieRender.createSlice(expenseAmount)
     }
 
     setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
+      this.#validateInitializationOfPie()
       this.pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
     }
 
     setColoursOfWarningAndDangerBoundaries(warningColour, dangerColour) {
+      this.#validateInitializationOfPie()
       this.pieRender.setStateColours(warningColour, dangerColour)
     }
 
     setColourOfPie(colourOfPie) {
+      this.#validateInitializationOfPie()
       this.pieRender.setPieColour(colourOfPie)
     }
 
     setColourOfSlicesOnPie(colourOfSlice) {
+      this.#validateInitializationOfPie()
       this.pieRender.setSliceColour(colourOfSlice)
     }
 
     displayTextOnCanvas(boolean) {
+      this.#validateInitializationOfPie()
       this.pieRender.displayPercentText(boolean)
     }
 
     setColourOfTextOnCanvas(colourOfText) {
+      this.#validateInitializationOfPie()
       this.pieRender.setFontColour(colourOfText)
     }
 
     setSizeOfTextOnCanvas(sizeOfText) {
+      this.#validateInitializationOfPie()
       this.pieRender.setFontSize(sizeOfText)
     }
 
     getStateOfPie() {
+      this.#validateInitializationOfPie()
       return this.pieRender.getCurrentStateOfPie()
+    }
+
+    #validateInitializationOfPie() {
+      if (!this.pieRender) {
+      return
+      }
     }
   }
 )
