@@ -36,54 +36,66 @@ customElements.define("pie-element",
     }
 
     displaySliceOnPieBasedOnInput(expenseAmount) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.createSlice(expenseAmount)
     }
 
     setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
     }
 
     setColoursOfWarningAndDangerBoundaries(warningColour, dangerColour) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.setStateColours(warningColour, dangerColour)
     }
 
     setColourOfPie(colourOfPie) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.setPieColour(colourOfPie)
     }
 
     setColourOfSlicesOnPie(colourOfSlice) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.setSliceColour(colourOfSlice)
     }
 
     displayTextOnCanvas(boolean) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.displayPercentText(boolean)
     }
 
     setColourOfTextOnCanvas(colourOfText) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.setFontColour(colourOfText)
     }
 
     setSizeOfTextOnCanvas(sizeOfText) {
-      this.#validateInitializationOfPie()
+      if (!this.pieRender) {
+        return
+      }
       this.pieRender.setFontSize(sizeOfText)
     }
 
     getStateOfPie() {
-      this.#validateInitializationOfPie()
-      return this.pieRender.getCurrentStateOfPie()
-    }
-
-    #validateInitializationOfPie() {
       if (!this.pieRender) {
-      return
+        return
       }
+      return this.pieRender.getCurrentStateOfPie()
     }
   }
 )
