@@ -159,11 +159,13 @@ customElements.define(
         this.addExpenseToCollection()
         this.displayAddedExpenses()
         this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
+        console.log(this.pieElement.getStateOfPie())
       })
 
       this.pieButton.addEventListener('click', () => {
         this.hidePieButton()
         this.displayBudgetPie(this.addedBudget)
+        this.drawAddedExpensesOnPie()
       })
     }
 
@@ -210,6 +212,12 @@ customElements.define(
 
     addExpenseToCollection() {
       this.collectedExpenses.push(this.addedExpense)
+    }
+
+    drawAddedExpensesOnPie() {
+      this.collectedExpenses.forEach((addedExpense) => {
+        this.pieElement.displaySliceOnPieBasedOnInput(addedExpense)
+      })
     }
   }
 )
