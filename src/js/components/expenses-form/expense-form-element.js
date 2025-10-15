@@ -32,6 +32,10 @@ input {
 <input type='text' name='expense' placeholder='Add your expense here' required />
 <button type='submit'>Add your expense</button>
 </form>
+<form id='editExpenseForm'>
+<input type='text' name='editExpense' placeholder='Edit your expense here' required />
+<button type='submit'>Edit your expense</button>
+</form>
 </div>
 `
 
@@ -47,15 +51,28 @@ customElements.define('expense-form-element',
       this.attachShadow({ mode: 'open' }).appendChild(expenseFormTemplate.content.cloneNode(true))
 
       this.form = this.shadowRoot.querySelector('#expenseForm')
-      this.currentExpense = 0
-      this.totalOfExpenses = []
+      this.editForm = this.shadowRoot.querySelector('#editExpenseForm')
+
+      this.editedExpense
+      this.editedExpenseIndex
     }
 
     connectedCallback() {
+      this.editForm.style.display = 'none'
+      
       this.form.addEventListener('submit', (event) => {
         event.preventDefault()
         this.collectFormDataAndSendExpense()
       })
+
+      this.editForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        this.editedExpense = this.editForm.editExpense.value
+        this.sendEditedExpense(this.editedExpense, this.editExpenseIndex)
+        this.editForm.style.display = 'none'
+        this.form.style.display = 'block'
+        this.editForm.reset()
+      })      
     }
 
     collectFormDataAndSendExpense() {
@@ -72,6 +89,27 @@ customElements.define('expense-form-element',
         bubbles: true,
       })
       this.dispatchEvent(expenseAdded)
+      this.form.reset()
+    }
+
+    editExpense(editExpense, editExpenseIndex) {
+      this.editForm.style.display = 'block'
+      this.form.style.display = 'none'
+
+      this.editExpenseIndex = editExpenseIndex
+      this.editForm.editExpense.value = editExpense
+      this.editForm.editExpense.focus()
+    }
+
+    sendEditedExpense(editedExpense, editedExpenseIndex) {
+      const expenseEdited = new CustomEvent('expenseEdited', {
+        detail: {
+          expense: editedExpense,
+          index: editedExpenseIndex,
+        },
+        bubbles: true,
+      })
+      this.dispatchEvent(expenseEdited)
     }
   }
 )
