@@ -94,7 +94,9 @@ customElements.define(
       )
 
       this.form = this.shadowRoot.querySelector('#budgetForm')
+      this.selectCurrency = this.shadowRoot.querySelector('#currency')
       this.budget = 0
+      this.currency = 'KR'
     }
 
     connectedCallback() {
@@ -106,17 +108,17 @@ customElements.define(
 
     collectFormDataAndSendBudget() {
       const formData = new FormData(this.form)
-      const budget = formData.get('budget')
-      const currency = formData.get('currency')
-      this.sendAddedBudget(budget, currency)
+      this.budget = formData.get('budget')
+      this.currency = this.selectCurrency.value
+      this.sendAddedBudget()
       this.form.reset()
     }
 
-    sendAddedBudget(budget, currency) {
+    sendAddedBudget() {
       const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
-          budget: budget,
-          currency: currency,
+          budget: this.budget,
+          currency: this.currency,
         },
         bubbles: true,
       })
