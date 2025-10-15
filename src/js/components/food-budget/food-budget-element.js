@@ -8,55 +8,55 @@ import { DateHandler } from '../../utils/dateHandler.js'
 const foodBudgetTemplate = document.createElement('template')
 foodBudgetTemplate.innerHTML = `
 <style>
-.main {
-  display: grid;
-  grid-template-columns: 250px 800px 300px;
-  grid-template-areas: 'left middle right';
-  gap: 1rem;
-}
+  .main {
+    display: grid;
+    grid-template-columns: 250px 800px 300px;
+    grid-template-areas: "left middle right";
+    gap: 1rem;
+  }
 
-.left, .middle, .right {
-  min-height: 0;
-}
+  .left, .middle, .right {
+    min-height: 0;
+  }
 
-.left { 
-  grid-area: left;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
-  height: 70vh;
-  overflow: auto;
-}
+  .left { 
+    grid-area: left;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
+    height: 70vh;
+    overflow: auto;
+  }
 
-.middle { 
-  grid-area: middle;
-}
+  .middle { 
+    grid-area: middle;
+  }
 
-.right { 
-  grid-area: right;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
-  height: 70vh;
-  overflow: auto;
-}
+  .right { 
+    grid-area: right;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
+    height: 70vh;
+    overflow: auto;
+  }
 
-.budgetForm {
-display: flex;
+  .budgetForm {
+    display: flex;
     align-items: center;
     justify-content: center;
-}
+  }
 
-.expenseForm {
-  display: none;
-}
+  .expenseForm {
+    display: none;
+  }
 
-.pieButton {
-display: none;
-}
+  .pieButton {
+    display: none;
+  }
 
   button {
-    font-family: 'DynaPuff';
+    font-family: "DynaPuff";
     background-color: #b0a8d6b9;
     color:  #ffffff;
     border: none;
@@ -65,108 +65,108 @@ display: none;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
+  }
 
-button:hover {
+  button:hover {
     background-color: #9fa0d6;
-}
-
-.budgetPie {
-display: none;
-}
-
-.expenses-remaining {
-display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 1rem;
-  row-gap: .25rem;
-  align-items: start;
-}
-
-.expenses-remaining p {
-  margin: 0;
-  line-height: 1.5;
-}
-
-#expenses {
-grid-row: 1;
-}
-
-#expensesValue {
-grid-row: 2;
-}
-
-#remaining {
-grid-row: 1;
-}
-
-#remainingValue {
-grid-row: 2;
-}
-
-@media (max-width: 1200px) {
-  .main {
-  grid-template-columns: 1fr 1.5fr 1fr;
-  grid-template-areas: 'left middle right';
   }
-}
 
-@media (max-width: 1000px) {
-  .main {
-  grid-template-columns: 0.5fr 1fr 0.6fr;
-  grid-template-areas: 'left middle right';
+  .budgetPie {
+    display: none;
   }
-}
 
-@media (max-width: 600px) {
-  .main {
-  grid-template-columns: 1fr;
-  grid-template-areas: 'left' 'middle' 'right';
+  .expenses-remaining {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    row-gap: .25rem;
+    align-items: start;
   }
-}
 
-@media (max-width: 400px) {
-  .main {
-  gap: 0.5rem;
+  .expenses-remaining p {
+    margin: 0;
+    line-height: 1.5;
   }
-}
+
+  #expenses {
+    grid-row: 1;
+  }
+
+  #expensesValue {
+    grid-row: 2;
+  }
+
+  #remaining {
+  grid-row: 1;
+  }
+
+  #remainingValue {
+    grid-row: 2;
+  }
+
+  @media (max-width: 1200px) {
+    .main {
+      grid-template-columns: 1fr 1.5fr 1fr;
+      grid-template-areas: 'left middle right';
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .main {
+      grid-template-columns: 0.5fr 1fr 0.6fr;
+      grid-template-areas: 'left middle right';
+    }
+  }
+
+  @media (max-width: 600px) {
+    .main {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'left' 'middle' 'right';
+    }
+  }
+
+  @media (max-width: 400px) {
+    .main {
+      gap: 0.5rem;
+    }
+  }
 </style>
 <div class='main'>
-<section class='left'>
-<div class="monthYear">
-<h1><span id='budgetYearMonth'></span></h1>
-</div>
-<div class="theme">
-<h3>Change theme</h3>
-<button>Light</button>
-<button>Dark</button>
-<button>Colourful</button>
-</div>
-<div class="reset">
-<button id="resetBudget">Reset budget</button>
-</div>
-</section>
-    <section class='middle'>
-<button class='pieButton'>Display pie?</button> 
-<div class='budgetForm'>
-<budget-form-element></budget-form-element>
-</div>
-<div class='budgetPie'>
-<pie-element></pie-element>
-</div>
-<div class='expenseForm'>
-<expense-form-element></expense-form-element>
-</div>
-</section>
-<section class='right'>
+  <section class='left'>
+    <div class="monthYear">
+      <h1><span id='budgetYearMonth'></span></h1>
+    </div>
+    <div class="theme">
+      <h3>Change theme</h3>
+      <button>Light</button>
+      <button>Dark</button>
+      <button>Colourful</button>
+    </div>
+    <div class="reset">
+      <button id="resetBudget">Reset budget</button>
+    </div>
+  </section>
+  <section class='middle'>
+    <button class='pieButton'>Display pie?</button> 
+    <div class='budgetForm'>
+      <budget-form-element></budget-form-element>
+    </div>
+    <div class='budgetPie'>
+      <pie-element></pie-element>
+    </div>
+    <div class='expenseForm'>
+      <expense-form-element></expense-form-element>
+    </div>
+  </section>
+  <section class='right'>
     <h2><strong>Budget:</strong> <span id='budgetValue'></span></h2>
     <div class="expenses-remaining">
-    <p id="expenses"><strong>Expenses:</strong></p>
-    <div id="expensesValue">—</div>
-    <p id="remaining"><strong>Remaining:</strong></p>
-    <div id="remainingValue">—</div>
+      <p id="expenses"><strong>Expenses:</strong></p>
+      <div id="expensesValue">—</div>
+      <p id="remaining"><strong>Remaining:</strong></p>
+      <div id="remainingValue">—</div>
     </div>
-</section>
+  </section>
 </div>
 `
 
@@ -198,6 +198,7 @@ customElements.define(
       this.currentYearMonth = this.shadowRoot.querySelector('#budgetYearMonth')
       this.allAddedExpenses = this.shadowRoot.querySelector('#expensesValue')
       this.remainingOfBudget = this.shadowRoot.querySelector('#remainingValue')
+      this.resetBudgetButton = this.shadowRoot.querySelector('#resetBudget')
 
       this.addedBudget
       this.addedExpense
@@ -207,12 +208,15 @@ customElements.define(
     }
 
     connectedCallback() {
+      this.displayStoredBudgetAndExpenses()
+      
       this.budgetForm.addEventListener('budgetAdded', (event) => {
         this.addedBudget = Number(event.detail.budget)
         this.getAndDisplayCurrentYearMonthBudget()
 
         this.hideBudgetFormDisplayExpenseForm()
         this.displayPieButton()
+        this.storeBudgetAndExpenses()
       })
 
       this.expenseForm.addEventListener('expenseAdded', (event) => {
@@ -221,11 +225,15 @@ customElements.define(
         this.displayAddedExpenses()
         this.displayRemainingBudgetAfterAddedExpense()
         this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
+        this.storeBudgetAndExpenses()
       })
 
       this.pieButton.addEventListener('click', () => {
         this.toggleTextAndDisplayButton()
+      })
 
+      this.resetBudgetButton.addEventListener('click', () => {
+        this.removeStoredBudgetAndExpenses()
       })
     }
 
@@ -252,15 +260,15 @@ customElements.define(
 
     toggleTextAndDisplayButton() {
       this.displayPieButton()
- if (this.pieButton.textContent === 'Display pie?') {
-  this.pieButton.textContent = 'Hide pie?'
-  this.budgetPie.style.display = 'block'
-  this.displayBudgetPie(this.addedBudget)
-  this.drawAddedExpensesOnPie()
- } else if (this.pieButton.textContent === 'Hide pie?') {
-  this.pieButton.textContent = 'Display pie?'
-  this.budgetPie.style.display = 'none'
- }
+      if (this.pieButton.textContent === 'Display pie?') {
+        this.pieButton.textContent = 'Hide pie?'
+        this.budgetPie.style.display = 'block'
+        this.displayBudgetPie(this.addedBudget)
+        this.drawAddedExpensesOnPie()
+      } else if (this.pieButton.textContent === 'Hide pie?') {
+        this.pieButton.textContent = 'Display pie?'
+        this.budgetPie.style.display = 'none'
+      }
     }
 
 
@@ -310,8 +318,52 @@ customElements.define(
       localStorage.setItem(this.yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
     }
 
+    displayStoredBudgetAndExpenses() {
+      const storedData = localStorage.getItem(this.yearMonthKey)
+      if (!storedData) {
+        this.addedBudget = 0
+        this.collectedExpenses = []
+        this.refreshDisplayWithNoAddedBudget()
+      } else {
+        try {
+          const parsedData = JSON.parse(storedData)
+          this.addedBudget = parsedData.budget
+          this.collectedExpenses = parsedData.expenses
+          this.getAndDisplayCurrentYearMonthBudget()
+          this.hideBudgetFormDisplayExpenseForm()
+          this.displayAddedExpenses()
+          this.displayRemainingBudgetAfterAddedExpense()
+          this.displayPieButton()
+          if (this.budgetPie.style.display === 'block' && this.addedBudget > 0) {
+            this.pieElement.initializePieRenderModuleWithBaseAmount(this.addedBudget)
+            this.drawAddedExpensesOnPie()
+          }
+        } catch (error) {
+          console.error('Could not parse the stored budget and expenses', error)
+        }
+      }
+    }
+
     removeStoredBudgetAndExpenses() {
       localStorage.removeItem(this.yearMonthKey)
+      this.addedBudget = 0
+      this.collectedExpenses = []
+      this.refreshDisplayWithNoAddedBudget()
+    }
+
+    refreshDisplayWithNoAddedBudget() {
+      this.budgetFormDiv.style.display = 'flex'
+      this.expenseFormDiv.style.display = 'none'
+      this.pieButton.style.display = 'none'
+      this.budgetPie.style.display = 'none'
+      this.pieButton.textContent = 'Display pie?'
+
+      this.currentBudget.textContent = '—'
+      this.allAddedExpenses.replaceChildren()
+      this.allAddedExpenses.textContent = '—'
+      this.remainingOfBudget.replaceChildren()
+      this.remainingOfBudget.textContent = '—'
+      this.getAndDisplayCurrentYearMonthBudget()
     }
   }
 )
