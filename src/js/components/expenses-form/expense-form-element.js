@@ -22,10 +22,32 @@ button:hover {
     background-color: #9fa0d6;
 }
 
-input {
-  font-family: 'DynaPuff';
-  padding: 0.5rem 1rem;
+  input {
+    font-family: 'DynaPuff';
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
+  #expenseForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "expense"
+      "submit";
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+#expense { 
+grid-area: expense; 
+width: 50%; 
 }
+
+  #expenseForm button { 
+  grid-area: submit; 
+  width: 50%; 
+  }
 </style>
 <div>
 <form id='expenseForm'>
