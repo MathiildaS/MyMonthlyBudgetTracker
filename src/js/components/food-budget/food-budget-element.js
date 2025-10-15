@@ -77,7 +77,7 @@ foodBudgetTemplate.innerHTML = `
 
   .expenses-remaining {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.3fr 1fr;
     column-gap: 1rem;
     row-gap: .25rem;
     align-items: start;
@@ -209,13 +209,14 @@ customElements.define(
       this.remainingOfBudget = this.shadowRoot.querySelector('#remainingValue')
       this.resetBudgetButton = this.shadowRoot.querySelector('#resetBudget')
 
-      this.addedBudget
+      this.addedBudget = 0
       this.addedExpense
       this.editedExpense
       this.editedExpenseIndex
       this.collectedExpenses = []
       this.remainingValue
       this.yearMonthKey = `${this.dateHandler.getCurrentYearMonth()}`
+      this.currency = 'KR'
     }
 
     connectedCallback() {
@@ -301,7 +302,7 @@ customElements.define(
 
     getAndDisplayCurrentYearMonthBudget() {
       this.currentYearMonth.textContent = this.yearMonthKey
-      this.currentBudget.textContent = this.addedBudget
+      this.currentBudget.textContent = `${this.addedBudget} ${this.currency}`
     }
 
     displayAddedExpenses() {
@@ -309,7 +310,7 @@ customElements.define(
 
       this.collectedExpenses.forEach((expense, index) => {
         const pElement = document.createElement('p')
-        pElement.textContent = expense
+        pElement.textContent = `${expense} ${this.currency}`
         const editButton = document.createElement('button')
         editButton.classList.add('edit-button')
         editButton.textContent = 'Edit'
@@ -342,7 +343,7 @@ customElements.define(
       this.collectedExpenses.forEach((expense) => {
         this.remainingValue -= expense
         const pElement = document.createElement('p')
-        pElement.textContent = this.remainingValue
+        pElement.textContent = `${this.remainingValue} ${this.currency}`
         this.remainingOfBudget.appendChild(pElement)
       })
     }
@@ -351,6 +352,7 @@ customElements.define(
       const budgetAndExpensesToStore = {
         budget: this.addedBudget,
         expenses: this.collectedExpenses,
+        currency: this.currency,
       }
       localStorage.setItem(this.yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
     }
@@ -366,6 +368,7 @@ customElements.define(
           const parsedData = JSON.parse(storedData)
           this.addedBudget = parsedData.budget
           this.collectedExpenses = parsedData.expenses
+          this.currency = parsedData.currency
           this.getAndDisplayCurrentYearMonthBudget()
           this.hideBudgetFormDisplayExpenseForm()
           this.displayAddedExpenses()
