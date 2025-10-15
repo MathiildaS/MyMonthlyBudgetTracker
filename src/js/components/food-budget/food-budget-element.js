@@ -132,8 +132,20 @@ grid-row: 2;
 }
 </style>
 <div class='main'>
-<section class='left'> 
-<p>Change theme</p>
+<section class='left'>
+<div class="monthYear">
+<h1><span id='budgetYear'></span>
+<span id='budgetMonth'></span></h1>
+</div>
+<div class="theme">
+<h3>Change theme</h3>
+<button>Light</button>
+<button>Dark</button>
+<button>Colourful</button>
+</div>
+<div class="reset">
+<button id="resetBudget">Reset budget</button>
+</div>
 </section>
     <section class='middle'>
 <button class='pieButton'>Display pie?</button> 
@@ -148,7 +160,6 @@ grid-row: 2;
 </div>
 </section>
 <section class='right'>
-<h1><span id='budgetYear'></span>  <span id='budgetMonth'></span></h1>
     <h2><strong>Budget:</strong> <span id='budgetValue'></span></h2>
     <div class="expenses-remaining">
     <p id="expenses"><strong>Expenses:</strong></p>
