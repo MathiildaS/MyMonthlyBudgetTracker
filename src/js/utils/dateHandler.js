@@ -28,4 +28,8 @@ export class DateHandler {
     let currentYear = this.getCurrentDate().getFullYear()
     return currentYear
   }
+
+  getCurrentYearMonth() {
+    return `${this.getCurrentYear()}-${this.getCurrentMonth()} `
+  }
 }
