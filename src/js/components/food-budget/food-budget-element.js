@@ -203,6 +203,7 @@ customElements.define(
       this.addedExpense
       this.collectedExpenses = []
       this.remainingValue
+      this.yearMonthKey = `${this.dateHandler.getCurrentYearMonth()}`
     }
 
     connectedCallback() {
@@ -262,8 +263,9 @@ customElements.define(
  }
     }
 
+
     getAndDisplayCurrentYearMonthBudget() {
-      this.currentYearMonth.textContent = this.dateHandler.getCurrentYearMonth()
+      this.currentYearMonth.textContent = this.yearMonthKey
       this.currentBudget.textContent = this.addedBudget
     }
 
@@ -301,12 +303,15 @@ customElements.define(
     }
 
     storeBudgetAndExpenses() {
-      const storageKey = `${this.dateHandler.getCurrentYearMonth()}`
       const budgetAndExpensesToStore = {
         budget: this.addedBudget,
         expenses: this.collectedExpenses,
       }
-      localStorage.setItem(storageKey, JSON.stringify(budgetAndExpensesToStore))
+      localStorage.setItem(this.yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
+    }
+
+    removeStoredBudgetAndExpenses() {
+      localStorage.removeItem(this.yearMonthKey)
     }
   }
 )
