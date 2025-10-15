@@ -104,6 +104,15 @@ foodBudgetTemplate.innerHTML = `
     grid-row: 2;
   }
 
+  .edit-button, .delete-button {
+    font-family: "DynaPuff";
+    background-color: #b0a8d6b9;
+    font-size: 0.6rem;
+    color:  #ffffff;
+    padding: 0.2rem 0.4rem;
+    margin-left: 0.2rem;
+    }
+
   @media (max-width: 1200px) {
     .main {
       grid-template-columns: 1fr 1.5fr 1fr;
@@ -159,11 +168,11 @@ foodBudgetTemplate.innerHTML = `
     </div>
   </section>
   <section class='right'>
-    <h2><strong>Budget:</strong> <span id='budgetValue'></span></h2>
+    <h2><u>Budget:</u> <span id='budgetValue'></span></h2>
     <div class="expenses-remaining">
-      <p id="expenses"><strong>Expenses:</strong></p>
+      <p id="expenses"><u>Expenses:</u></p>
       <div id="expensesValue">—</div>
-      <p id="remaining"><strong>Remaining:</strong></p>
+      <p id="remaining"><u>Remaining:</u></p>
       <div id="remainingValue">—</div>
     </div>
   </section>
@@ -202,6 +211,8 @@ customElements.define(
 
       this.addedBudget
       this.addedExpense
+      this.editedExpense
+      this.editedExpenseIndex
       this.collectedExpenses = []
       this.remainingValue
       this.yearMonthKey = `${this.dateHandler.getCurrentYearMonth()}`
@@ -209,7 +220,7 @@ customElements.define(
 
     connectedCallback() {
       this.displayStoredBudgetAndExpenses()
-      
+
       this.budgetForm.addEventListener('budgetAdded', (event) => {
         this.addedBudget = Number(event.detail.budget)
         this.getAndDisplayCurrentYearMonthBudget()
@@ -226,6 +237,22 @@ customElements.define(
         this.displayRemainingBudgetAfterAddedExpense()
         this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
         this.storeBudgetAndExpenses()
+      })
+
+      this.allAddedExpenses.addEventListener('click', (event) => {
+      this.editOrDeleteExpense(event)
+      })
+
+        this.expenseForm.addEventListener('expenseEdited', (event) => {
+        this.editedExpense = Number(event.detail.expense)
+        this.editedExpenseIndex = Number(event.detail.index)
+        this.collectedExpenses[this.editedExpenseIndex] = this.editedExpense
+
+        this.displayAddedExpenses()
+        this.displayRemainingBudgetAfterAddedExpense()
+        this.storeBudgetAndExpenses()
+        this.pieElement.initializePieRenderModuleWithBaseAmount(this.addedBudget)
+        this.drawAddedExpensesOnPie()
       })
 
       this.pieButton.addEventListener('click', () => {
@@ -280,9 +307,19 @@ customElements.define(
     displayAddedExpenses() {
       this.allAddedExpenses.replaceChildren()
 
-      this.collectedExpenses.forEach((expense) => {
+      this.collectedExpenses.forEach((expense, index) => {
         const pElement = document.createElement('p')
         pElement.textContent = expense
+        const editButton = document.createElement('button')
+        editButton.classList.add('edit-button')
+        editButton.textContent = 'Edit'
+        editButton.dataset.expenseIndex = index
+        pElement.appendChild(editButton)
+        const deleteButton = document.createElement('button')
+        deleteButton.classList.add('delete-button')
+        deleteButton.textContent = 'Delete'
+        deleteButton.dataset.expenseIndex = index
+        pElement.appendChild(deleteButton)
         this.allAddedExpenses.appendChild(pElement)
       })
     }
@@ -364,6 +401,22 @@ customElements.define(
       this.remainingOfBudget.replaceChildren()
       this.remainingOfBudget.textContent = '—'
       this.getAndDisplayCurrentYearMonthBudget()
+    }
+
+    editOrDeleteExpense(event) {
+      if (event.target.classList.contains('edit-button')) {
+        const expenseIndex = event.target.dataset.expenseIndex
+        const expenseToEdit = this.collectedExpenses[expenseIndex]
+        this.expenseForm.editExpense(expenseToEdit, expenseIndex)
+      } else if (event.target.classList.contains('delete-button')) {
+        const expenseIndex = event.target.dataset.expenseIndex
+        this.collectedExpenses.splice(expenseIndex, 1)
+        this.displayAddedExpenses()
+        this.displayRemainingBudgetAfterAddedExpense()
+        this.storeBudgetAndExpenses()
+        this.pieElement.initializePieRenderModuleWithBaseAmount(this.addedBudget)
+        this.drawAddedExpensesOnPie()
+      }
     }
   }
 )
