@@ -64,6 +64,7 @@ customElements.define(
       const formData = new FormData(this.form)
       const budget = formData.get('budget')
       this.sendAddedBudget(budget)
+      this.form.reset()
     }
 
     sendAddedBudget(budget) {
