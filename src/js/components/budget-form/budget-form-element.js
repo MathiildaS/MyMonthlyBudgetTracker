@@ -3,6 +3,8 @@
  * @version 1.0.0
  */
 
+import { budgetHandler } from '../../utils/budgetHandler.js'
+
 const budgetFormTemplate = document.createElement('template')
 budgetFormTemplate.innerHTML = `
 <style>
@@ -16,11 +18,11 @@ budgetFormTemplate.innerHTML = `
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
+  }
 
-button:hover {
+  button:hover {
     background-color: #9fa0d6;
-}
+  }
 
   input, select {
     font-family: 'DynaPuff';
@@ -39,17 +41,18 @@ button:hover {
     align-items: stretch;
   }
 
-#budget { 
-grid-area: budget; 
-width: 100%; 
-}
+  #budget {
+    grid-area: budget;
+    width: 100%;
+  }
 
-#currency { 
-grid-area: currency; 
-}
-  #budgetForm button { 
-  grid-area: submit; 
-  width: 100%; 
+  #currency {
+    grid-area: currency;
+  }
+  
+  #budgetForm button {
+    grid-area: submit;
+    width: 100%;
   }
 
   #currency {
@@ -58,8 +61,9 @@ grid-area: currency;
     border: none;
     cursor: pointer;
   }
-  #currency:hover { 
-  background-color: #9fa0d6; 
+
+  #currency:hover {
+    background-color: #9fa0d6;
   }
 </style>
 <div>
@@ -94,31 +98,27 @@ customElements.define(
       )
 
       this.form = this.shadowRoot.querySelector('#budgetForm')
-      this.selectCurrency = this.shadowRoot.querySelector('#currency')
-      this.budget = 0
-      this.currency = 'KR'
     }
 
     connectedCallback() {
       this.form.addEventListener('submit', (event) => {
         event.preventDefault()
-        this.collectFormDataAndSendBudget()
+        const budgetForm = this.form
+        this.collectFormValuesAndSendBudget(budgetForm)
       })
     }
 
-    collectFormDataAndSendBudget() {
-      const formData = new FormData(this.form)
-      this.budget = formData.get('budget')
-      this.currency = this.selectCurrency.value
-      this.sendAddedBudget()
+    collectFormValuesAndSendBudget(budgetForm) {
+      const { budget, currency } = budgetHandler.getBudgetFormValues(budgetForm)
+      this.sendAddedBudget(budget, currency)
       this.form.reset()
     }
 
-    sendAddedBudget() {
+    sendAddedBudget(budget, currency) {
       const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
-          budget: this.budget,
-          currency: this.currency,
+          budget: budget,
+          currency: currency,
         },
         bubbles: true,
       })
