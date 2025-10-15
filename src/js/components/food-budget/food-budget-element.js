@@ -134,8 +134,7 @@ grid-row: 2;
 <div class='main'>
 <section class='left'>
 <div class="monthYear">
-<h1><span id='budgetYear'></span>
-<span id='budgetMonth'></span></h1>
+<h1><span id='budgetYearMonth'></span></h1>
 </div>
 <div class="theme">
 <h3>Change theme</h3>
@@ -163,9 +162,9 @@ grid-row: 2;
     <h2><strong>Budget:</strong> <span id='budgetValue'></span></h2>
     <div class="expenses-remaining">
     <p id="expenses"><strong>Expenses:</strong></p>
-    <p id="expensesValue">—</p>
+    <div id="expensesValue">—</div>
     <p id="remaining"><strong>Remaining:</strong></p>
-    <p id="remainingValue">—</p>
+    <div id="remainingValue">—</div>
     </div>
 </section>
 </div>
@@ -196,8 +195,7 @@ customElements.define(
       this.expenseFormDiv = this.shadowRoot.querySelector('.expenseForm')
       this.pieButton = this.shadowRoot.querySelector('.pieButton')
       this.currentBudget = this.shadowRoot.querySelector('#budgetValue')
-      this.currentYear = this.shadowRoot.querySelector('#budgetYear')
-      this.currentMonth = this.shadowRoot.querySelector('#budgetMonth')
+      this.currentYearMonth = this.shadowRoot.querySelector('#budgetYearMonth')
       this.allAddedExpenses = this.shadowRoot.querySelector('#expensesValue')
       this.remainingOfBudget = this.shadowRoot.querySelector('#remainingValue')
 
@@ -265,8 +263,7 @@ customElements.define(
     }
 
     getAndDisplayCurrentYearMonthBudget() {
-      this.currentYear.textContent = this.dateHandler.getCurrentYear()
-      this.currentMonth.textContent = this.dateHandler.getCurrentMonth()
+      this.currentYearMonth.textContent = this.dateHandler.getCurrentYearMonth()
       this.currentBudget.textContent = this.addedBudget
     }
 
@@ -301,6 +298,15 @@ customElements.define(
         pElement.textContent = this.remainingValue
         this.remainingOfBudget.appendChild(pElement)
       })
+    }
+
+    storeBudgetAndExpenses() {
+      const storageKey = `${this.dateHandler.getCurrentYearMonth()}`
+      const budgetAndExpensesToStore = {
+        budget: this.addedBudget,
+        expenses: this.collectedExpenses,
+      }
+      localStorage.setItem(storageKey, JSON.stringify(budgetAndExpensesToStore))
     }
   }
 )
