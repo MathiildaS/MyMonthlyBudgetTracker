@@ -224,6 +224,7 @@ customElements.define(
 
       this.budgetForm.addEventListener('budgetAdded', (event) => {
         this.addedBudget = Number(event.detail.budget)
+        this.currency = event.detail.currency
         this.getAndDisplayCurrentYearMonthBudget()
 
         this.hideBudgetFormDisplayExpenseForm()
