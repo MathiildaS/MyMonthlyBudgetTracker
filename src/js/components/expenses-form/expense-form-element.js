@@ -16,11 +16,11 @@ expenseFormTemplate.innerHTML = `
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
+  }
 
-button:hover {
+  button:hover {
     background-color: #9fa0d6;
-}
+  }
 
   input {
     font-family: 'DynaPuff';
@@ -33,20 +33,32 @@ button:hover {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas:
-      "expense"
-      "submit";
+      "expense expense" 
+      "submit submit";
     gap: 0.5rem;
     align-items: stretch;
   }
 
-#expense { 
-grid-area: expense; 
-width: 50%; 
-}
+    #editExpenseForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "editExpense editExpense" 
+      "submit submit";
+    gap: 0.5rem;
+    align-items: stretch;
+  }
 
-  #expenseForm button { 
-  grid-area: submit; 
-  width: 50%; 
+  #expenseForm input { 
+    grid-area: expense;
+  }
+
+  #editExpenseForm input {
+    grid-area: editExpense;
+  }
+
+  #expenseForm button, #editExpenseForm button { 
+    grid-area: submit;
   }
 </style>
 <div>
@@ -115,7 +127,7 @@ customElements.define('expense-form-element',
     }
 
     editExpense(editExpense, editExpenseIndex) {
-      this.editForm.style.display = 'block'
+      this.editForm.style.display = 'flex'
       this.form.style.display = 'none'
 
       this.editExpenseIndex = editExpenseIndex

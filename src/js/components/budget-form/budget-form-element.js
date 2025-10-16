@@ -41,18 +41,16 @@ budgetFormTemplate.innerHTML = `
     align-items: stretch;
   }
 
-  #budget {
+  #budgetForm input {
     grid-area: budget;
-    width: 100%;
   }
 
-  #currency {
+  #budgetForm select {
     grid-area: currency;
   }
   
   #budgetForm button {
     grid-area: submit;
-    width: 100%;
   }
 
   #currency {
@@ -67,35 +65,32 @@ budgetFormTemplate.innerHTML = `
   }
 </style>
 <div>
-<form id='budgetForm'>
-<input type='text' name='budget' placeholder='Add this months budget' required />
-<select name="currency" id="currency" required>
-<option value="KR">SEK</option>
-<option value="$">USD</option>
-<option value="€">EUR</option>
-<option value="£">GBP</option>
-<option value="A$">AUD</option>
-<option value="CN¥">CNY</option>
-<option value="JP¥">JPY</option>
-</select>
-<button type='submit'>ADD BUDGET</button>
-</form>
+  <form id='budgetForm'>
+    <input type='text' name='budget' placeholder='Add this months budget' required />
+    <select name="currency" id="currency" required>
+      <option value="KR">SEK</option>
+      <option value="$">USD</option>
+      <option value="€">EUR</option>
+      <option value="£">GBP</option>
+      <option value="A$">AUD</option>
+      <option value="CN¥">CNY</option>
+      <option value="JP¥">JPY</option>
+    </select>
+    <button type='submit'>ADD BUDGET</button>
+  </form>
 </div>
 `
 
-customElements.define(
-  'budget-form-element',
+customElements.define('budget-form-element',
 
   class extends HTMLElement {
     /**
-     * Create a shadow DOM for the element and attach the template to its shadow root.
+     * Create a shadow DOM for the budget-form-element and attach the template to its shadow root.
      */
     constructor() {
       super()
 
-      this.attachShadow({ mode: 'open' }).appendChild(
-        budgetFormTemplate.content.cloneNode(true)
-      )
+      this.attachShadow({ mode: 'open' }).appendChild(budgetFormTemplate.content.cloneNode(true))
 
       this.form = this.shadowRoot.querySelector('#budgetForm')
     }
@@ -109,12 +104,12 @@ customElements.define(
     }
 
     collectFormValuesAndSendBudget(budgetForm) {
-      const { budget, currency } = budgetHandler.getBudgetFormValues(budgetForm)
-      this.sendAddedBudget(budget, currency)
+      const { budget, currency } = budgetHandler.getBudgetAndCurrencyFromForm(budgetForm)
+      this.sendBudgetAndCurrency(budget, currency)
       this.form.reset()
     }
 
-    sendAddedBudget(budget, currency) {
+    sendBudgetAndCurrency(budget, currency) {
       const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
           budget: budget,

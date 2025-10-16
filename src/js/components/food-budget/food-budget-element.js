@@ -49,6 +49,8 @@ foodBudgetTemplate.innerHTML = `
 
   .expenseForm {
     display: none;
+        align-items: center;
+    justify-content: center;
   }
 
   .pieButton {
@@ -280,7 +282,7 @@ customElements.define(
     }
 
     displayExpenseForm() {
-      this.expenseFormDiv.style.display = 'block'
+      this.expenseFormDiv.style.display = 'flex'
     }
 
     displayPieButton() {

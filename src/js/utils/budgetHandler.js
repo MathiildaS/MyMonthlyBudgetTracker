@@ -1,10 +1,9 @@
 class BudgetHandler {
 
-getBudgetFormValues(form) {
+getBudgetAndCurrencyFromForm(form) {
         const formData = new FormData(form)
         const budget = formData.get('budget')
-        let currency = formData.get('currency')
-
+        const currency = formData.get('currency')
         return { budget, currency }
     }
 }
