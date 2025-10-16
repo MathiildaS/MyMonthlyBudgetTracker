@@ -9,7 +9,7 @@ import { cssTemplate } from './budget-form.css.js'
 
 import { BudgetFormHandler } from '../../logic/budgetFormHandler.js'
 
-customElements.define('budget-form-element',
+customElements.define('budget-form',
 
   class extends HTMLElement {
 
@@ -43,29 +43,43 @@ customElements.define('budget-form-element',
     }
 
     #collectAndDispatchFormValues() {
-      const { budgetFormInput, budgetFormOption } = this.#collectFormValues()
-      this.#dispatchFormValues(budgetFormInput, budgetFormOption)
-    }
-
-    #collectFormValues() {
       try {
-        const { budgetFormInput, budgetFormOption } = this.budgetFormHandler.getInputAndOption(this.form)
-        return { budgetFormInput, budgetFormOption }
+        const { inputValue, optionValue } = this.#collectFormValues()
+        this.#dispatchFormValues(inputValue, optionValue)
       } catch (error) {
-        console.error('An error occured when collecting the values from the budget form', error)
+        console.error('An error occured:', error.message)
+        const userMessage = error.userMessage
+        this.#dispatchErrorMessage(userMessage)
       }
     }
 
-    #dispatchFormValues(budgetFormInput, budgetFormOption) {
+    #collectFormValues() {
+      const { inputValue, optionValue } = this.budgetFormHandler.getInputOptionValue(this.form)
+      return { inputValue, optionValue }
+    }
+
+    #dispatchFormValues(inputValue, optionValue) {
       const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
-          budget: budgetFormInput,
-          currency: budgetFormOption,
+          budget: inputValue,
+          currency: optionValue,
         },
 
         bubbles: true,
       })
       this.dispatchEvent(budgetAdded)
+    }
+
+    #dispatchErrorMessage(userMessage) {
+      const errorOccurred = new CustomEvent('errorOccurred', {
+        detail: {
+          message: userMessage
+        },
+
+        bubbles: true,
+        composed: true,
+      })
+      this.dispatchEvent(errorOccurred)
     }
 
     /**

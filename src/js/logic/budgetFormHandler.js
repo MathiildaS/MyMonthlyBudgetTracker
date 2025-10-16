@@ -14,16 +14,16 @@ export class BudgetFormHandler {
     this.validator = new Validator()
   }
 
-  getInputAndOption(budgetForm) {
+  getInputOptionValue(budgetForm) {
     const budgetFormData = new FormData(budgetForm)
-    const budgetFormInput = budgetFormData.get('budget')
-    const budgetFormOption = budgetFormData.get('currency')
-    this.#validateFormInput(budgetFormInput)
-    return { budgetFormInput, budgetFormOption }
+    const inputValue = budgetFormData.get('budget')
+    const optionValue = budgetFormData.get('currency')
+    this.#validateFormInput(inputValue)
+    return { inputValue, optionValue }
   }
 
-  #validateFormInput(budgetFormInput) {
-    const parsedFormInput = this.parser.parseValueToNumber(budgetFormInput)
+  #validateFormInput(inputValue) {
+    const parsedFormInput = this.parser.parseValueToNumber(inputValue)
     this.validator.validateNumber(parsedFormInput)
   }
 }
