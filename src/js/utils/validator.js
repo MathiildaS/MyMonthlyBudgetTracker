@@ -27,8 +27,12 @@ export class Validator {
   }
 
   validateStringInput(input) {
-
-    throw new Error("")
+    if (typeof input !== "string") {
+      throw new Error("The value must be a string.")
+    }
+    if (input === null || input === undefined) {
+      throw new Error('The value is missing or undefined.')
+    }
   }
 
   validateInputExist(input) {
