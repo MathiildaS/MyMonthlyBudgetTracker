@@ -52,7 +52,7 @@ customElements.define('budget-form-element',
         const { budgetFormInput, budgetFormOption } = this.budgetFormHandler.getInputAndOption(this.form)
         return { budgetFormInput, budgetFormOption }
       } catch (error) {
-        console.error('An error occured when collecting and sending values from the budget form', error)
+        console.error('An error occured when collecting the values from the budget form', error)
       }
     }
 
