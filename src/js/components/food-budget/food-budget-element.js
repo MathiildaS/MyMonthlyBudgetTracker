@@ -160,13 +160,14 @@ foodBudgetTemplate.innerHTML = `
   <section class='middle'>
     <button class='pieButton'>Display pie?</button> 
     <div class='budgetForm'>
-      <budget-form-element></budget-form-element>
+      <budget-form></budget-form>
     </div>
     <div class='budgetPie'>
       <pie-element></pie-element>
     </div>
+    <error-popup></error-popup>
     <div class='expenseForm'>
-      <expense-form-element></expense-form-element>
+      <expense-form></expense-form>
     </div>
   </section>
   <section class='right'>
@@ -197,7 +198,7 @@ customElements.define(
 
       this.dateHandler = new DateHandler()
 
-      this.budgetForm = this.shadowRoot.querySelector('budget-form-element')
+      this.budgetForm = this.shadowRoot.querySelector('budget-form')
       this.expenseForm = this.shadowRoot.querySelector('expense-form-element')
       this.pieElement = this.shadowRoot.querySelector('pie-element')
 
@@ -413,7 +414,7 @@ customElements.define(
       if (event.target.classList.contains('edit-button')) {
         const expenseIndex = event.target.dataset.expenseIndex
         const expenseToEdit = this.collectedExpenses[expenseIndex]
-        this.expenseForm.editExpense(expenseToEdit, expenseIndex)
+        this.expenseForm.displayEditFormAndExpense(expenseToEdit, expenseIndex)
       } else if (event.target.classList.contains('delete-button')) {
         const expenseIndex = event.target.dataset.expenseIndex
         this.collectedExpenses.splice(expenseIndex, 1)

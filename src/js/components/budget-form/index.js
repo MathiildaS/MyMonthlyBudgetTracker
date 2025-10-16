@@ -1,5 +1,5 @@
 /**
- * @file The root of the custom budget-form-element web component .
+ * @file The root of the custom budget-form web component .
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
