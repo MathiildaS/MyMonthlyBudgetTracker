@@ -1,3 +1,9 @@
+/**
+ * @file A module for the DateHandler class. Collects and returns the current month and year.
+ * @author Mathilda Segerlund <ms228qs@student.lnu.se>
+ * @version 1.0.0
+ */
+
 export class DateHandler {
 
   getCurrentDate() {
@@ -30,6 +36,6 @@ export class DateHandler {
   }
 
   getCurrentYearMonth() {
-    return `${this.getCurrentYear()}-${this.getCurrentMonth()} `
+    return `${this.getCurrentYear()}-${this.getCurrentMonth()}`
   }
 }
