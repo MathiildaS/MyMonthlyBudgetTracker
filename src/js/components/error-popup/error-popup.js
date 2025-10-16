@@ -17,5 +17,30 @@ customElements.define('error-popup',
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
+
+      this.popup = this.shadowRoot.querySelector('.popup')
+      this.popupText = this.shadowRoot.querySelector('.popup-error')
     }
-    })
+
+    /**
+     * Called when added to the DOM. Display an popup with error message for 3 seconds when errorOccured custom event is dispatched.
+     */
+    connectedCallback() {
+      // Creates a new AbortController object instance to remove event listeners.
+      this.abortController = new AbortController()
+
+      document.addEventListener('errorOccurred', (event) => {
+        const errorMessage = event.detail.message
+        this.displayPopUp(errorMessage)
+      }, { signal: this.abortController.signal })
+    }
+
+    displayPopUp(errorMessage) {
+      this.popupText.textContent = errorMessage
+      this.popup.classList.add('display')
+
+      setTimeout(() => {
+        this.popup.classList.remove('display')
+      }, 3000)
+    }
+  })
