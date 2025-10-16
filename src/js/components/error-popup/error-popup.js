@@ -31,16 +31,24 @@ customElements.define('error-popup',
 
       document.addEventListener('errorOccurred', (event) => {
         const errorMessage = event.detail.message
-        this.displayPopUp(errorMessage)
+        this.#displayPopUp(errorMessage)
       }, { signal: this.abortController.signal })
     }
 
-    displayPopUp(errorMessage) {
+    #displayPopUp(errorMessage) {
       this.popupText.textContent = errorMessage
       this.popup.classList.add('display')
 
       setTimeout(() => {
         this.popup.classList.remove('display')
       }, 3000)
+    }
+
+    /**
+     * Called when disconnected from DOM. 
+     * Aborts event listeners to prevent memory leaks.
+     */
+    disconnectedCallback() {
+      this.abortController.abort()
     }
   })

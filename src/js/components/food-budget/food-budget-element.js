@@ -199,7 +199,7 @@ customElements.define(
       this.dateHandler = new DateHandler()
 
       this.budgetForm = this.shadowRoot.querySelector('budget-form')
-      this.expenseForm = this.shadowRoot.querySelector('expense-form-element')
+      this.expenseForm = this.shadowRoot.querySelector('expense-form')
       this.pieElement = this.shadowRoot.querySelector('pie-element')
 
       this.budgetPie = this.shadowRoot.querySelector('.budgetPie')
@@ -414,7 +414,7 @@ customElements.define(
       if (event.target.classList.contains('edit-button')) {
         const expenseIndex = event.target.dataset.expenseIndex
         const expenseToEdit = this.collectedExpenses[expenseIndex]
-        this.expenseForm.displayEditFormAndExpense(expenseToEdit, expenseIndex)
+        this.expenseForm.displayEditExpenseForm(expenseToEdit, expenseIndex)
       } else if (event.target.classList.contains('delete-button')) {
         const expenseIndex = event.target.dataset.expenseIndex
         this.collectedExpenses.splice(expenseIndex, 1)

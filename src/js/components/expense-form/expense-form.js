@@ -8,13 +8,10 @@ import { cssTemplate } from './expense-form.css.js'
 
 import { ExpenseFormHandler } from '../../logic/expenseFormHandler.js'
 
-
 customElements.define('expense-form',
 
   class extends HTMLElement {
-    /**
-     * Create a shadow DOM for the expenses-form-element and attach the template to its shadow root.
-     */
+
     constructor() {
       super()
 
@@ -22,11 +19,8 @@ customElements.define('expense-form',
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
-
+      // Creates a new BudgetFormHandler instance to extract form values.
       this.expenseFormHandler = new ExpenseFormHandler()
-
-      // Creates a new AbortController object instance to remove event listeners.
-      this.abortController = new AbortController()
 
       this.expenseForm = this.shadowRoot.querySelector('#expenseForm')
       this.editExpenseForm = this.shadowRoot.querySelector('#editExpenseForm')
@@ -35,81 +29,102 @@ customElements.define('expense-form',
     }
 
     connectedCallback() {
+      // Creates a new AbortController object instance to remove event listeners.
+      this.abortController = new AbortController()
+
       this.editExpenseForm.style.display = 'none'
 
       this.expenseForm.addEventListener('submit', (event) => {
-        this.#collectAndSendExpenseFormInput(event)
+        event.preventDefault()
+
+        this.#collectAndDispatchFormValue()
+        this.expenseForm.reset()
       }, { signal: this.abortController.signal })
 
       this.editExpenseForm.addEventListener('submit', (event) => {
-        this.#collectAndSendEditedExpense(event)
+        event.preventDefault()
+
+        this.#collectAndDispatchEditedExpenseValue()
         this.#displayExpenseForm()
       }, { signal: this.abortController.signal })
     }
 
-    displayEditFormAndExpense(expense, expenseIndex) {
+    displayEditExpenseForm(currentExpense, currentExpenseIndex) {
+      this.editExpenseForm.editExpense.value = currentExpense
+      this.expenseToEditIndex = currentExpenseIndex
+
       this.#displayEditExpenseForm()
-      this.editExpenseForm.editExpense.value = expense
-      this.expenseToEditIndex = expenseIndex
       this.editExpenseForm.editExpense.focus()
     }
 
-    #collectAndSendExpenseFormInput(event) {
-      event.preventDefault()
-      const expenseForm = this.expenseForm
+    #collectAndDispatchFormValue() {
       try {
-        this.#collectFormInputAndSendExpense(expenseForm)
+        const inputValue = this.#collectFormValue()
+        this.#dispatchFormValue(inputValue)
       } catch (error) {
-        console.error('An error occured when collecting and sending values from the expense form', error)
+        console.error('An error occured:', error.message)
+        const userMessage = error.userMessage
+        this.#dispatchErrorMessage(userMessage)
       }
     }
 
-    #collectFormInputAndSendExpense(expenseForm) {
-      const expenseFormInput = this.expenseFormHandler.getInputValue(expenseForm)
-      this.#setAndSendExpense(expenseFormInput)
+    #collectFormValue() {
+      const inputValue = this.expenseFormHandler.getInputValue(this.expenseForm)
+      return inputValue
     }
 
-    #setAndSendExpense(expenseFormInput) {
+    #dispatchFormValue(inputValue) {
       const expenseAdded = new CustomEvent('expenseAdded', {
         detail: {
-          expense: expenseFormInput,
+          expense: inputValue,
         },
         bubbles: true,
       })
       this.dispatchEvent(expenseAdded)
-      this.expenseForm.reset()
     }
 
-    #collectAndSendEditedExpense(event) {
-      event.preventDefault()
-      const editExpenseForm = this.editExpenseForm
+    #collectAndDispatchEditedExpenseValue() {
       try {
-        this.#collectFormInputAndSendEditedExpense(editExpenseForm)
+        const editedInputValue = this.#collectEditFormValue()
+        this.#dispatchEditFormValue(editedInputValue)
       } catch (error) {
         console.error('An error occured when collecting and sending values from the expense form', error)
       }
     }
 
-    #collectFormInputAndSendEditedExpense(editExpenseForm) {
-      const editExpenseFormInput = expenseFormHandler.getEditedInputValue(editExpenseForm)
-      this.#setAndSendEditedExpense(editExpenseFormInput)
+    #collectEditFormValue() {
+      const inputValue = this.expenseFormHandler.getEditedInputValue(this.editExpenseForm)
+      return inputValue
     }
 
-    #setAndSendEditedExpense(editExpenseFormInput) {
+    #dispatchEditFormValue(editedInputValue) {
       const expenseEdited = new CustomEvent('expenseEdited', {
         detail: {
-          expense: editExpenseFormInput,
+          expense: editedInputValue,
           index: this.expenseToEditIndex,
         },
         bubbles: true,
       })
       this.dispatchEvent(expenseEdited)
-      this.editExpenseForm.reset()
     }
+
+    #dispatchErrorMessage(userMessage) {
+      const errorOccurred = new CustomEvent('errorOccurred', {
+        detail: {
+          message: userMessage
+        },
+
+        bubbles: true,
+        composed: true,
+      })
+      this.dispatchEvent(errorOccurred)
+    }
+
 
     #displayExpenseForm() {
       this.editExpenseForm.style.display = 'none'
       this.expenseForm.style.display = 'block'
+      this.editExpenseForm.reset()
     }
 
     #displayEditExpenseForm() {
