@@ -3,7 +3,7 @@
  * @version 1.0.0
  */
 
-import { budgetHandler } from '../../utils/budgetHandler.js'
+import { budgetHandler } from '../../logic/budgetHandler.js'
 
 const budgetFormTemplate = document.createElement('template')
 budgetFormTemplate.innerHTML = `
@@ -92,32 +92,51 @@ customElements.define('budget-form-element',
 
       this.attachShadow({ mode: 'open' }).appendChild(budgetFormTemplate.content.cloneNode(true))
 
+      // Creates a new AbortController object instance to remove event listeners.
+      this.abortController = new AbortController()
+
       this.form = this.shadowRoot.querySelector('#budgetForm')
     }
 
     connectedCallback() {
       this.form.addEventListener('submit', (event) => {
-        event.preventDefault()
-        const budgetForm = this.form
-        this.collectFormValuesAndSendBudget(budgetForm)
-      })
+        this.#onSubmitCollectAndSendFormValues(event)
+      }, { signal: this.abortController.signal })
     }
 
-    collectFormValuesAndSendBudget(budgetForm) {
-      const { budget, currency } = budgetHandler.getBudgetAndCurrencyFromForm(budgetForm)
-      this.sendBudgetAndCurrency(budget, currency)
+    #onSubmitCollectAndSendFormValues(event) {
+      event.preventDefault()
+      const budgetForm = this.form
+      try {
+        this.#collectFormValuesAndSendBudget(budgetForm)
+      } catch (error) {
+        console.error('An error occured when collecting and sending values from the budget form', error)
+      }
+    }
+
+    #collectFormValuesAndSendBudget(budgetForm) {
+      const { input, option } = budgetHandler.getInputAndOptionValueFromBudgetForm(budgetForm)
+      this.#setAndSendBudgetAndCurrency(input, option)
       this.form.reset()
     }
 
-    sendBudgetAndCurrency(budget, currency) {
+    #setAndSendBudgetAndCurrency(input, option) {
       const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
-          budget: budget,
-          currency: currency,
+          budget: input,
+          currency: option,
         },
         bubbles: true,
       })
       this.dispatchEvent(budgetAdded)
+    }
+
+    /**
+     * Called when disconnected from DOM. 
+     * Aborts event listeners to prevent memory leaks.
+     */
+    disconnectedCallback() {
+      this.abortController.abort()
     }
   }
 )
