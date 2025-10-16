@@ -3,7 +3,7 @@
  * @version 1.0.0
  */
 
-import { DateHandler } from '../../utils/dateHandler.js'
+import { DateHandler } from '../../logic/dateHandler.js'
 
 const foodBudgetTemplate = document.createElement('template')
 foodBudgetTemplate.innerHTML = `
