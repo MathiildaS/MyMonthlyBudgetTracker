@@ -5,7 +5,7 @@
  */
 
 import { Parser } from '../utils/parser.js'
-import { DateHandler } from '../../logic/dateHandler.js'
+import { DateHandler } from '../logic/dateHandler.js'
 import { BudgetAppHandler } from '../logic/budgetAppHandler.js'
 
 export class BudgetAppService {
@@ -18,6 +18,6 @@ export class BudgetAppService {
     }
 
     getBudgetAppHandler() {
-        return new BudgetAppHandler(this.#parser, this.#dateHandler)
+        return new BudgetAppHandler(this.#dateHandler, this.#parser)
     }
 }
