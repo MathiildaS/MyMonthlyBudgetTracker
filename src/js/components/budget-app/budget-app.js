@@ -6,9 +6,7 @@
 import { cssTemplate } from './budget-app.css.js'
 import { htmlTemplate } from './budget-app.html.js'
 
-import { DateHandler } from '../../logic/dateHandler.js'
-
-customElements.define('food-budget-element',
+customElements.define('budget-app',
 
   class extends HTMLElement {
 
