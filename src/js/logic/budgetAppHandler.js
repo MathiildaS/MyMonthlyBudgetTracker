@@ -12,7 +12,7 @@ export class BudgetAppHandler {
   #currency = 'KR'
   #addedBudgetAmount = 0
   #editedExpenseAmount
-  #expenseIndex
+  #editedExpenseIndex
   #collectedExpenses = []
   #remainingValue
 
@@ -82,7 +82,7 @@ export class BudgetAppHandler {
         const { budget, currency } = this.getBudget()
       const budgetAndExpensesToStore = {
         budget: budget,
-        expenses: this.collectedExpenses,
+        expenses: this.#collectedExpenses,
         currency: currency,
       }
       localStorage.setItem(this.#yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
@@ -92,5 +92,14 @@ export class BudgetAppHandler {
       localStorage.removeItem(this.#yearMonthKey)
       this.#addedBudgetAmount = 0
       this.#collectedExpenses = []
+    }
+
+    editExpense(expenseEditedEvent) {
+      const value = expenseEditedEvent.detail.expense
+      const index = expenseEditedEvent.detail.index
+
+ this.#editedExpenseAmount = Number(value)
+        this.#editedExpenseIndex = Number(index)
+        this.#collectedExpenses[this.#editedExpenseIndex] = this.#editedExpenseAmount
     }
 }

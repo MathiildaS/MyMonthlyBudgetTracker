@@ -54,8 +54,6 @@ customElements.define('budget-app',
       this.expenseForm.addEventListener('expenseAdded', (event) => {
         this.budgetAppHandler.addExpense(event)
         this.displayAddedExpensesAndRemainingOfBudget()
-
-        this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
         this.storeBudgetAndExpenses()
       })
 
@@ -64,9 +62,7 @@ customElements.define('budget-app',
       })
 
       this.expenseForm.addEventListener('expenseEdited', (event) => {
-        this.editedExpense = Number(event.detail.expense)
-        this.editedExpenseIndex = Number(event.detail.index)
-        this.collectedExpenses[this.editedExpenseIndex] = this.editedExpense
+       this.budgetAppHandler.editExpense(event)
 
         this.displayAddedExpenses()
         this.displayRemainingBudgetAfterAddedExpense()
@@ -85,20 +81,12 @@ customElements.define('budget-app',
     }
 
     hideBudgetFormDisplayExpenseForm() {
-      this.hideBudgetForm()
-      this.displayExpenseForm()
+      this.budgetFormDiv.style.display = 'none'
+      this.expenseFormDiv.style.display = 'flex'
     }
 
     displayBudgetPie(addedBudget) {
       this.pieElement.initializePieRenderModuleWithBaseAmount(addedBudget)
-    }
-
-    hideBudgetForm() {
-      this.budgetFormDiv.style.display = 'none'
-    }
-
-    displayExpenseForm() {
-      this.expenseFormDiv.style.display = 'flex'
     }
 
     displayPieButton() {
@@ -128,6 +116,11 @@ customElements.define('budget-app',
       const { budget, currency } = this.budgetAppHandler.getBudget()
       this.currentBudget.textContent = `${budget} ${currency}`
     }
+
+displayAddedExpensesAndRemainingOfBudget() {
+  this.displayAddedExpensesAndDrawOnPie()
+  this.displayRemainingBudget()
+}
 
     displayAddedExpensesAndDrawOnPie() {
       const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
@@ -203,6 +196,10 @@ customElements.define('budget-app',
           console.error('Could not parse the stored budget and expenses', error)
         }
       }
+    }
+
+    storeBudgetAndExpenses() {
+      this.budgetAppHandler.storeBudgetAndExpenses()
     }
 
     removeStoredBudgetAndExpenses() {
