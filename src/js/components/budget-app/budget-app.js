@@ -6,6 +6,8 @@
 import { cssTemplate } from './budget-app.css.js'
 import { htmlTemplate } from './budget-app.html.js'
 
+import { budgetAppService } from '../../services/budgetAppService.js'
+
 customElements.define('budget-app',
 
   class extends HTMLElement {
@@ -17,6 +19,7 @@ customElements.define('budget-app',
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
+      
       this.dateHandler = new DateHandler()
 
       this.budgetForm = this.shadowRoot.querySelector('budget-form')

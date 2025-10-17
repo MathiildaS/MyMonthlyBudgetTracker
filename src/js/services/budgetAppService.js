@@ -12,4 +12,8 @@ export class budgetAppService {
   constructor() {
     this.#dateHandler = new DateHandler()
   }
+
+  createDateHandler() {
+    return this.#dateHandler
+  }
 }
