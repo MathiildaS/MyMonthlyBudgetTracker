@@ -4,14 +4,13 @@
  * @version 1.0.0
  */
 
-import { Parser } from "../utils/parser"
-import { Validator } from "../utils/validator"
-
 export class ExpenseFormHandler {
+#parser
+#validator
 
-    constructor() {
-    this.parser = new Parser()
-    this.validator = new Validator()
+    constructor(parser, validator) {
+    this.#parser = parser
+    this.#validator = validator
   }
 
   getInputValue(expenseForm) {
@@ -29,7 +28,7 @@ export class ExpenseFormHandler {
   }
 
   #validateFormInput(inputValue) {
-    const parsedFormInput = this.parser.parseValueToNumber(inputValue)
-    this.validator.validateNumber(parsedFormInput)
+    const parsedFormInput = this.#parser.parseValueToNumber(inputValue)
+    this.#validator.validateNumber(parsedFormInput)
   }
 }
