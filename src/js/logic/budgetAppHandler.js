@@ -11,10 +11,7 @@ export class BudgetAppHandler {
   #yearMonthKey
   #currency = 'KR'
   #addedBudgetAmount = 0
-  #editedExpenseAmount
-  #editedExpenseIndex
   #collectedExpenses = []
-  #remainingValue
 
   constructor(dateHandler, parser) {
     this.#dateHandler = dateHandler
@@ -98,13 +95,18 @@ export class BudgetAppHandler {
     const value = expenseEditedEvent.detail.expense
     const index = expenseEditedEvent.detail.index
 
-    this.#editedExpenseAmount = this.#parser.parseValueToNumber(value)
-    this.#editedExpenseIndex = this.#parser.parseValueToNumber(index)
-    this.#collectedExpenses[this.#editedExpenseIndex] = this.#editedExpenseAmount
+    const editedExpenseAmount = this.#parser.parseValueToNumber(value)
+    const editedExpenseIndex = this.#parser.parseValueToNumber(index)
+    this.#collectedExpenses[editedExpenseIndex].expense = editedExpenseAmount
   }
 
-  deleteExpense(expenseIndex) {
+  deleteExpense(index) {
+    const expenseIndex = this.#parser.parseValueToNumber(index)
     this.#collectedExpenses.splice(expenseIndex, 1)
+
+    this.#collectedExpenses.forEach((expense, expenseIndex) => {
+      expense.index = expenseIndex
+    })
   }
 
   getStoredBudgetAndExpenses() {
