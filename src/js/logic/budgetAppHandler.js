@@ -52,7 +52,7 @@ export class BudgetAppHandler {
     this.#collectedExpenses.push(expense)
   }
 
-  getAddedExpenses() {
+  getAllAddedExpenses() {
     if (this.#collectedExpenses.length === 0) {
       return []
     }
@@ -60,21 +60,31 @@ export class BudgetAppHandler {
     return this.#collectedExpenses
   }
 
-getRemainingOfBudget() {
-  const { budget } = this.getBudget()
-  let remainingValue = budget
-  const collectionOfRemainingValues = []
+  getRemainingOfBudget() {
+    const { budget } = this.getBudget()
+    let remainingValue = budget
+    const collectionOfRemainingValues = []
 
-  const allExpenses = this.getAddedExpenses()
+    const allExpenses = this.getAllAddedExpenses()
 
-      allExpenses.forEach(({ expense }) => {
-        remainingValue -= expense
-         collectionOfRemainingValues.push(remainingValue)
-      })
-      return collectionOfRemainingValues
-}
+    allExpenses.forEach(({ expense }) => {
+      remainingValue -= expense
+      collectionOfRemainingValues.push(remainingValue)
+    })
+    return collectionOfRemainingValues
+  }
 
   getYearMonth() {
     return this.#yearMonthKey
   }
+
+      storeBudgetAndExpenses() {
+        const { budget, currency } = this.getBudget()
+      const budgetAndExpensesToStore = {
+        budget: budget,
+        expenses: this.collectedExpenses,
+        currency: currency,
+      }
+      localStorage.setItem(this.#yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
+    }
 }

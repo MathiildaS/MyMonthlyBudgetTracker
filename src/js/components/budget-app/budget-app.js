@@ -138,8 +138,8 @@ customElements.define('budget-app',
       this.currentBudget.textContent = `${budget} ${currency}`
     }
 
-    displayAddedExpenses() {
-      const allExpenses = this.budgetAppHandler.getAddedExpenses()
+    displayAddedExpensesAndDrawOnPie() {
+      const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
 
       this.allAddedExpenses.replaceChildren()
       this.#checkLenghtOfCollection(allExpenses)
@@ -160,13 +160,15 @@ customElements.define('budget-app',
         deleteButton.dataset.expenseIndex = index
         pElement.appendChild(deleteButton)
 
-        this.allAddedExpenses.appendChild(pElement)    
-      })  
+        this.allAddedExpenses.appendChild(pElement)
+      })
+
+      this.drawAddedExpensesOnPie(allExpenses)
     }
 
-    drawAddedExpensesOnPie() {
-      this.collectedExpenses.forEach((addedExpense) => {
-        this.pieElement.displaySliceOnPieBasedOnInput(addedExpense)
+    drawAddedExpensesOnPie(allExpenses) {
+      allExpenses.forEach((expense) => {
+        this.pieElement.displaySliceOnPieBasedOnInput(expense)
       })
     }
 
@@ -183,15 +185,6 @@ customElements.define('budget-app',
         pElement.textContent = `${value} ${currency}`
         this.remainingOfBudget.appendChild(pElement)
       })
-    }
-
-    storeBudgetAndExpenses() {
-      const budgetAndExpensesToStore = {
-        budget: this.addedBudget,
-        expenses: this.collectedExpenses,
-        currency: this.currency,
-      }
-      localStorage.setItem(this.yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
     }
 
     displayStoredBudgetAndExpenses() {
