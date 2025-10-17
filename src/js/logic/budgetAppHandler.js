@@ -9,6 +9,13 @@ export class BudgetAppHandler {
   #parser
 
   #yearMonthKey
+  #currency = 0
+  #addedBudget = 0
+  #addedExpense
+  #editedExpense
+  #editedExpenseIndex
+  #collectedExpenses
+  #remainingValue
 
   constructor(dateHandler, parser) {
     this.#dateHandler = dateHandler
