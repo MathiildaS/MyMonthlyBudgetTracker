@@ -7,8 +7,8 @@
 
 import { Parser } from "../utils/parser.js"
 import { Validator } from "../utils/validator.js"
-import { BudgetFormHandler } from '../../logic/budgetFormHandler.js'
-import { ExpenseFormHandler } from '../../logic/expenseFormHandler.js'
+import { BudgetFormHandler } from '../logic/budgetFormHandler.js'
+import { ExpenseFormHandler } from '../logic/expenseFormHandler.js'
 
 export class FormService {
   #parser
