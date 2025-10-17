@@ -3,64 +3,21 @@
  * @version 1.0.0
  */
 
+import { cssTemplate } from './budget-app.css.js'
+import { htmlTemplate } from './budget-app.html.js'
+
 import { DateHandler } from '../../logic/dateHandler.js'
 
-const foodBudgetTemplate = document.createElement('template')
-foodBudgetTemplate.innerHTML = `
-
-<div class='main'>
-  <section class='left'>
-    <div class="monthYear">
-      <h1><span id='budgetYearMonth'></span></h1>
-    </div>
-    <div class="theme">
-      <h3>Change theme</h3>
-      <button>Light</button>
-      <button>Dark</button>
-      <button>Colourful</button>
-    </div>
-    <div class="reset">
-      <button id="resetBudget">Reset budget</button>
-    </div>
-  </section>
-  <section class='middle'>
-    <button class='pieButton'>Display pie?</button> 
-    <div class='budgetForm'>
-      <budget-form></budget-form>
-    </div>
-    <div class='budgetPie'>
-      <pie-element></pie-element>
-    </div>
-    <error-popup></error-popup>
-    <div class='expenseForm'>
-      <expense-form></expense-form>
-    </div>
-  </section>
-  <section class='right'>
-    <h2><u>Budget:</u> <span id='budgetValue'></span></h2>
-    <div class="expenses-remaining">
-      <p id="expenses"><u>Expenses:</u></p>
-      <div id="expensesValue">—</div>
-      <p id="remaining"><u>Remaining:</u></p>
-      <div id="remainingValue">—</div>
-    </div>
-  </section>
-</div>
-`
-
-customElements.define(
-  'food-budget-element',
+customElements.define('food-budget-element',
 
   class extends HTMLElement {
-    /**
-     * Create a shadow DOM for the food-budget-element and attach the template to its shadow root.
-     */
+
     constructor() {
       super()
 
-      this.attachShadow({ mode: 'open' }).appendChild(
-        foodBudgetTemplate.content.cloneNode(true)
-      )
+      this.attachShadow({ mode: 'open' })
+      this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
+      this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
       this.dateHandler = new DateHandler()
 
