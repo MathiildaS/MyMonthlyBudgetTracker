@@ -7,7 +7,7 @@
 import { htmlTemplate } from './budget-form.html.js'
 import { cssTemplate } from './budget-form.css.js'
 
-import { BudgetFormHandler } from '../../logic/budgetFormHandler.js'
+import { FormService } from '../../services/formService.js'
 
 customElements.define('budget-form',
 
@@ -20,8 +20,9 @@ customElements.define('budget-form',
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
-      // Creates a new BudgetFormHandler instance to extract form values.
-      this.budgetFormHandler = new BudgetFormHandler()
+      // Creates a new FormService instance to validate and extract form values.
+      this.formService = new FormService()
+      this.budgetFormHandler = this.formService.createBudgetFormHandler()
 
       this.form = this.shadowRoot.querySelector('#budgetForm')
     }
