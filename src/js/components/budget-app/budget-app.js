@@ -62,7 +62,7 @@ customElements.define('budget-app',
       })
 
       this.expenseForm.addEventListener('expenseEdited', (event) => {
-       this.budgetAppHandler.editExpense(event)
+        this.budgetAppHandler.editExpense(event)
 
         this.displayAddedExpenses()
         this.displayRemainingBudgetAfterAddedExpense()
@@ -98,12 +98,17 @@ customElements.define('budget-app',
       if (this.pieButton.textContent === 'Display pie?') {
         this.pieButton.textContent = 'Hide pie?'
         this.budgetPie.style.display = 'block'
-        this.displayBudgetPie(this.addedBudget)
-        this.drawAddedExpensesOnPie()
+        this.#drawBudgetPieWithExpenses()
       } else if (this.pieButton.textContent === 'Hide pie?') {
         this.pieButton.textContent = 'Display pie?'
         this.budgetPie.style.display = 'none'
       }
+    }
+
+    #drawBudgetPieWithExpenses() {
+      const { budget } = this.budgetAppHandler.getBudget()
+      this.displayBudgetPie(budget)
+      this.drawAddedExpensesOnPie(this.budgetAppHandler.getAllAddedExpenses())
     }
 
 
@@ -117,10 +122,10 @@ customElements.define('budget-app',
       this.currentBudget.textContent = `${budget} ${currency}`
     }
 
-displayAddedExpensesAndRemainingOfBudget() {
-  this.displayAddedExpensesAndDrawOnPie()
-  this.displayRemainingBudget()
-}
+    displayAddedExpensesAndRemainingOfBudget() {
+      this.displayAddedExpensesAndDrawOnPie()
+      this.displayRemainingBudget()
+    }
 
     displayAddedExpensesAndDrawOnPie() {
       const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
@@ -128,7 +133,7 @@ displayAddedExpensesAndRemainingOfBudget() {
       this.allAddedExpenses.replaceChildren()
       this.#checkLenghtOfCollection(allExpenses)
 
-      allExpenses.forEach((expense, currency, index) => {
+      allExpenses.forEach(({ expense, currency, index }) => {
         const pElement = document.createElement('p')
         pElement.textContent = `${expense} ${currency}`
 
@@ -151,7 +156,7 @@ displayAddedExpensesAndRemainingOfBudget() {
     }
 
     drawAddedExpensesOnPie(allExpenses) {
-      allExpenses.forEach((expense) => {
+      allExpenses.forEach(({ expense }) => {
         this.pieElement.displaySliceOnPieBasedOnInput(expense)
       })
     }
@@ -172,29 +177,27 @@ displayAddedExpensesAndRemainingOfBudget() {
     }
 
     displayStoredBudgetAndExpenses() {
-      const storedData = localStorage.getItem(this.yearMonthKey)
-      if (!storedData) {
-        this.addedBudget = 0
-        this.collectedExpenses = []
-        this.refreshDisplayWithNoAddedBudget()
-      } else {
-        try {
-          const parsedData = JSON.parse(storedData)
-          this.addedBudget = parsedData.budget
-          this.collectedExpenses = parsedData.expenses
-          this.currency = parsedData.currency
-          this.getAndDisplayCurrentYearMonthBudget()
+      try {
+        const { budget, expenses, currency, isStoredValues } = this.budgetAppHandler.getStoredBudgetAndExpenses()
+
+        this.#getAndDisplayYearMonth()
+        this.#getAndDisplayBudget()
+
+        if (!isStoredValues) {
+          this.refreshDisplayWithNoAddedBudget()
+          return
+        } else {
           this.hideBudgetFormDisplayExpenseForm()
-          this.displayAddedExpenses()
-          this.displayRemainingBudgetAfterAddedExpense()
+          this.displayAddedExpensesAndDrawOnPie()
+          this.displayRemainingBudget()
           this.displayPieButton()
-          if (this.budgetPie.style.display === 'block' && this.addedBudget > 0) {
-            this.pieElement.initializePieRenderModuleWithBaseAmount(this.addedBudget)
-            this.drawAddedExpensesOnPie()
+          if (this.budgetPie.style.display === 'block' && budget > 0) {
+            this.displayBudgetPie(budget)
+            this.drawAddedExpensesOnPie(expenses)
           }
-        } catch (error) {
-          console.error('Could not parse the stored budget and expenses', error)
         }
+      } catch (error) {
+
       }
     }
 
@@ -219,22 +222,27 @@ displayAddedExpensesAndRemainingOfBudget() {
       this.allAddedExpenses.textContent = '—'
       this.remainingOfBudget.replaceChildren()
       this.remainingOfBudget.textContent = '—'
-      this.getAndDisplayCurrentYearMonthBudget()
+      this.getAndDisplayYearMonth()
     }
 
     editOrDeleteExpense(event) {
-      if (event.target.classList.contains('edit-button')) {
-        const expenseIndex = event.target.dataset.expenseIndex
-        const expenseToEdit = this.collectedExpenses[expenseIndex]
-        this.expenseForm.displayEditExpenseForm(expenseToEdit, expenseIndex)
-      } else if (event.target.classList.contains('delete-button')) {
-        const expenseIndex = event.target.dataset.expenseIndex
-        this.collectedExpenses.splice(expenseIndex, 1)
-        this.displayAddedExpenses()
-        this.displayRemainingBudgetAfterAddedExpense()
+      const editButton = event.target.classList.contains('edit-button')
+      const deleteButton = event.target.classList.contains('delete-button')
+      const allAddedExpenses = this.budgetAppHandler.getAllAddedExpenses()
+
+      const expenseToEditIndex = event.target.dataset.expenseIndex
+      const expenseToEdit = allAddedExpenses[expenseToEditIndex]
+
+      if (editButton) {
+        this.expenseForm.displayEditExpenseForm(expenseToEdit, expenseToEditIndex)
+      } else if (deleteButton) {
+        this.budgetAppHandler.deleteExpense(expenseIndex)
+        this.displayAddedExpensesAndRemainingOfBudget()
         this.storeBudgetAndExpenses()
-        this.pieElement.initializePieRenderModuleWithBaseAmount(this.addedBudget)
-        this.drawAddedExpensesOnPie()
+
+        const { budget } = this.budgetAppHandler.getBudget()
+        this.displayBudgetPie(budget)
+        this.drawAddedExpensesOnPie(this.budgetAppHandler.getAllAddedExpenses())
       }
     }
 
