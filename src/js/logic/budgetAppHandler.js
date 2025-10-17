@@ -60,6 +60,19 @@ export class BudgetAppHandler {
     return this.#collectedExpenses
   }
 
+getRemainingOfBudget() {
+  const { budget } = this.getBudget()
+  let remainingValue = budget
+  const collectionOfRemainingValues = []
+
+  const allExpenses = this.getAddedExpenses()
+
+      allExpenses.forEach(({ expense }) => {
+        remainingValue -= expense
+         collectionOfRemainingValues.push(remainingValue)
+      })
+      return collectionOfRemainingValues
+}
 
   getYearMonth() {
     return this.#yearMonthKey

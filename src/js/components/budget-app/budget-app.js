@@ -61,10 +61,9 @@ customElements.define('budget-app',
       })
 
       this.expenseForm.addEventListener('expenseAdded', (event) => {
-this.budgetAppHandler.addExpense(event)
+        this.budgetAppHandler.addExpense(event)
+        this.displayAddedExpensesAndRemainingOfBudget()
 
-        this.displayAddedExpenses()
-        this.displayRemainingBudgetAfterAddedExpense()
         this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
         this.storeBudgetAndExpenses()
       })
@@ -141,23 +140,28 @@ this.budgetAppHandler.addExpense(event)
 
     displayAddedExpenses() {
       const allExpenses = this.budgetAppHandler.getAddedExpenses()
-      allExpenses.replaceChildren()
 
-      allExpenses.forEach((expense, index) => {
+      this.allAddedExpenses.replaceChildren()
+      this.#checkLenghtOfCollection(allExpenses)
+
+      allExpenses.forEach((expense, currency, index) => {
         const pElement = document.createElement('p')
-        pElement.textContent = `${expense} ${this.currency}`
+        pElement.textContent = `${expense} ${currency}`
+
         const editButton = document.createElement('button')
         editButton.classList.add('edit-button')
         editButton.textContent = 'Edit'
         editButton.dataset.expenseIndex = index
         pElement.appendChild(editButton)
+
         const deleteButton = document.createElement('button')
         deleteButton.classList.add('delete-button')
         deleteButton.textContent = 'Delete'
         deleteButton.dataset.expenseIndex = index
         pElement.appendChild(deleteButton)
-        this.allAddedExpenses.appendChild(pElement)
-      })
+
+        this.allAddedExpenses.appendChild(pElement)    
+      })  
     }
 
     drawAddedExpensesOnPie() {
@@ -166,15 +170,17 @@ this.budgetAppHandler.addExpense(event)
       })
     }
 
-    displayRemainingBudgetAfterAddedExpense() {
+    displayRemainingBudget() {
       this.remainingOfBudget.replaceChildren()
 
-      this.remainingValue = this.addedBudget
+      const { currency } = this.budgetAppHandler.getBudget()
+      const collectionOfRemainingValues = this.budgetAppHandler.getRemainingOfBudget()
 
-      this.collectedExpenses.forEach((expense) => {
-        this.remainingValue -= expense
+      this.#checkLenghtOfCollection(collectionOfRemainingValues)
+
+      collectionOfRemainingValues.forEach((value) => {
         const pElement = document.createElement('p')
-        pElement.textContent = `${this.remainingValue} ${this.currency}`
+        pElement.textContent = `${value} ${currency}`
         this.remainingOfBudget.appendChild(pElement)
       })
     }
@@ -250,6 +256,13 @@ this.budgetAppHandler.addExpense(event)
         this.storeBudgetAndExpenses()
         this.pieElement.initializePieRenderModuleWithBaseAmount(this.addedBudget)
         this.drawAddedExpensesOnPie()
+      }
+    }
+
+    #checkLenghtOfCollection(expenses) {
+      if (expenses.length === 0) {
+        this.allAddedExpenses.textContent = '—'
+        return
       }
     }
   }
