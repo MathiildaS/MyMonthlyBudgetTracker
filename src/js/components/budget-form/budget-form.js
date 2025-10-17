@@ -22,7 +22,7 @@ customElements.define('budget-form',
 
       // Creates a new FormService instance to validate and extract form values.
       this.formService = new FormService()
-      this.budgetFormHandler = this.formService.createBudgetFormHandler()
+      this.budgetFormHandler = this.formService.getBudgetFormHandler()
 
       this.form = this.shadowRoot.querySelector('#budgetForm')
     }

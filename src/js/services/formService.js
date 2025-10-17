@@ -19,11 +19,11 @@ export class FormService {
     this.#validator = new Validator()
   }
 
-  createBudgetFormHandler() {
+  getBudgetFormHandler() {
     return new BudgetFormHandler(this.#parser, this.#validator)
   }
 
-  createExpenseFormHandler() {
+  getExpenseFormHandler() {
     return new ExpenseFormHandler(this.#parser, this.#validator)
   }
 }

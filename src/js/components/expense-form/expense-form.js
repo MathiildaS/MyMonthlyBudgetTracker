@@ -21,7 +21,7 @@ customElements.define('expense-form',
 
       // Creates a new FormService instance to validate and extract form values.
       this.formService = new FormService()
-      this.expenseFormHandler = this.formService.createExpenseFormHandler()
+      this.expenseFormHandler = this.formService.getExpenseFormHandler()
 
       this.expenseForm = this.shadowRoot.querySelector('#expenseForm')
       this.editExpenseForm = this.shadowRoot.querySelector('#editExpenseForm')

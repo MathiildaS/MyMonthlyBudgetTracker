@@ -17,7 +17,7 @@ export class BudgetAppService {
         this.#parser = new Parser()
     }
 
-    createBudgetAppHandler() {
+    getBudgetAppHandler() {
         return new BudgetAppHandler(this.#parser, this.#dateHandler)
     }
 }

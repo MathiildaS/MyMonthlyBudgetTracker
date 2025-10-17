@@ -21,6 +21,7 @@ customElements.define('budget-app',
 
       // Creates a new budgetAppService instance to 
       this.budgetAppService = new BudgetAppService()
+      this.budgetAppHandler = this.budgetAppService.getBudgetAppHandler()
 
       this.budgetForm = this.shadowRoot.querySelector('budget-form')
       this.expenseForm = this.shadowRoot.querySelector('expense-form')

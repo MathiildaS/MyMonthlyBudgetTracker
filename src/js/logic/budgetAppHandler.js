@@ -8,9 +8,13 @@ export class BudgetAppHandler {
   #dateHandler
   #parser
 
+  #yearMonthKey
+
   constructor(dateHandler, parser) {
     this.#dateHandler = dateHandler
     this.#parser = parser
+
+    this.#yearMonthKey = this.#dateHandler.getCurrentYearMonth()
   }
 
 }
