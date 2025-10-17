@@ -6,7 +6,7 @@
 import { cssTemplate } from './budget-app.css.js'
 import { htmlTemplate } from './budget-app.html.js'
 
-import { budgetAppService } from '../../services/budgetAppService.js'
+import { BudgetAppService } from '../../services/budgetAppService.js'
 
 customElements.define('budget-app',
 
@@ -19,8 +19,8 @@ customElements.define('budget-app',
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
-      
-      this.dateHandler = new DateHandler()
+      // Creates a new budgetAppService instance to 
+      this.budgetAppService = new BudgetAppService()
 
       this.budgetForm = this.shadowRoot.querySelector('budget-form')
       this.expenseForm = this.shadowRoot.querySelector('expense-form')

@@ -1,19 +1,23 @@
 /**
- * @file A module for the budgetAppService. This class handles the instantiation of DateHandler class.
+ * @file A module for the BudgetAppService. This class handles the instantiation of DateHandler class.
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
 
+import { Parser } from '../utils/parser.js'
 import { DateHandler } from '../../logic/dateHandler.js'
+import { BudgetAppHandler } from '../logic/budgetAppHandler.js'
 
-export class budgetAppService {
-  #dateHandler
+export class BudgetAppService {
+    #dateHandler
+    #parser
 
-  constructor() {
-    this.#dateHandler = new DateHandler()
-  }
+    constructor() {
+        this.#dateHandler = new DateHandler()
+        this.#parser = new Parser()
+    }
 
-  createDateHandler() {
-    return this.#dateHandler
-  }
+    createBudgetAppHandler() {
+        return new BudgetAppHandler(this.#parser, this.#dateHandler)
+    }
 }
