@@ -37,23 +37,23 @@ customElements.define('budget-app',
       this.remainingOfBudget = this.shadowRoot.querySelector('#remainingValue')
       this.resetBudgetButton = this.shadowRoot.querySelector('#resetBudget')
 
-      this.addedBudget = 0
+      /*this.addedBudget = 0
       this.addedExpense
       this.editedExpense
       this.editedExpenseIndex
       this.collectedExpenses = []
       this.remainingValue
       this.yearMonthKey = `${this.dateHandler.getCurrentYearMonth()}`
-      this.currency = 'KR'
+      this.currency = 'KR'*/
     }
 
     connectedCallback() {
-      this.displayStoredBudgetAndExpenses()
+      //this.displayStoredBudgetAndExpenses()
 
       this.budgetForm.addEventListener('budgetAdded', (event) => {
-        this.addedBudget = Number(event.detail.budget)
-        this.currency = event.detail.currency
-        this.getAndDisplayCurrentYearMonthBudget()
+        this.budgetAppHandler.setBudget(event)
+        this.#getAndDisplayBudget()
+        this.#getAndDisplayYearMonth()
 
         this.hideBudgetFormDisplayExpenseForm()
         this.displayPieButton()
@@ -61,8 +61,8 @@ customElements.define('budget-app',
       })
 
       this.expenseForm.addEventListener('expenseAdded', (event) => {
-        this.addedExpense = Number(event.detail.expense)
-        this.addExpenseToCollection()
+this.budgetAppHandler.addExpense(event)
+
         this.displayAddedExpenses()
         this.displayRemainingBudgetAfterAddedExpense()
         this.pieElement.displaySliceOnPieBasedOnInput(this.addedExpense)
@@ -70,10 +70,10 @@ customElements.define('budget-app',
       })
 
       this.allAddedExpenses.addEventListener('click', (event) => {
-      this.editOrDeleteExpense(event)
+        this.editOrDeleteExpense(event)
       })
 
-        this.expenseForm.addEventListener('expenseEdited', (event) => {
+      this.expenseForm.addEventListener('expenseEdited', (event) => {
         this.editedExpense = Number(event.detail.expense)
         this.editedExpenseIndex = Number(event.detail.index)
         this.collectedExpenses[this.editedExpenseIndex] = this.editedExpense
@@ -129,15 +129,21 @@ customElements.define('budget-app',
     }
 
 
-    getAndDisplayCurrentYearMonthBudget() {
-      this.currentYearMonth.textContent = this.yearMonthKey
-      this.currentBudget.textContent = `${this.addedBudget} ${this.currency}`
+    #getAndDisplayYearMonth() {
+      const currentYearMonth = this.budgetAppHandler.getYearMonth()
+      this.currentYearMonth.textContent = currentYearMonth
+    }
+
+    #getAndDisplayBudget() {
+      const { budget, currency } = this.budgetAppHandler.getBudget()
+      this.currentBudget.textContent = `${budget} ${currency}`
     }
 
     displayAddedExpenses() {
-      this.allAddedExpenses.replaceChildren()
+      const allExpenses = this.budgetAppHandler.getAddedExpenses()
+      allExpenses.replaceChildren()
 
-      this.collectedExpenses.forEach((expense, index) => {
+      allExpenses.forEach((expense, index) => {
         const pElement = document.createElement('p')
         pElement.textContent = `${expense} ${this.currency}`
         const editButton = document.createElement('button')
@@ -152,10 +158,6 @@ customElements.define('budget-app',
         pElement.appendChild(deleteButton)
         this.allAddedExpenses.appendChild(pElement)
       })
-    }
-
-    addExpenseToCollection() {
-      this.collectedExpenses.push(this.addedExpense)
     }
 
     drawAddedExpensesOnPie() {

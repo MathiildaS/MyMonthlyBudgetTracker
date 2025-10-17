@@ -10,11 +10,10 @@ export class BudgetAppHandler {
 
   #yearMonthKey
   #currency = 'KR'
-  #addedBudget = 0
-  #addedExpense
-  #editedExpense
-  #editedExpenseIndex
-  #collectedExpenses
+  #addedBudgetAmount = 0
+  #editedExpenseAmount
+  #expenseIndex
+  #collectedExpenses = []
   #remainingValue
 
   constructor(dateHandler, parser) {
@@ -25,15 +24,42 @@ export class BudgetAppHandler {
   }
 
   setBudget(budgetAddedEvent) {
-    this.#addedBudget = this.#parser.parseValueToNumber(budgetAddedEvent.detail.budget)
+    const budget = budgetAddedEvent.detail.budget
+    this.#addedBudgetAmount = this.#parser.parseValueToNumber(budget)
     this.#currency = budgetAddedEvent.detail.currency
   }
 
   getBudget() {
-    const budget = this.#addedBudget
+    const budget = this.#addedBudgetAmount
     const currency = this.#currency
     return { budget, currency }
   }
+
+  addExpense(expenseAddedEvent) {
+    const value = expenseAddedEvent.detail.expense
+    const addedExpenseAmount = this.#parser.parseValueToNumber(value)
+
+    const expense = {
+      expense: addedExpenseAmount,
+      currency: this.#currency,
+      index: this.#collectedExpenses.length
+    }
+
+    this.addExpenseToCollection(expense)
+  }
+
+  addExpenseToCollection(expense) {
+    this.#collectedExpenses.push(expense)
+  }
+
+  getAddedExpenses() {
+    if (this.#collectedExpenses.length === 0) {
+      return []
+    }
+
+    return this.#collectedExpenses
+  }
+
 
   getYearMonth() {
     return this.#yearMonthKey
