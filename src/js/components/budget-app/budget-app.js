@@ -36,15 +36,6 @@ customElements.define('budget-app',
       this.allAddedExpenses = this.shadowRoot.querySelector('#expensesValue')
       this.remainingOfBudget = this.shadowRoot.querySelector('#remainingValue')
       this.resetBudgetButton = this.shadowRoot.querySelector('#resetBudget')
-
-      /*this.addedBudget = 0
-      this.addedExpense
-      this.editedExpense
-      this.editedExpenseIndex
-      this.collectedExpenses = []
-      this.remainingValue
-      this.yearMonthKey = `${this.dateHandler.getCurrentYearMonth()}`
-      this.currency = 'KR'*/
     }
 
     connectedCallback() {
@@ -215,9 +206,7 @@ customElements.define('budget-app',
     }
 
     removeStoredBudgetAndExpenses() {
-      localStorage.removeItem(this.yearMonthKey)
-      this.addedBudget = 0
-      this.collectedExpenses = []
+      this.budgetAppHandler.removeStoredBudgetAndExpenses()
       this.refreshDisplayWithNoAddedBudget()
     }
 

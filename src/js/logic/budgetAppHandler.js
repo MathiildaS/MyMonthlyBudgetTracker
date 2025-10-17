@@ -87,4 +87,10 @@ export class BudgetAppHandler {
       }
       localStorage.setItem(this.#yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
     }
+
+        removeStoredBudgetAndExpenses() {
+      localStorage.removeItem(this.#yearMonthKey)
+      this.#addedBudgetAmount = 0
+      this.#collectedExpenses = []
+    }
 }
