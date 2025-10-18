@@ -1,24 +1,24 @@
 # Test Specification
-This is a specification of all the test cases for the project.
-The project is manually tested to ensure that the implemented functionality works as intended.
+This is a specification of all the test cases for the project. The project has been manually tested to ensure that the implemented functionality works as intended.
 
 ## Table Of Contents
-- [How to read the documentation](#how-to-read-the-documentation)
-- [Test Cases](#test-cases)
--- [TC1-Frontpage](#tc1-frontpage)
---- [TC1-Development](#tc1-development)
---- [TC1-Production](#tc1-production)
--- [TC2-Display of Year and Month](#tc2-display-of-year-and-month)
---- [TC2-Development](#development)
---- [TC2-Production](#production)
--- [TC3-Budget-form](#tc3-budget-form)
---- [TC3-Development](#development)
---- [TC3-Production](#production)
+- [How to read the documentation](#how-to-read-the-documentation)  
+- [Test Cases](#test-cases)  
+-- [TC1-Frontpage](#tc1-frontpage)  
+--- [TC1-Development](#tc1-development)  
+--- [TC1-Production](#tc1-production)  
+-- [TC2-Display of Year and Month](#tc2-display-of-year-and-month)  
+--- [TC2-Development](#development)  
+--- [TC2-Production](#production)  
+-- [TC3-Budget-form](#tc3-budget-form)  
+--- [TC3-Development](#development)  
+--- [TC3-Production](#production)  
 
 ## How to read the documenatation
 The test cases has been documented during the development of the project.
 
-| **Test case** | Title/Description |
+| **Test case**       | Title/Description          |
+|---------------------|----------------------------|
 | **Main scenario** | What the user is trying to do |
 | **Preconditions** | State before the test |
 | **Input data** | Values, dates, amounts… |
