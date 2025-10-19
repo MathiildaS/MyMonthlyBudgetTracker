@@ -15,12 +15,6 @@ htmlTemplate.innerHTML = `
     <div class="allowance">
       <daily-allowance></daily-allowance>
     </div>
-    <div class="theme">
-      <h3>Change theme</h3>
-      <button>Light</button>
-      <button>Dark</button>
-      <button>Colourful</button>
-    </div>
     <div class="reset">
       <button id="resetBudget">Reset budget</button>
     </div>
