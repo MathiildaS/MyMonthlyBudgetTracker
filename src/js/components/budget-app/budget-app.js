@@ -40,6 +40,7 @@ customElements.define('budget-app',
 
     connectedCallback() {
       this.displayStoredBudgetAndExpenses()
+      queueMicrotask(() => this.getAndDispatchDailyAllowance())
 
       this.budgetForm.addEventListener('budgetAdded', (event) => {
         this.budgetAppHandler.setBudget(event)
@@ -52,6 +53,7 @@ customElements.define('budget-app',
 
         const { budget } = this.budgetAppHandler.getBudget()
         this.displayBudgetPie(budget)
+        this.getAndDispatchDailyAllowance()
       })
 
       this.expenseForm.addEventListener('expenseAdded', (event) => {
@@ -63,6 +65,7 @@ customElements.define('budget-app',
         this.displayBudgetPie(budget)
 
         this.drawAddedExpensesOnPie()
+        this.getAndDispatchDailyAllowance()
       })
 
       this.allAddedExpenses.addEventListener('click', (event) => {
@@ -91,15 +94,17 @@ customElements.define('budget-app',
 
 getAndDispatchDailyAllowance() {
   const dailyAllowance = this.budgetAppHandler.getDailyAllowance()
+  const { currency } = this.budgetAppHandler.getBudget()
 
   const updateAllowance = new CustomEvent('update-allowance', {
     detail: {
-      allowance: dailyAllowance
+      allowance: dailyAllowance,
+      currency: currency
     },
           bubbles: true,
         composed: true,
       })
-      this.dispatchEvent(updateAllowance)
+      document.dispatchEvent(updateAllowance)
 }
 
     hideBudgetFormDisplayExpenseForm() {
@@ -203,11 +208,13 @@ getAndDispatchDailyAllowance() {
 
         this.#getAndDisplayYearMonth()
         this.#getAndDisplayBudget()
+        this.getAndDispatchDailyAllowance()
 
         if (!isStoredValues) {
           this.refreshDisplayWithNoAddedBudget()
           return
         } else {
+          this.getAndDispatchDailyAllowance()
           this.hideBudgetFormDisplayExpenseForm()
           this.displayAddedExpenses()
           this.displayRemainingBudget()
