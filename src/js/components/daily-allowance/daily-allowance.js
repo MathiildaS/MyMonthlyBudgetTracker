@@ -4,10 +4,10 @@
  * @version 1.0.0
  */
 
-import { htmlTemplate } from './budget-form.html.js'
-import { cssTemplate } from './budget-form.css.js'
+import { htmlTemplate } from './daily-allowance.html.js'
+import { cssTemplate } from './daily-allowance.css.js'
 
-customElements.define('budget-form',
+customElements.define('daily-allowance',
 
   class extends HTMLElement {
 
@@ -18,5 +18,30 @@ customElements.define('budget-form',
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
+      this.allowance = this.shadowRoot.querySelector('#allowance')
+
     }
-})
+
+    /**
+     * Called when added to the DOM. Display an popup with error message for 3 seconds when errorOccured custom event is dispatched.
+     */
+    connectedCallback() {
+      // Creates a new AbortController object instance to remove event listeners.
+      this.abortController = new AbortController()
+
+      document.addEventListener('update-allowance', (event) => {
+        const dailyAllowance = event.detail.allowance.toFixed(2)
+        const currency = event.detail.currency
+        this.allowance.textContent = `${dailyAllowance} ${currency}/DAY`
+      }, { signal: this.abortController.signal })
+    }
+
+    /**
+     * Called when disconnected from DOM. 
+     * Aborts event listeners to prevent memory leaks.
+     */
+    disconnectedCallback() {
+      this.abortController.abort()
+    }
+  }
+)
