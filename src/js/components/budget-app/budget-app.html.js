@@ -12,6 +12,9 @@ htmlTemplate.innerHTML = `
     <div class="monthYear">
       <h1><span id='budgetYearMonth'></span></h1>
     </div>
+    <div class="allowance">
+      <daily-allowance></daily-allowance>
+    </div>
     <div class="theme">
       <h3>Change theme</h3>
       <button>Light</button>
