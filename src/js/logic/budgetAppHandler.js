@@ -7,15 +7,17 @@
 export class BudgetAppHandler {
   #dateHandler
   #parser
+  #storageHandler
 
   #yearMonthKey
   #currency = 'KR'
   #addedBudgetAmount = 0
   #collectedExpenses = []
 
-  constructor(dateHandler, parser) {
+  constructor(dateHandler, parser, storageHandler) {
     this.#dateHandler = dateHandler
     this.#parser = parser
+    this.#storageHandler = storageHandler
 
     this.#yearMonthKey = this.#dateHandler.getCurrentYearMonth()
   }
