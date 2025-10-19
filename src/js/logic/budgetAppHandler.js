@@ -138,4 +138,18 @@ export class BudgetAppHandler {
       }
     }
   }
+  getDailyAllowance() {
+    const allExpenses = this.getAllAddedExpenses()
+let remainingBudget = this.#addedBudgetAmount
+
+    allExpenses.forEach(({ expense }) => {
+      remainingBudget -= expense
+    })
+
+    const remainingDaysOfMonth = Math.max(this.#dateHandler.getRemainingDaysOfMonth(), 1)
+
+    const dailyAllowance = Math.max(remainingBudget, 0) / remainingDaysOfMonth
+
+    return dailyAllowance
+  }
 }
