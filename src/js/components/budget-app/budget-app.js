@@ -89,6 +89,19 @@ customElements.define('budget-app',
       })
     }
 
+getAndDispatchDailyAllowance() {
+  const dailyAllowance = this.budgetAppHandler.getDailyAllowance()
+
+  const updateAllowance = new CustomEvent('update-allowance', {
+    detail: {
+      allowance: dailyAllowance
+    },
+          bubbles: true,
+        composed: true,
+      })
+      this.dispatchEvent(updateAllowance)
+}
+
     hideBudgetFormDisplayExpenseForm() {
       this.budgetFormDiv.style.display = 'none'
       this.expenseFormDiv.style.display = 'flex'
