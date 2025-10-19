@@ -23,7 +23,7 @@ customElements.define('daily-allowance',
     }
 
     /**
-     * Called when added to the DOM. Display an popup with error message for 3 seconds when errorOccured custom event is dispatched.
+     * Called when added to the DOM. Displays the daily allowance.
      */
     connectedCallback() {
       // Creates a new AbortController object instance to remove event listeners.
