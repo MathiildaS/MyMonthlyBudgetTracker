@@ -94,8 +94,8 @@ customElements.define('budget-app',
       this.expenseFormDiv.style.display = 'flex'
     }
 
-    displayBudgetPie(addedBudget) {
-      this.pieElement.initializePieRenderModuleWithBaseAmount(addedBudget)
+    displayBudgetPie(budget) {
+      this.pieElement.initializePieRenderWithBudget(budget)
     }
 
     renderPieButton() {
@@ -165,7 +165,7 @@ customElements.define('budget-app',
     drawAddedExpensesOnPie() {
       const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
       allExpenses.forEach(({ expense }) => {
-        this.pieElement.displaySliceOnPieBasedOnInput(expense)
+        this.pieElement.displaySliceOnPieBasedOnExpense(expense)
       })
     }
 

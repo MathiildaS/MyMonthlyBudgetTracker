@@ -1,5 +1,5 @@
 import './components/budget-form/index.js'
 import './components/budget-app/index.js'
-import './components/pie/index.js'
+import './components/pie-element/index.js'
 import './components/expense-form/index.js'
 import './components/error-popup/index.js'
