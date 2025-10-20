@@ -9,38 +9,37 @@ export class BudgetAppHandler {
   #parser
   #storageHandler
 
-  #yearMonthKey
-  #currency = 'KR'
-  #addedBudgetAmount = 0
+  #budgetCurrency = 'KR'
+  #budgetAmount = 0
   #collectedExpenses = []
 
   constructor(dateHandler, parser, storageHandler) {
     this.#dateHandler = dateHandler
     this.#parser = parser
     this.#storageHandler = storageHandler
-
-    this.#yearMonthKey = this.#dateHandler.getCurrentYearMonth()
   }
 
   setBudget(budgetAddedEvent) {
-    const budget = budgetAddedEvent.detail.budget
-    this.#addedBudgetAmount = this.#parser.parseValueToNumber(budget)
-    this.#currency = budgetAddedEvent.detail.currency
+    const budgetAmount = budgetAddedEvent.detail.budget
+    this.#budgetAmount = this.#parser.parseValueToNumber(budgetAmount)
+    this.#budgetCurrency = budgetAddedEvent.detail.currency
   }
 
   getBudget() {
-    const budget = this.#addedBudgetAmount
-    const currency = this.#currency
-    return { budget, currency }
+    const budget = {
+      amount: this.#budgetAmount,
+      currency: this.#budgetCurrency
+    }
+    return budget
   }
 
   addExpense(expenseAddedEvent) {
-    const value = expenseAddedEvent.detail.expense
-    const addedExpenseAmount = this.#parser.parseValueToNumber(value)
+    const amount = expenseAddedEvent.detail.expense
+    const addedExpenseAmount = this.#parser.parseValueToNumber(amount)
 
     const expense = {
-      expense: addedExpenseAmount,
-      currency: this.#currency,
+      amount: addedExpenseAmount,
+      currency: this.#budgetCurrency,
       index: this.#collectedExpenses.length
     }
 
@@ -60,8 +59,8 @@ export class BudgetAppHandler {
   }
 
   getRemainingOfBudget() {
-    const { budget } = this.getBudget()
-    let remainingValue = budget
+    const { amount } = this.getBudget()
+    let remainingValue = amount
     const collectionOfRemainingValues = []
 
     const allExpenses = this.getAllAddedExpenses()
@@ -74,22 +73,24 @@ export class BudgetAppHandler {
   }
 
   getYearMonth() {
-    return this.#yearMonthKey
+    return this.#dateHandler.getCurrentYearMonth()
   }
 
   storeBudgetAndExpenses() {
+    const yearMonthKey = this.getYearMonth()
     const { budget, currency } = this.getBudget()
-    const budgetAndExpensesToStore = {
+    const budgetPayload = {
       budget: budget,
       expenses: this.#collectedExpenses,
-      currency: currency,
+      currency: currency
     }
-    localStorage.setItem(this.#yearMonthKey, JSON.stringify(budgetAndExpensesToStore))
+    this.#storageHandler.saveBudget(yearMonthKey, budgetPayload)
   }
 
   removeStoredBudgetAndExpenses() {
-    localStorage.removeItem(this.#yearMonthKey)
-    this.#addedBudgetAmount = 0
+    this.#storageHandler.deleteStoredBudget(this.getYearMonth())
+
+    this.#budgetAmount = 0
     this.#collectedExpenses = []
   }
 
@@ -112,8 +113,10 @@ export class BudgetAppHandler {
   }
 
   getStoredBudgetAndExpenses() {
-    const storedValues = localStorage.getItem(this.#yearMonthKey)
+    const yearMonthKey = this.getYearMonth()
+    const storedValues = this.#storageHandler.loadBudget(yearMonthKey)
 
+    let storedBudget = {}
     let budget
     let currency
     let expenses
@@ -121,28 +124,39 @@ export class BudgetAppHandler {
     if (!storedValues) {
       budget = 0
       expenses = []
-      currency = this.#currency
-      return { budget, expenses, currency, isStoredValues: false }
-    } else {
-      try {
-        const parsedValues = JSON.parse(storedValues)
-        budget = parsedValues.budget
-        expenses = parsedValues.expenses
-        currency = parsedValues.currency
+      currency = this.#budgetCurrency
 
-        this.#addedBudgetAmount = budget
-        this.#collectedExpenses = expenses
-        this.#currency = currency
-
-        return { budget, expenses, currency, isStoredValues: true }
-      } catch (error) {
-        console.error('An error occurred when collecting stored values', error.message)
+      storedBudget = {
+        budget: budget,
+        expenses: expenses,
+        currency: currency,
+        isStoredValues: false
       }
+
+      return storedBudget
     }
+
+    budget = storedValues.budget
+    expenses = storedValues.expenses
+    currency = storedValues.currency
+
+    this.#budgetAmount = budget
+    this.#collectedExpenses = expenses
+    this.#budgetCurrency = currency
+
+    storedBudget = {
+      budget: budget,
+      expenses: expenses,
+      currency: currency,
+      isStoredValues: true
+    }
+
+    return storedBudget
   }
+
   getDailyAllowance() {
     const allExpenses = this.getAllAddedExpenses()
-let remainingBudget = this.#addedBudgetAmount
+    let remainingBudget = this.#budgetAmount
 
     allExpenses.forEach(({ expense }) => {
       remainingBudget -= expense
