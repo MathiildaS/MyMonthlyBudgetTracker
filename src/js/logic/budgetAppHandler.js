@@ -6,28 +6,31 @@
 
 export class BudgetAppHandler {
   #dateHandler
-  #parser
   #storageHandler
 
   #budgetCurrency = 'KR'
   #budgetAmount = 0
   #collectedExpenses = []
 
-  constructor(dateHandler, parser, storageHandler) {
+  /**
+   * Creates and initializes an instance of the class BudgetAppHandler with an instance of DateHandler and StorageHandler classes 
+   *
+   * @param {Parser} parser - An isntance of the Parser-class.
+   * @param {} validator - An instance of the Validator-class.
+   */
+  constructor(dateHandler, storageHandler) {
     this.#dateHandler = dateHandler
-    this.#parser = parser
     this.#storageHandler = storageHandler
   }
 
   setBudget(budgetAddedEvent) {
-    const budgetAmount = budgetAddedEvent.detail.budget
-    this.#budgetAmount = this.#parser.parseValueToNumber(budgetAmount)
+    this.#budgetAmount = budgetAddedEvent.detail.budget
     this.#budgetCurrency = budgetAddedEvent.detail.currency
   }
 
   getBudget() {
     const budget = {
-      amount: this.#budgetAmount,
+      budgetAmount: this.#budgetAmount,
       currency: this.#budgetCurrency
     }
     return budget
@@ -35,20 +38,17 @@ export class BudgetAppHandler {
 
   addExpense(expenseAddedEvent) {
     const amount = expenseAddedEvent.detail.expense
-    const addedExpenseAmount = this.#parser.parseValueToNumber(amount)
 
     const expense = {
-      amount: addedExpenseAmount,
+      expenseAmount: amount,
       currency: this.#budgetCurrency,
       index: this.#collectedExpenses.length
     }
 
-    this.addExpenseToCollection(expense)
+    this.#addExpenseToCollection(expense)
   }
 
-  addExpenseToCollection(expense) {
-    this.#collectedExpenses.push(expense)
-  }
+
 
   getAllAddedExpenses() {
     if (this.#collectedExpenses.length === 0) {
@@ -59,28 +59,28 @@ export class BudgetAppHandler {
   }
 
   getRemainingOfBudget() {
-    const { amount } = this.getBudget()
-    let remainingValue = amount
+    const { budgetAmount } = this.getBudget()
+    let remainingValue = budgetAmount
     const collectionOfRemainingValues = []
 
     const allExpenses = this.getAllAddedExpenses()
 
-    allExpenses.forEach(({ expense }) => {
-      remainingValue -= expense
+    allExpenses.forEach(({ expenseAmount }) => {
+      remainingValue -= expenseAmount
       collectionOfRemainingValues.push(remainingValue)
     })
     return collectionOfRemainingValues
   }
 
   getYearMonth() {
-    return this.#dateHandler.getCurrentYearMonth()
+    return this.#dateHandler.getCurrentYearMonthString()
   }
 
   storeBudgetAndExpenses() {
     const yearMonthKey = this.getYearMonth()
-    const { budget, currency } = this.getBudget()
+    const { budgetAmount, currency } = this.getBudget()
     const budgetPayload = {
-      budget: budget,
+      budget: budgetAmount,
       expenses: this.#collectedExpenses,
       currency: currency
     }
@@ -95,16 +95,13 @@ export class BudgetAppHandler {
   }
 
   editExpense(expenseEditedEvent) {
-    const value = expenseEditedEvent.detail.expense
+    const expense = expenseEditedEvent.detail.expense
     const index = expenseEditedEvent.detail.index
 
-    const editedExpenseAmount = this.#parser.parseValueToNumber(value)
-    const editedExpenseIndex = this.#parser.parseValueToNumber(index)
-    this.#collectedExpenses[editedExpenseIndex].expense = editedExpenseAmount
+    this.#collectedExpenses[index].expenseAmount = expense
   }
 
-  deleteExpense(index) {
-    const expenseIndex = this.#parser.parseValueToNumber(index)
+  deleteExpense(expenseIndex) {
     this.#collectedExpenses.splice(expenseIndex, 1)
 
     this.#collectedExpenses.forEach((expense, expenseIndex) => {
@@ -117,17 +114,17 @@ export class BudgetAppHandler {
     const storedValues = this.#storageHandler.loadBudget(yearMonthKey)
 
     let storedBudget = {}
-    let budget
+    let amount
     let currency
     let expenses
 
     if (!storedValues) {
-      budget = 0
+      amount = 0
       expenses = []
       currency = this.#budgetCurrency
 
       storedBudget = {
-        budget: budget,
+        budgetAmount: amount,
         expenses: expenses,
         currency: currency,
         isStoredValues: false
@@ -136,16 +133,16 @@ export class BudgetAppHandler {
       return storedBudget
     }
 
-    budget = storedValues.budget
+    amount = storedValues.budget
     expenses = storedValues.expenses
     currency = storedValues.currency
 
-    this.#budgetAmount = budget
+    this.#budgetAmount = amount
     this.#collectedExpenses = expenses
     this.#budgetCurrency = currency
 
     storedBudget = {
-      budget: budget,
+      budgetAmount: amount,
       expenses: expenses,
       currency: currency,
       isStoredValues: true
@@ -158,14 +155,17 @@ export class BudgetAppHandler {
     const allExpenses = this.getAllAddedExpenses()
     let remainingBudget = this.#budgetAmount
 
-    allExpenses.forEach(({ expense }) => {
-      remainingBudget -= expense
+    allExpenses.forEach(({ expenseAmount }) => {
+      remainingBudget -= expenseAmount
     })
 
-    const remainingDaysOfMonth = Math.max(this.#dateHandler.getRemainingDaysOfMonth(), 1)
-
+    const remainingDaysOfMonth = Math.max(this.#dateHandler.getRemainingDaysOfCurrentMonth(), 1)
     const dailyAllowance = Math.max(remainingBudget, 0) / remainingDaysOfMonth
 
     return dailyAllowance
+  }  
+  
+  #addExpenseToCollection(expense) {
+    this.#collectedExpenses.push(expense)
   }
 }

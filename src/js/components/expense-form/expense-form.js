@@ -60,8 +60,8 @@ customElements.define('expense-form',
 
     #collectAndDispatchFormValue() {
       try {
-        const inputValue = this.#collectFormValue()
-        this.#dispatchFormValue(inputValue)
+        const expenseAmount = this.#collectFormValue()
+        this.#dispatchExpense(expenseAmount)
       } catch (error) {
         console.error('An error occured:', error.message)
         const userMessage = error.userMessage
@@ -70,14 +70,14 @@ customElements.define('expense-form',
     }
 
     #collectFormValue() {
-      const inputValue = this.expenseFormHandler.getInputValue(this.expenseForm)
-      return inputValue
+      const expenseAmount = this.expenseFormHandler.getValidatedInputValueFromExpenseForm(this.expenseForm)
+      return expenseAmount
     }
 
-    #dispatchFormValue(inputValue) {
+    #dispatchExpense(expenseAmount) {
       const expenseAdded = new CustomEvent('expenseAdded', {
         detail: {
-          expense: inputValue,
+          expense: expenseAmount,
         },
         bubbles: true,
       })
@@ -86,22 +86,22 @@ customElements.define('expense-form',
 
     #collectAndDispatchEditedExpenseValue() {
       try {
-        const editedInputValue = this.#collectEditFormValue()
-        this.#dispatchEditFormValue(editedInputValue)
+        const editedExpenseAmount = this.#collectEditFormValue()
+        this.#dispatchEditExpenseValue(editedExpenseAmount)
       } catch (error) {
         console.error('An error occured when collecting and sending values from the expense form', error)
       }
     }
 
     #collectEditFormValue() {
-      const inputValue = this.expenseFormHandler.getEditedInputValue(this.editExpenseForm)
+      const inputValue = this.expenseFormHandler.getValidatedInputValueFromEditExpenseForm(this.editExpenseForm)
       return inputValue
     }
 
-    #dispatchEditFormValue(editedInputValue) {
+    #dispatchEditExpenseValue(editedExpenseAmount) {
       const expenseEdited = new CustomEvent('expenseEdited', {
         detail: {
-          expense: editedInputValue,
+          expense: editedExpenseAmount,
           index: this.expenseToEditIndex,
         },
         bubbles: true,

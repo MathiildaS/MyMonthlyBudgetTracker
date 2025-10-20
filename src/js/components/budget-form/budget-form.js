@@ -38,15 +38,21 @@ customElements.define('budget-form',
       this.form.addEventListener('submit', (event) => {
         event.preventDefault()
 
-        this.#collectAndDispatchFormValues()
+        this.#collectAndDispatchBudget()
         this.form.reset()
       }, { signal: this.abortController.signal })
     }
 
-    #collectAndDispatchFormValues() {
+    #collectFormValues() {
+      const inputAmount = this.budgetFormHandler.getValidatedInputFromBudgetForm(this.form)
+      const optionCurrency = this.budgetFormHandler.getSelectedOptionFromBudgetForm(this.form)
+      return { inputAmount, optionCurrency }
+    }
+
+    #collectAndDispatchBudget() {
       try {
-        const { inputValue, optionValue } = this.#collectFormValues()
-        this.#dispatchFormValues(inputValue, optionValue)
+        const { inputAmount, optionCurrency } = this.#collectFormValues()
+        this.#dispatchFormValues(inputAmount, optionCurrency)
       } catch (error) {
         console.error('An error occured:', error.message)
         const userMessage = error.userMessage
@@ -54,16 +60,11 @@ customElements.define('budget-form',
       }
     }
 
-    #collectFormValues() {
-      const { inputValue, optionValue } = this.budgetFormHandler.getInputOptionValue(this.form)
-      return { inputValue, optionValue }
-    }
-
-    #dispatchFormValues(inputValue, optionValue) {
+    #dispatchFormValues(inputAmount, optionCurrency) {
       const budgetAdded = new CustomEvent('budgetAdded', {
         detail: {
-          budget: inputValue,
-          currency: optionValue,
+          budget: inputAmount,
+          currency: optionCurrency,
         },
 
         bubbles: true,

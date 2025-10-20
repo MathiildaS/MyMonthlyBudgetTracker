@@ -24,18 +24,17 @@ export class BudgetFormHandler {
   * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
   * @returns {number} - The validated and parsed `budget` input value.
   */
-  getValidatedInputValueFromBudgetForm(budgetForm) {
+  getValidatedInputFromBudgetForm(budgetForm) {
     const budgetFormData = new FormData(budgetForm)
     const inputValue = budgetFormData.get('budget')
-    this.#validateFormInput(inputValue)
-    return inputValue
+    return this.#validateFormInput(inputValue)
   }
 
   /**
  * @param {HTMLFormElement} budgetForm - A form-element namned budgetForm
  * @returns {string} - The selected option from select-element named `currency`.
  */
-  getSelectOptionFromBudgetForm(budgetForm) {
+  getSelectedOptionFromBudgetForm(budgetForm) {
     const budgetFormData = new FormData(budgetForm)
     const optionValue = budgetFormData.get('currency')
     return optionValue
@@ -43,9 +42,11 @@ export class BudgetFormHandler {
 
   /**
    * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
+   * @returns {number} - The validated and parsed input value.
    */
   #validateFormInput(inputValue) {
     const parsedFormInput = this.#parser.parseValueToNumber(inputValue)
     this.#validator.validateNumber(parsedFormInput)
+    return parsedFormInput
   }
 }

@@ -27,8 +27,7 @@ export class ExpenseFormHandler {
   getValidatedInputValueFromExpenseForm(expenseForm) {
     const expenseFormData = new FormData(expenseForm)
     const inputValue = expenseFormData.get('expense')
-    this.#parseAndValidateFormInput(inputValue)
-    return inputValue
+    return this.#parseAndValidateFormInput(inputValue)
   }
 
   /**
@@ -39,8 +38,7 @@ export class ExpenseFormHandler {
   getValidatedInputValueFromEditExpenseForm(editExpenseForm) {
     const editExpenseFormData = new FormData(editExpenseForm)
     const editedInputValue = editExpenseFormData.get('editExpense')
-    this.#parseAndValidateFormInput(editedInputValue)
-    return editedInputValue
+    return this.#parseAndValidateFormInput(editedInputValue)
   }
 
   /**
@@ -49,5 +47,6 @@ export class ExpenseFormHandler {
   #parseAndValidateFormInput(inputValue) {
     const parsedFormInput = this.#parser.parseValueToNumber(inputValue)
     this.#validator.validateNumber(parsedFormInput)
+    return parsedFormInput
   }
 }
