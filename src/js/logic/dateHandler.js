@@ -6,45 +6,56 @@
 
 export class DateHandler {
   /**
-   * Returns the year and month of the current date. 
-   *
-   * @returns {number} The current year - The name of the current month
+   * @returns {string} The current year and the name of the current month.
    */
-  getCurrentYearMonth() {
-    return `${this.#getCurrentYear()}-${this.#getCurrentNameOfMonth()}`
+  getCurrentYearMonthString() {
+    return `${this.#getCurrentYear()}-${this.#getNameOfCurrentMonth()}`
   }
 
   /**
-   * Returns the remaining days of the month based on the current date. 
-   *
-   * @returns {number} The amount of days remaining in current month.
+   * @returns {number} The amount of days remaining in current month based on the date of today.
    */
-  getRemainingDaysOfMonth() {
+  getRemainingDaysOfCurrentMonth() {
     const daysOfMonth = this.#getDaysInCurrentMonth()
     const dayOfToday = this.#getCurrentDayOfMonth()
 
-    const remainingDaysOfMonth = Math.max(daysOfMonth - dayOfToday, 0)
-    return remainingDaysOfMonth
+    const remainingDaysOfCurrentMonth = Math.max(daysOfMonth - dayOfToday, 0)
+    return remainingDaysOfCurrentMonth
   }
 
+  /**
+   * @returns {Date} - A Date object with the date and time of today and now.
+   */
   #getCurrentDate() {
     return new Date()
   }
 
+  /**
+   * @returns {number} - The current year of the date of today e.g. 2025.
+   */
   #getCurrentYear() {
-    let currentYear = this.#getCurrentDate().getFullYear()
+    const currentYear = this.#getCurrentDate().getFullYear()
     return currentYear
   }
 
+  /**
+   * @returns {number} - The current month of the date of today, between 1-12 e.g. 10 for October.
+   */
   #getCurrentMonth() {
     return this.#getCurrentDate().getMonth() + 1
   }
 
+  /**
+   * @returns {number} - The current day in the month of the date of today between 1-31.
+   */
   #getCurrentDayOfMonth() {
     return this.#getCurrentDate().getDate()
   }
 
-  #getCurrentNameOfMonth() {
+  /**
+   * @returns {string} - The name of the current month e.g "October"
+   */
+  #getNameOfCurrentMonth() {
     const month = [
       "January",
       "February",
@@ -64,22 +75,25 @@ export class DateHandler {
     return nameOfCurrentMonth
   }
 
+  /**
+   * @returns {number} - The amount of days in current month e.g. 31 for the month "October" 
+   */
   #getDaysInCurrentMonth() {
-    const daysInMonth = [
-      31,
-      28,
-      31,
-      30,
-      31,
-      30,
-      31,
-      31,
-      30,
-      31,
-      30,
-      31
-    ]
+    const daysInMonth = {
+      January: 31,
+      February: 28,
+      March: 31,
+      April: 30,
+      May: 31,
+      June: 30,
+      July: 31,
+      August: 31,
+      September: 30,
+      October: 31,
+      November: 30,
+      December: 31
+    }
 
-    return daysInMonth[this.#getCurrentMonth() - 1]
+    return daysInMonth[this.#getNameOfCurrentMonth()]
   }
 }
