@@ -11,7 +11,7 @@ export class StorageHandler {
    *
    * @param {string} yearMonthKey - The current year and month as e.g. "2025-10"
    * @param {object} budgetPayload - The budget object containing budget, expenses and currency.
-   * @throws {Error} - Throws error and custom userMessage if fail when storing the budget.
+   * @throws {Error} - Throws error with custom userMessage if fail when storing the budget.
    */
   saveBudget(yearMonthKey, budgetPayload) {
     try {
@@ -28,7 +28,7 @@ export class StorageHandler {
    *
    * @param {string} yearMonthKey - The current year and month as e.g. "2025-10"
    * @returns {boolean|object} false if no value or the budget object containing budget, expenses and currency.
-   * @throws {Error} - Throws error and custom userMessage if fail when parsing the stored budget-object.
+   * @throws {Error} - Throws error with custom userMessage if fail when parsing the stored budget-object.
    */
   loadBudget(yearMonthKey) {
     const storedValues = localStorage.getItem(yearMonthKey)
@@ -51,7 +51,7 @@ export class StorageHandler {
    *  Deletes a stored object from localStorage with the current year and month as provided key.
    *
    * @param {string} yearMonthKey - The current year and month as e.g. "2025-10"
-   * @throws {Error} - Throws error and custom userMessage if fail when deleting the stored budget-object.
+   * @throws {Error} - Throws error with custom userMessage if fail when deleting the stored budget-object.
    */
   deleteStoredBudget(yearMonthKey) {
     try {
