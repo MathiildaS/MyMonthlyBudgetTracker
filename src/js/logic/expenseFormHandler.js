@@ -43,6 +43,9 @@ export class ExpenseFormHandler {
     return editedInputValue
   }
 
+  /**
+   * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
+   */
   #parseAndValidateFormInput(inputValue) {
     const parsedFormInput = this.#parser.parseValueToNumber(inputValue)
     this.#validator.validateNumber(parsedFormInput)
