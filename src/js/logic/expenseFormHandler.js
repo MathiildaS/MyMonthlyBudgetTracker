@@ -5,28 +5,26 @@
  */
 
 export class ExpenseFormHandler {
-#parser
-#validator
+  #parser
+  #validator
 
-/**
- * Creates and initializes an instance of the class with an instance of Parser and Validator classes to parse and validate input values.
- *
- * @param {Parser} parser - An isntance of the Parser-class.
- * @param {Validator} validator - An instance of the Validator-class.
- */
-    constructor(parser, validator) {
+  /**
+   * Creates and initializes an instance of the class ExpenseFormHandler with an instance of Parser and Validator classes to parse and validate input values before returning them.
+   *
+   * @param {Parser} parser - An isntance of the Parser-class.
+   * @param {Validator} validator - An instance of the Validator-class.
+   */
+  constructor(parser, validator) {
     this.#parser = parser
     this.#validator = validator
   }
 
   /**
-   * Extracts, validates and parses the input value named `expense` to make sure it's a valid number before returning the value.
-   *
    * @param {HTMLFormElement} expenseForm - a form element named expenseForm
    * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
    * @returns The validated and parsed `expense` input value.
    */
-  getInputValueFromExpenseForm(expenseForm) {
+  getValidatedInputValueFromExpenseForm(expenseForm) {
     const expenseFormData = new FormData(expenseForm)
     const inputValue = expenseFormData.get('expense')
     this.#parseAndValidateFormInput(inputValue)
@@ -34,13 +32,11 @@ export class ExpenseFormHandler {
   }
 
   /**
-   * Extracts, validates and parses the input value named `editExpense` to make sure it's a valid number before returning the value.
-   *
    * @param {HTMLFormElement} editExpenseForm - A form element namned editExpenseForm
    * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
    * @returns The validated and parsed `editExpense` input value.
    */
-  getInputValueFromEditExpenseForm(editExpenseForm) {
+  getValidatedInputValueFromEditExpenseForm(editExpenseForm) {
     const editExpenseFormData = new FormData(editExpenseForm)
     const editedInputValue = editExpenseFormData.get('editExpense')
     this.#parseAndValidateFormInput(editedInputValue)
