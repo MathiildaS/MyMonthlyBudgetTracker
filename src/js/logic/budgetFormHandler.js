@@ -22,7 +22,7 @@ export class BudgetFormHandler {
   /**
   * @param {HTMLFormElement} budgetForm - a form-element named budgetForm
   * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
-  * @returns The validated and parsed `budget` input value.
+  * @returns {number} - The validated and parsed `budget` input value.
   */
   getValidatedInputValueFromBudgetForm(budgetForm) {
     const budgetFormData = new FormData(budgetForm)
@@ -33,7 +33,7 @@ export class BudgetFormHandler {
 
   /**
  * @param {HTMLFormElement} budgetForm - A form-element namned budgetForm
- * @returns The selected option from select-element named `currency`.
+ * @returns {string} - The selected option from select-element named `currency`.
  */
   getSelectOptionFromBudgetForm(budgetForm) {
     const budgetFormData = new FormData(budgetForm)

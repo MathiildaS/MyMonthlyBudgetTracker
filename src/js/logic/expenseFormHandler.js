@@ -22,7 +22,7 @@ export class ExpenseFormHandler {
   /**
    * @param {HTMLFormElement} expenseForm - a form element named expenseForm
    * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
-   * @returns The validated and parsed `expense` input value.
+   * @returns {number} - The validated and parsed `expense` input value.
    */
   getValidatedInputValueFromExpenseForm(expenseForm) {
     const expenseFormData = new FormData(expenseForm)
@@ -34,7 +34,7 @@ export class ExpenseFormHandler {
   /**
    * @param {HTMLFormElement} editExpenseForm - A form element namned editExpenseForm
    * @throws {Error} - Throws error with custom userMessage if fail when parsing and validating the input value.
-   * @returns The validated and parsed `editExpense` input value.
+   * @returns {number} - The validated and parsed `editExpense` input value.
    */
   getValidatedInputValueFromEditExpenseForm(editExpenseForm) {
     const editExpenseFormData = new FormData(editExpenseForm)
