@@ -1,5 +1,7 @@
 /**
- * @file A module for a custom web component that initializes a new PieRender instance from the imported pie-render module that renders a pie on canvas and allow visual configuration of it.
+ * @file A module for the custom web component pie-element that initializes a new PieRender instance from the imported pie-render module. 
+ * The component uses methods form the PieRender API that renders a pie on canvas and allow visual configuration of it.
+ * The pie-element is used as a visualization of a monthly budget.
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
@@ -17,11 +19,14 @@ customElements.define("pie-element",
     constructor() {
       super()
 
+      // Injects the components CSS and HTML template to the shadow root for encapsulation
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
+      // References to the elements in the DOM for reusability and readability.
       this.canvas = this.shadowRoot.querySelector("#canvasElement")
+      
       this.#pieRender
     }
 
