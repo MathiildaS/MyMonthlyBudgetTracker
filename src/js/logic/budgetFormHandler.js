@@ -4,16 +4,14 @@
  * @version 1.0.0
  */
 
+/**
+ * Creates and initializes an instance of the class BudgetFormHandler with Parser and Validator dependencies to parse and validate input values before returning them.
+ *
+ */
 export class BudgetFormHandler {
   #parser
   #validator
 
-  /**
-   * Creates and initializes an instance of the class BudgetFormHandler with an instance of Parser and Validator classes to parse and validate input values before returning them.
-   *
-   * @param {Parser} parser - An isntance of the Parser-class.
-   * @param {Validator} validator - An instance of the Validator-class.
-   */
   constructor(parser, validator) {
     this.#parser = parser
     this.#validator = validator
@@ -31,9 +29,9 @@ export class BudgetFormHandler {
   }
 
   /**
- * @param {HTMLFormElement} budgetForm - A form-element namned budgetForm
- * @returns {string} - The selected option from select-element named `currency`.
- */
+   * @param {HTMLFormElement} budgetForm - A form-element namned budgetForm
+   * @returns {string} - The selected option from select-element named `currency`.
+   */
   getSelectedOptionFromBudgetForm(budgetForm) {
     const budgetFormData = new FormData(budgetForm)
     const optionValue = budgetFormData.get('currency')

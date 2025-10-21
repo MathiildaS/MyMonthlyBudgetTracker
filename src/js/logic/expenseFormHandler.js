@@ -4,9 +4,9 @@
  * @version 1.0.0
  */
 
-  /**
-   * Creates and initializes an instance of the class ExpenseFormHandler with Parser and Validator dependencies to parse and validate input values before returning them.
-   */
+/**
+ * Creates and initializes an instance of the class ExpenseFormHandler with Parser and Validator dependencies to parse and validate input values before returning them.
+ */
 export class ExpenseFormHandler {
   #parser
   #validator

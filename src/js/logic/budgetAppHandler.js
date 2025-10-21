@@ -5,6 +5,10 @@
  * @version 1.0.0
  */
 
+/**
+ * Creates and initializes an instance of the class BudgetAppHandler with an instance of DateHandler and StorageHandler classes to
+ * help manage date logic and storage logic.
+ */
 export class BudgetAppHandler {
   #dateHandler
   #storageHandler
@@ -13,13 +17,6 @@ export class BudgetAppHandler {
   #budgetAmount = 0
   #collectedExpenses = []
 
-  /**
-   * Creates and initializes an instance of the class BudgetAppHandler with an instance of DateHandler and StorageHandler classes to
-   * help manage date logic and storage logic.
-   *
-   * @param {Parser} parser - An isntance of the Parser-class.
-   * @param {} validator - An instance of the Validator-class.
-   */
   constructor(dateHandler, storageHandler) {
     this.#dateHandler = dateHandler
     this.#storageHandler = storageHandler
@@ -167,38 +164,26 @@ export class BudgetAppHandler {
         budgetAmount: 0,
         expenses: [],
         currency: this.#budgetCurrency,
-        isStoredValues: false
+        isStoredBudget: false
       }
 
       return storedBudgetPayload
     }
 
-    let amount
-    let currency
-    let expenses
+    const { budget, expenses, currency } = storedBudget
 
-    amount = storedBudget.budget
-    expenses = storedBudget.expenses
-    currency = storedBudget.currency
-
-    this.#budgetAmount = amount
+    this.#budgetAmount = budget
     this.#collectedExpenses = expenses
     this.#budgetCurrency = currency
 
     storedBudgetPayload = {
-      budgetAmount: amount,
+      budgetAmount: budget,
       expenses: expenses,
       currency: currency,
-      isStoredValues: true
+      isStoredBudget: true
     }
 
     return storedBudgetPayload
-  }
-
-  #loadBudgetWithKey() {
-    const yearMonthKey = this.getYearMonth()
-    const storedBudget = this.#storageHandler.loadBudget(yearMonthKey)
-    return storedBudget
   }
 
   /**
@@ -206,6 +191,15 @@ export class BudgetAppHandler {
    */
   getDailyAllowance() {
     return this.#calculateDailyAllowance()
+  }
+
+  /**
+   * @returns {object} - The loaded, stored object.
+   */
+  #loadBudgetWithKey() {
+    const yearMonthKey = this.getYearMonth()
+    const storedBudget = this.#storageHandler.loadBudget(yearMonthKey)
+    return storedBudget
   }
 
   /**
