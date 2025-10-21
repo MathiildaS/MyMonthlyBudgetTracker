@@ -1,6 +1,6 @@
 /* @vitest-environment jsdom */
 import { describe, it, expect, beforeEach, vi } from "vitest"
-import "../src/js/components/pie/index.js"
+import "../src/js/components/pie-element/index.js"
 
 let pieElement
 describe("test pie-element component", () => {
@@ -16,19 +16,19 @@ describe("test pie-element component", () => {
 
   it("should display slice of pie based on input 100", () => {
     pieElement.pieRender = { createSlice: vi.fn() }
-    pieElement.displaySliceOnPieBasedOnInput(100)
+    pieElement.displaySliceOnPieBasedOnExpense(100)
     expect(pieElement.pieRender.createSlice).toHaveBeenCalledWith(100)
   })
 
   it("should set colour of pie", () => {
     pieElement.pieRender = { setPieColour: vi.fn() }
-    pieElement.setColourOfPie('#FFFFFF')
+    pieElement.setColourOfBudget('#FFFFFF')
     expect(pieElement.pieRender.setPieColour).toHaveBeenCalledWith('#FFFFFF')
   })
 
   it("should set colour of slice on pie", () => {
     pieElement.pieRender = { setSliceColour: vi.fn() }
-    pieElement.setColourOfSlicesOnPie('#590000')
+    pieElement.setColourOfExpense('#590000')
     expect(pieElement.pieRender.setSliceColour).toHaveBeenCalledWith('#590000')
   })
 
@@ -46,25 +46,19 @@ describe("test pie-element component", () => {
 
   it("should display text next to pie", () => {
     pieElement.pieRender = { displayPercentText: vi.fn() }
-    pieElement.displayTextOnCanvas(true)
+    pieElement.displayRemainingPercentOfBudget(true)
     expect(pieElement.pieRender.displayPercentText).toHaveBeenCalledWith(true)
   })
 
   it("should set font colour of text on pie", () => {
     pieElement.pieRender = { setFontColour: vi.fn() }
-    pieElement.setColourOfTextOnCanvas('#ffae00')
+    pieElement.setPercentTextColour('#ffae00')
     expect(pieElement.pieRender.setFontColour).toHaveBeenCalledWith('#ffae00')
   })
 
   it("should set font size of text on pie", () => {
     pieElement.pieRender = { setFontSize: vi.fn() }
-    pieElement.setSizeOfTextOnCanvas(45)
+    pieElement.setPercentTextSize(45)
     expect(pieElement.pieRender.setFontSize).toHaveBeenCalledWith(45)
-  })
-
-  it("should return information of the state of the pie", () => {
-    pieElement.pieRender = { getCurrentStateOfPie: vi.fn() }
-    pieElement.getStateOfPie()
-    expect(pieElement.pieRender.getCurrentStateOfPie).toHaveBeenCalled
   })
 })
