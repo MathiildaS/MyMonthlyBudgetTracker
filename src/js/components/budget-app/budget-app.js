@@ -1,4 +1,6 @@
 /**
+ * @file A module for a custom web component that works as an Controller. 
+ * It listens for events from views, manages the visibility of the views and connects the user interactions to the right internal logic of the MyMonthlyBudgetTracker-application.
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
@@ -19,7 +21,7 @@ customElements.define('budget-app',
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
-      // Creates a new budgetAppService instance to 
+      // Creates a new budgetAppService instance to get access to the budgetAppHandler responsible for managing the business logic of the application.
       this.budgetAppService = new BudgetAppService()
       this.budgetAppHandler = this.budgetAppService.getBudgetAppHandler()
 
@@ -38,131 +40,158 @@ customElements.define('budget-app',
       this.resetBudgetButton = this.shadowRoot.querySelector('#resetBudget')
     }
 
+    /**
+     * Called when added to the DOM. Display an popup with error message for 3 seconds when errorOccured custom event is dispatched.
+     */
     connectedCallback() {
-      this.displayStoredBudgetAndExpenses()
-      queueMicrotask(() => this.getAndDispatchDailyAllowance())
+      // Creates a new AbortController object instance to remove event listeners.
+      this.abortController = new AbortController()
+
+      this.#refreshBudgetView()
 
       this.budgetForm.addEventListener('budgetAdded', (event) => {
-        this.budgetAppHandler.setBudget(event)
-        this.#getAndDisplayBudget()
-        this.#getAndDisplayYearMonth()
-
-        this.hideBudgetFormDisplayExpenseForm()
-        this.renderPieButton()
-        this.storeBudgetAndExpenses()
-
-        const { budget } = this.budgetAppHandler.getBudget()
-        this.displayBudgetPie(budget)
-        this.getAndDispatchDailyAllowance()
-      })
+        try {
+          this.setAddedBudget(event)
+          this.#renderAddedBudgetView()
+          this.#storeBudgetState()
+        } catch (error) {
+          this.#handleError(error)
+        }
+      }, { signal: this.abortController.signal })
 
       this.expenseForm.addEventListener('expenseAdded', (event) => {
-        this.budgetAppHandler.addExpense(event)
-        this.displayAddedExpensesAndRemainingOfBudget()
-        this.storeBudgetAndExpenses()
-
-                const { budget } = this.budgetAppHandler.getBudget()
-        this.displayBudgetPie(budget)
-
-        this.drawAddedExpensesOnPie()
-        this.getAndDispatchDailyAllowance()
-      })
+        try {
+          this.addExpense(event)
+          this.#renderAddedExpenseView()
+          this.#storeBudgetState()
+        } catch (error) {
+          this.#handleError(error)
+        }
+      }, { signal: this.abortController.signal })
 
       this.allAddedExpenses.addEventListener('click', (event) => {
-        this.editOrDeleteExpense(event)
-      })
+        try {
+          this.#editOrDeleteExpense(event)
+        } catch (error) {
+          this.#handleError(error)
+        }
+      }, { signal: this.abortController.signal })
 
       this.expenseForm.addEventListener('expenseEdited', (event) => {
-        this.budgetAppHandler.editExpense(event)
-        this.displayAddedExpensesAndRemainingOfBudget()
-        this.storeBudgetAndExpenses()
-
-        const { budget } = this.budgetAppHandler.getBudget()
-        this.displayBudgetPie(budget)
-
-        this.drawAddedExpensesOnPie()
-      })
+        try {
+          this.editExpense(event)
+          this.#renderAddedExpenseView()
+          this.#storeBudgetState()
+        } catch (error) {
+          this.#handleError(error)
+        }
+      }, { signal: this.abortController.signal })
 
       this.displayPieButton.addEventListener('click', () => {
-        this.toggleTextAndDisplayButton()
-      })
+        this.#toggleDisplayPie()
+      }, { signal: this.abortController.signal })
 
       this.resetBudgetButton.addEventListener('click', () => {
-        this.removeStoredBudgetAndExpenses()
-      })
+        try {
+          this.#removeStoredBudgetState()
+        } catch (error) {
+          this.#handleError(error)
+        }
+      }, { signal: this.abortController.signal })
     }
 
-getAndDispatchDailyAllowance() {
-  const dailyAllowance = this.budgetAppHandler.getDailyAllowance()
-  const { currency } = this.budgetAppHandler.getBudget()
-
-  const updateAllowance = new CustomEvent('update-allowance', {
-    detail: {
-      allowance: dailyAllowance,
-      currency: currency
-    },
-          bubbles: true,
-        composed: true,
-      })
-      document.dispatchEvent(updateAllowance)
-}
-
-    hideBudgetFormDisplayExpenseForm() {
-      this.budgetFormDiv.style.display = 'none'
-      this.expenseFormDiv.style.display = 'flex'
+    /**
+     * Called when disconnected from DOM. 
+     * Aborts event listeners to prevent memory leaks.
+     */
+    disconnectedCallback() {
+      this.abortController.abort()
     }
 
-    displayBudgetPie(budget) {
-      this.pieElement.initializePieRenderWithBudget(budget)
+    setAddedBudget(event) {
+      const budgetAmount = event.detail.budget
+      const budgetCurrency = event.detail.currency
+      this.budgetAppHandler.setBudget(budgetAmount, budgetCurrency)
     }
 
-    renderPieButton() {
-      this.displayPieButton.style.display = 'block'
+    addExpense(event) {
+      const expenseAmount = event.detail.expense
+      this.budgetAppHandler.addExpense(expenseAmount)
     }
 
-    toggleTextAndDisplayButton() {
-      this.renderPieButton()
-      if (this.displayPieButton.textContent === 'Display pie?') {
-        this.displayPieButton.textContent = 'Hide pie?'
-        this.budgetPie.style.display = 'block'
-        this.#drawBudgetPieWithExpenses()
-      } else if (this.displayPieButton.textContent === 'Hide pie?') {
-        this.displayPieButton.textContent = 'Display pie?'
-        this.budgetPie.style.display = 'none'
+    editExpense(event) {
+      const expenseAmount = event.detail.expense
+      const expenseIndex = event.detail.index
+      this.budgetAppHandler.editExpense(expenseAmount, expenseIndex)
+    }
+
+    #refreshBudgetView() {
+      try {
+        this.#getVerifyAndDisplayStoredBudgetAndExpenses()
+        queueMicrotask(() => this.#getAndDispatchDailyAllowance())
+      } catch (error) {
+        this.#handleError(error)
       }
     }
 
-    #drawBudgetPieWithExpenses() {
-      const { budget } = this.budgetAppHandler.getBudget()
-      this.displayBudgetPie(budget)
-      this.drawAddedExpensesOnPie()
+    #renderAddedBudgetView() {
+      this.#getAndDisplayBudget()
+      this.#getAndDisplayYearMonth()
+      this.#hideBudgetFormDisplayExpenseForm()
+      this.#renderPieButton()
+      this.#displayBudgetPieWithPercent()
+      this.#getAndDispatchDailyAllowance()
     }
 
+    #renderAddedExpenseView() {
+      this.#displayAddedExpensesAndRemainingOfBudget()
+      this.#refreshBudgetPie()
+      this.#getAndDispatchDailyAllowance()
+    }
 
-    #getAndDisplayYearMonth() {
-      const currentYearMonth = this.budgetAppHandler.getYearMonth()
-      this.currentYearMonth.textContent = currentYearMonth
+    #getVerifyAndDisplayStoredBudgetAndExpenses() {
+      const { isStoredBudget } = this.budgetAppHandler.getStoredBudgetAndExpenses()
+
+      this.#getAndDisplayYearMonth()
+      this.#getAndDisplayBudget()
+
+      if (!isStoredBudget) {
+        this.#refreshDisplayWithNoAddedBudget()
+        return
+      }
+
+      this.#hideBudgetFormDisplayExpenseForm()
+      this.#displayAddedExpensesAndRemainingOfBudget()
+      this.#renderPieButton()
+
+      this.#refreshPieIfVisibleWithAddedBudget()
+
+      this.#getAndDispatchDailyAllowance()
+    }
+
+    #refreshPieIfVisibleWithAddedBudget() {
+      if (this.budgetPie.style.display === 'block') {
+        this.#refreshBudgetPie()
+      }
     }
 
     #getAndDisplayBudget() {
-      const { budget, currency } = this.budgetAppHandler.getBudget()
-      this.currentBudget.textContent = `${budget} ${currency}`
+      const { budgetAmount, currency } = this.budgetAppHandler.getBudget()
+      this.currentBudget.textContent = `${budgetAmount} ${currency}`
     }
 
-    displayAddedExpensesAndRemainingOfBudget() {
-      this.displayAddedExpenses()
-      this.displayRemainingBudget()
+    #displayAddedExpensesAndRemainingOfBudget() {
+      this.#displayAddedExpenses()
+      this.#displayRemainingBudget()
     }
 
-    displayAddedExpenses() {
+    #displayAddedExpenses() {
       const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
-
       this.allAddedExpenses.replaceChildren()
-      this.#checkLenghtOfCollection(allExpenses)
 
-      allExpenses.forEach(({ expense, currency, index }) => {
+      allExpenses.forEach(({ expenseAmount, currency, index }) => {
         const pElement = document.createElement('p')
-        pElement.textContent = `${expense} ${currency}`
+        pElement.textContent = `${expenseAmount} ${currency}`
 
         const editButton = document.createElement('button')
         editButton.classList.add('edit-button')
@@ -180,20 +209,18 @@ getAndDispatchDailyAllowance() {
       })
     }
 
-    drawAddedExpensesOnPie() {
+    #drawAddedExpensesOnPie() {
       const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
-      allExpenses.forEach(({ expense }) => {
-        this.pieElement.displaySliceOnPieBasedOnExpense(expense)
+      allExpenses.forEach(({ expenseAmount }) => {
+        this.pieElement.displaySliceOnPieBasedOnExpense(expenseAmount)
       })
     }
 
-    displayRemainingBudget() {
+    #displayRemainingBudget() {
       this.remainingOfBudget.replaceChildren()
 
       const { currency } = this.budgetAppHandler.getBudget()
-      const collectionOfRemainingValues = this.budgetAppHandler.getRemainingOfBudget()
-
-      this.#checkLenghtOfCollection(collectionOfRemainingValues)
+      const collectionOfRemainingValues = this.budgetAppHandler.getRemainingValuesOfBudget()
 
       collectionOfRemainingValues.forEach((value) => {
         const pElement = document.createElement('p')
@@ -202,43 +229,80 @@ getAndDispatchDailyAllowance() {
       })
     }
 
-    displayStoredBudgetAndExpenses() {
-      try {
-        const { budget, isStoredValues } = this.budgetAppHandler.getStoredBudgetAndExpenses()
-
-        this.#getAndDisplayYearMonth()
-        this.#getAndDisplayBudget()
-        this.getAndDispatchDailyAllowance()
-
-        if (!isStoredValues) {
-          this.refreshDisplayWithNoAddedBudget()
-          return
-        } else {
-          this.getAndDispatchDailyAllowance()
-          this.hideBudgetFormDisplayExpenseForm()
-          this.displayAddedExpenses()
-          this.displayRemainingBudget()
-          this.renderPieButton()
-          if (this.budgetPie.style.display === 'block' && budget > 0) {
-            this.displayBudgetPie(budget)
-            this.drawAddedExpensesOnPie()
-          }
-        }
-      } catch (error) {
-
-      }
+    #getAndDisplayYearMonth() {
+      const currentYearMonth = this.budgetAppHandler.getYearMonth()
+      this.currentYearMonth.textContent = currentYearMonth
     }
 
-    storeBudgetAndExpenses() {
+    #storeBudgetState() {
       this.budgetAppHandler.storeBudgetAndExpenses()
     }
 
-    removeStoredBudgetAndExpenses() {
-      this.budgetAppHandler.removeStoredBudgetAndExpenses()
-      this.refreshDisplayWithNoAddedBudget()
+    #toggleDisplayPie() {
+      this.#renderPieButton()
+      this.#toggleTextOnPieButtonAndDisplayPie()
     }
 
-    refreshDisplayWithNoAddedBudget() {
+    #renderPieButton() {
+      this.displayPieButton.style.display = 'block'
+    }
+
+    #toggleTextOnPieButtonAndDisplayPie() {
+      if (this.displayPieButton.textContent === 'Display pie?') {
+        this.displayPieButton.textContent = 'Hide pie?'
+        this.budgetPie.style.display = 'block'
+        this.#refreshBudgetPie()
+      } else if (this.displayPieButton.textContent === 'Hide pie?') {
+        this.displayPieButton.textContent = 'Display pie?'
+        this.budgetPie.style.display = 'none'
+      }
+    }
+
+    #refreshBudgetPie() {
+      this.#displayBudgetPieWithPercent()
+      this.#drawAddedExpensesOnPie()
+    }
+
+    #hideBudgetFormDisplayExpenseForm() {
+      this.budgetFormDiv.style.display = 'none'
+      this.expenseFormDiv.style.display = 'flex'
+    }
+
+    #editOrDeleteExpense(event) {
+      const editButton = event.target.classList.contains('edit-button')
+      const deleteButton = event.target.classList.contains('delete-button')
+      const allAddedExpenses = this.budgetAppHandler.getAllAddedExpenses()
+
+      const expenseToEditIndex = Number(event.target.dataset.expenseIndex)
+
+      if (editButton) {
+        const expenseToEdit = allAddedExpenses[expenseToEditIndex]
+        this.expenseForm.displayEditExpenseForm(expenseToEdit.expenseAmount, expenseToEditIndex)
+      } else if (deleteButton) {
+        this.budgetAppHandler.deleteExpense(expenseToEditIndex)
+        this.#renderAddedExpenseView()
+        this.#storeBudgetState()
+      }
+    }
+
+    #displayBudgetPieWithPercent() {
+      const { budgetAmount } = this.budgetAppHandler.getBudget()
+      this.pieElement.initializePieRenderWithBudget(budgetAmount)
+      this.#setAndUpdateTextOnPie()
+    }
+
+    #setAndUpdateTextOnPie() {
+      this.pieElement.displayRemainingPercentOfBudget(true)
+      this.pieElement.setPercentTextSize(25)
+    }
+
+    #removeStoredBudgetState() {
+      this.budgetAppHandler.removeStoredAndResetBudget()
+      this.#refreshDisplayWithNoAddedBudget()
+      this.#getAndDispatchDailyAllowance()
+    }
+
+    #refreshDisplayWithNoAddedBudget() {
       this.budgetFormDiv.style.display = 'flex'
       this.expenseFormDiv.style.display = 'none'
       this.displayPieButton.style.display = 'none'
@@ -253,29 +317,36 @@ getAndDispatchDailyAllowance() {
       this.#getAndDisplayYearMonth()
     }
 
-    editOrDeleteExpense(event) {
-      const editButton = event.target.classList.contains('edit-button')
-      const deleteButton = event.target.classList.contains('delete-button')
-      const allAddedExpenses = this.budgetAppHandler.getAllAddedExpenses()
+    #getAndDispatchDailyAllowance() {
+      const dailyAllowance = this.budgetAppHandler.getDailyAllowance()
+      const { currency } = this.budgetAppHandler.getBudget()
 
-      const expenseToEditIndex = event.target.dataset.expenseIndex
-
-      if (editButton) {
-        const expenseToEdit = allAddedExpenses[expenseToEditIndex]
-        this.expenseForm.displayEditExpenseForm(expenseToEdit.expense, expenseToEditIndex)
-      } else if (deleteButton) {
-        this.budgetAppHandler.deleteExpense(expenseToEditIndex)
-        this.displayAddedExpensesAndRemainingOfBudget()
-        this.storeBudgetAndExpenses()
-        this.#drawBudgetPieWithExpenses()
-      }
+      const updateAllowance = new CustomEvent('update-allowance', {
+        detail: {
+          allowance: dailyAllowance,
+          currency: currency
+        },
+        bubbles: true,
+        composed: true,
+      })
+      document.dispatchEvent(updateAllowance)
     }
 
-    #checkLenghtOfCollection(expenses) {
-      if (expenses.length === 0) {
-        this.allAddedExpenses.textContent = ''
-        return
-      }
+    #handleError(error) {
+      console.error('An error occured:', error.message, error)
+      const userMessage = error.userMessage
+      this.#dispatchErrorMessage(userMessage)
+    }
+
+    #dispatchErrorMessage(userMessage) {
+      const errorOccurred = new CustomEvent('errorOccurred', {
+        detail: {
+          message: userMessage
+        },
+        bubbles: true,
+        composed: true,
+      })
+      this.dispatchEvent(errorOccurred)
     }
   }
 )
