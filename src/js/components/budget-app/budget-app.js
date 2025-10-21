@@ -310,9 +310,9 @@ customElements.define('budget-app',
 
       if (editButton) {
         const expenseToEdit = allAddedExpenses[expenseToEditIndex]
-        this.expenseForm.displayEditExpenseForm(expenseToEdit.expenseAmount, expenseToEditIndex)
+        this.expenseForm.displayEditExpenseForm(expenseToEdit.editedExpenseAmount, expenseToEditIndex)
       } else if (deleteButton) {
-        this.budgetAppHandler.deleteExpense(expenseToEditIndex)
+        this.budgetAppHandler.deleteExpenseIndex(expenseToEditIndex)
         this.#renderAddedExpenseView()
         this.#storeBudgetState()
       }
