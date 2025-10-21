@@ -17,7 +17,13 @@ The project has been manually tested to ensure that the implemented functionalit
 --- [TC3-Production](#production)  
 -- [TC4-Budget](#tc4-budget-form)  
 --- [TC4-Development](#development)  
---- [TC4-Production](#production)  
+--- [TC4-Production](#production)
+-- [TC5-Budget](#tc4-budget-form)  
+--- [TC5-Development](#development)  
+--- [TC5-Production](#production)
+-- [TC6-Budget](#tc4-budget-form)  
+--- [TC6-Development](#development)  
+--- [TC6-Production](#production)        
 
 ## How to read the documentation
 The test cases has been documented during the development of the project.
@@ -32,6 +38,12 @@ The test cases has been documented during the development of the project.
 | **Expected result** | What should happen |
 
 # Test Cases
+**TC1** - Test the appliaction startup and view.
+**TC2** - Test the view of the current Date.
+**TC3** - Test the budget input and validation.
+**TC4** - Test the expense input, update and validation.
+**TC5** - Tests the daily allowance.
+**TC6** - Tests the storage functionality.
 
 ## TC1-Frontpage 
 ### TC1-Development
@@ -319,7 +331,7 @@ The test cases has been documented during the development of the project.
 | **Steps** | 1. Visit localhost in a browser 2. Click on the `Reset budget` button 3. Find the budget-form under the header 4. Click on the input field 5. Type input data `1000` and press `Enter`-key 7. Click on the displayed button `Display pie?` 8. Type input data `300` in the input field of the displayed expense form and press `Enter` key 9. Observe the pie |
 | **Expected result** | When submitting the input data `300` the value is visible next to the `Expense:` header and the amount is taken of the pie |
 
-| **Test case** | See expense visualized on the budget pie |
+| **Test case** | See several expenses visualized on the budget pie |
 |---------------------|----------------------------|
 | **Requirement ID** | US-5, US-8 |
 | **Main scenario** | After added expense, the decreasing of the budget is visualized as the pie is shrinking |
@@ -455,3 +467,122 @@ The test cases has been documented during the development of the project.
 | **Input data** | 1000, 100, 200 |
 | **Steps** | 1. Visit ... 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Click on the displayed button `Display pie?` 5. Type input data `100` in the input field of the displayed expense form and press `Enter` key 6. Observe the value taken of the pie and the remaining value next to the expense 7. Type input data `200` in the input field of the displayed expense form and press `Enter` key 8. Observe the value taken of the pie and the remaining value next to the expense 9. Click the `Delete` button next to the `200` expense |
 | **Expected result** | When deleting the added expense, the remaining value next to the `100` expense is increased and the pie updates by increasing a piece the size equally the deleted expense |
+
+## TC5-Daily Allowance
+### TC5-Development
+
+| **Test case** | Display daily allowance with no budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user finds the `Daily Allowance` header and the allowance is displayed as 0 KR / DAY |
+| **Preconditions** | * Application is running with `npm run dev` |
+| **Input data** | --- |
+| **Steps** | 1. Visit localhost in a browser 2. Click on the `Reset budget` button 3. Check the content on the left side of the page 4. Find the `Daily Allowance` header and observe the text |
+| **Expected result** | The daily allowance when no added budget is displayed as `0 KR / DAY`  |
+
+| **Test case** | Display daily allowance with added budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user finds the `Daily Allowance` header and the allowance is displayed as `value KR / DAY` |
+| **Preconditions** | * Application is running with `npm run dev` |
+| **Input data** | 1000 |
+| **Steps** | 1. Visit localhost 2. Check the content on the left side of the page 3. Find the `Daily Allowance` header and observe the text 4. Type input data `1000` in the budget form and press `Enter`-key 4. Observe the text under the `Daily Allowance` header |
+| **Expected result** | The daily allowance when added budget is displayed as `value KR / DAY`  |
+
+| **Test case** | Display daily allowance with added expense |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user finds the `Daily Allowance` header and adds a budget of `1000` and then adds the expense of `100` and notices the change of daily allowance.  |
+| **Preconditions** | * Application is running with `npm run dev` |
+| **Input data** | 1000, 100 |
+| **Steps** | 1. Visit localhost 2. Check the content on the left side of the page 3. Find the `Daily Allowance` header and observe the text 4. Type input data `1000` in the budget form and press `Enter`-key 4. Observe the text under the `Daily Allowance` header 5. Type input data `100` in the input field of the displayed expense form and press `Enter` 6. Observe the text under the `Daily Allowance` header |
+| **Expected result** | The daily allowance when added budget is displayed as `value KR / DAY` and when added expense is displayed as `increased value KR / DAY` |
+
+### TC5-Production
+
+| **Test case** | Display daily allowance with no budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user finds the `Daily Allowance` header and the allowance is displayed as 0 KR / DAY |
+| **Preconditions** | * The application has been deployed at ... |
+| **Input data** | --- |
+| **Steps** | 1. Visit ... 2. Check the content on the left side of the page 3. Find the `Daily Allowance` header and observe the text |
+| **Expected result** | The daily allowance when no added budget is displayed as `0 KR / DAY`  |
+
+| **Test case** | Display daily allowance with added budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user finds the `Daily Allowance` header and the allowance is displayed as `value KR / DAY` |
+| **Preconditions** | * The application has been deployed at ... |
+| **Input data** | 1000 |
+| **Steps** | 1. Visit ... 2. Check the content on the left side of the page 3. Find the `Daily Allowance` header and observe the text 4. Type input data `1000` in the budget form and press `Enter`-key 4. Observe the text under the `Daily Allowance` header |
+| **Expected result** | The daily allowance when added budget is displayed as `value KR / DAY`  |
+
+| **Test case** | Display daily allowance with added expense |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user finds the `Daily Allowance` header and adds a budget of `1000` and then adds the expense of `100` and notices the change of daily allowance.  |
+| **Preconditions** | * The application has been deployed at ... |
+| **Input data** | 1000, 100 |
+| **Steps** | 1. Visit ... 2. Check the content on the left side of the page 3. Find the `Daily Allowance` header and observe the text 4. Type input data `1000` in the budget form and press `Enter`-key 4. Observe the text under the `Daily Allowance` header 5. Type input data `100` in the input field of the displayed expense form and press `Enter` 6. Observe the text under the `Daily Allowance` header |
+| **Expected result** | The daily allowance when added budget is displayed as `value KR / DAY` and when added expense is displayed as `decreased value KR / DAY` |
+
+## TC6-Stored Budget
+
+### TC6-Development
+
+| **Test case** | Store added budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user adds a budget and verifies the added budget in the Local Storage |
+| **Preconditions** | * Application is running with `npm run dev` |
+| **Input data** | 1000 |
+| **Steps** | 1. Visit localhost in a browser 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Open the inspector 5. Click on the `Storage` menu and click on the `Local Storage` submenu 6. Click on localhost and observe the key as current Year-Month |
+| **Expected result** | The budget has been stored as an object containing "budget": 1000, "expenses": [] and "currency": "KR". 
+
+| **Test case** | Load stored budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user adds a budget, closes the application and the budget is loaded when returning to the application |
+| **Preconditions** | * Application is running with `npm run dev` |
+| **Input data** | --- |
+| **Steps** | 1. Visit localhost in a browser 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Open the inspector 5. Click on the `Storage` menu and click on the `Local Storage` submenu 6. Click on localhost and observe the key as current Year-Month 7. Close the application 8. Visit localhost in a browser again and observe the budget |
+| **Expected result** | The budget has been stored and is loaded from localStorage and the view remains the same as when leaving the application.
+
+| **Test case** | Delete stored budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-14 |
+| **Main scenario** | The user adds a budget, clicks on the `Reset Budget` button and observes the removal of the budget |
+| **Preconditions** | * Application is running with `npm run dev` |
+| **Input data** | --- |
+| **Steps** | 1. Visit localhost in a browser 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Click on the `Reset Budget` button 5. Open the inspector 6. Click on the `Storage` menu and click on the `Local Storage` submenu 7. Click on localhost and control that there's no data stored for the current Year-Month key|
+| **Expected result** | The budget has been deleted and the `localhost` in `Local Storage` does not contain a Year-Month key.
+
+### TC6-Production
+
+| **Test case** | Store added budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user adds a budget and verifies the added budget in the Local Storage |
+| **Preconditions** | * The application has been deployed at ... |
+| **Input data** | 1000 |
+| **Steps** | 1. Visit ... 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Open the inspector 5. Click on the `Storage` menu and click on the `Local Storage` submenu 6. Click on localhost and observe the key as current Year-Month |
+| **Expected result** | The budget has been stored as an object containing "budget": 1000, "expenses": [] and "currency": "KR". 
+
+| **Test case** | Load stored budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-16 |
+| **Main scenario** | The user adds a budget, closes the application and the budget is loaded when returning to the application |
+| **Preconditions** | * The application has been deployed at ... |
+| **Input data** | --- |
+| **Steps** | 1. Visit ... 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Open the inspector 5. Click on the `Storage` menu and click on the `Local Storage` submenu 6. Click on localhost and observe the key as current Year-Month 7. Close the application 8. Visit localhost in a browser again and observe the budget |
+| **Expected result** | The budget has been stored and is loaded from localStorage and the view remains the same as when leaving the application.
+
+| **Test case** | Delete stored budget |
+|---------------------|----------------------------|
+| **Requirement ID** | US-14 |
+| **Main scenario** | The user adds a budget, clicks on the `Reset Budget` button and observes the removal of the budget |
+| **Preconditions** | * The application has been deployed at ... |
+| **Input data** | --- |
+| **Steps** | 1. Visit ... 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Click on the `Reset Budget` button 5. Open the inspector 6. Click on the `Storage` menu and click on the `Local Storage` submenu 7. Click on localhost and control that there's no data stored for the current Year-Month key|
+| **Expected result** | The budget has been deleted and the `localhost` in `Local Storage` does not contain a Year-Month key.
