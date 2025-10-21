@@ -1,8 +1,11 @@
 # <budget-app>
-This is a custom web component that displays a dynamically updated value representing an daily allowance. 
-The allowance is representing how much of a remaining budget for a current month can be spent per day for the rest of the month.
+This is a custom web component that acts as the Controller of the application MyMonthlyBudgetTracker.
+It connects and coordinates the other web components, listens for events from these components, manages the visibility of the views 
+and connects the user interactions to the right internal business logic of the application. 
 
-The component listens for a custom event `update-allowance` on the document object and updates the displayed text with the daily allowance value and its currency.
+The business logic is handled by an instance of the BudgetAppHandler class, created through an instance of the BudgetAppService.
+
+The component coordinates the state of the budget, the visualization of the budget as a pie, the daily allowance calculation and the storage of the budget. 
 
 ## Usage
 ```javascript
@@ -14,6 +17,8 @@ Then in your HTML
 ```html
 <budget-app></budget-app>
 ```
+
+Can be used as the root component of the application.
 
 ## Example 
 // TODO: Insert image

@@ -14,12 +14,13 @@ customElements.define('daily-allowance',
     constructor() {
       super()
 
+      // Injects the components CSS and HTML template to the shadow root for encapsulation
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
 
+      // References to the elements in the DOM for reusability and readability.
       this.allowance = this.shadowRoot.querySelector('#allowance')
-
     }
 
     /**
