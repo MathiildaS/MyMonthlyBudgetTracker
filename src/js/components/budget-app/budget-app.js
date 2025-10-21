@@ -1,6 +1,8 @@
 /**
- * @file A module for a custom web component that works as an Controller. 
- * It listens for events from views, manages the visibility of the views and connects the user interactions to the right internal logic of the MyMonthlyBudgetTracker-application.
+ * @file A module for the custom web component budget-app that acts as an Controller of the application MyMonthlyBudgetTracker.
+ * It connects the web components to the application and listens for events from these views, manages the visibility of the views 
+ * and connects the user interactions to the right internal business logic of the MyMonthlyBudgetTracker-application. The business logic is handled by
+ * an instance of the BudgetAppHandler class through an instance of the BudgetAppService.
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
@@ -17,6 +19,7 @@ customElements.define('budget-app',
     constructor() {
       super()
 
+      // Injects the components CSS and HTML template to the shadow root for encapsulation
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
       this.shadowRoot.appendChild(htmlTemplate.content.cloneNode(true))
@@ -25,23 +28,24 @@ customElements.define('budget-app',
       this.budgetAppService = new BudgetAppService()
       this.budgetAppHandler = this.budgetAppService.getBudgetAppHandler()
 
+      // References to the elements in the DOM for reusability and readability.
       this.budgetForm = this.shadowRoot.querySelector('budget-form')
       this.expenseForm = this.shadowRoot.querySelector('expense-form')
       this.pieElement = this.shadowRoot.querySelector('pie-element')
-
       this.budgetPie = this.shadowRoot.querySelector('.budgetPie')
       this.budgetFormDiv = this.shadowRoot.querySelector('.budgetForm')
       this.expenseFormDiv = this.shadowRoot.querySelector('.expenseForm')
       this.displayPieButton = this.shadowRoot.querySelector('.pieButton')
       this.currentBudget = this.shadowRoot.querySelector('#budgetValue')
       this.currentYearMonth = this.shadowRoot.querySelector('#budgetYearMonth')
-      this.allAddedExpenses = this.shadowRoot.querySelector('#expensesValue')
-      this.remainingOfBudget = this.shadowRoot.querySelector('#remainingValue')
+      this.columnOfAddedExpenses = this.shadowRoot.querySelector('#expensesValue')
+      this.columnOfRemainingBudget = this.shadowRoot.querySelector('#remainingValue')
       this.resetBudgetButton = this.shadowRoot.querySelector('#resetBudget')
     }
 
     /**
-     * Called when added to the DOM. Display an popup with error message for 3 seconds when errorOccured custom event is dispatched.
+     * Called when the component is added to the DOM. Listens for events to control the view and to delegate logic to 
+     * store and update the state of the budget, pie and daily allowance. Dispatches an errorOccured custom event if error occurs.
      */
     connectedCallback() {
       // Creates a new AbortController object instance to remove event listeners.
@@ -69,7 +73,7 @@ customElements.define('budget-app',
         }
       }, { signal: this.abortController.signal })
 
-      this.allAddedExpenses.addEventListener('click', (event) => {
+      this.columnOfAddedExpenses.addEventListener('click', (event) => {
         try {
           this.#editOrDeleteExpense(event)
         } catch (error) {
@@ -108,23 +112,44 @@ customElements.define('budget-app',
       this.abortController.abort()
     }
 
+    /**
+     * Sets the budget by extracting the event-details and delegates the extracted budget and currency to the 
+     * budgetAppHandler-isntance for handling the business-logic.
+     *
+     * @param {CustomEvent} event - The budgetAdded-event dispatched from budget-form component.  
+     */
     setAddedBudget(event) {
       const budgetAmount = event.detail.budget
       const budgetCurrency = event.detail.currency
       this.budgetAppHandler.setBudget(budgetAmount, budgetCurrency)
     }
 
+    /**
+     * Adds an expense by extracting the event-detail and delegate the extracted expense to the 
+     * budgetAppHandler-istance for handling the business-logic.
+     *
+     * @param {CustomEvent} event - The expenseAdded-event dispatched from expense-form component.  
+     */
     addExpense(event) {
       const expenseAmount = event.detail.expense
       this.budgetAppHandler.addExpense(expenseAmount)
     }
 
+    /**
+     * Updates an existing expense by extracting the event-details and delegates the extracted expense and index of the expense 
+     * to the budgetAppHandler-istance for handling the business-logic.
+     *
+     * @param {CustomEvent} event - The expenseEdited-event dispatched from expense-form component.  
+     */
     editExpense(event) {
       const expenseAmount = event.detail.expense
       const expenseIndex = event.detail.index
       this.budgetAppHandler.editExpense(expenseAmount, expenseIndex)
     }
 
+    /**
+     * Use queueMicrotask to delay the dispatching of daily allowance custom event until UI is rendered.
+     */
     #refreshBudgetView() {
       try {
         this.#getVerifyAndDisplayStoredBudgetAndExpenses()
@@ -135,12 +160,16 @@ customElements.define('budget-app',
     }
 
     #renderAddedBudgetView() {
-      this.#getAndDisplayBudget()
-      this.#getAndDisplayYearMonth()
+      this.#displayYearMonthBudget()
       this.#hideBudgetFormDisplayExpenseForm()
       this.#renderPieButton()
       this.#displayBudgetPieWithPercent()
       this.#getAndDispatchDailyAllowance()
+    }
+
+    #displayYearMonthBudget() {
+      this.#getAndDisplayBudget()
+      this.#getAndDisplayYearMonth()
     }
 
     #renderAddedExpenseView() {
@@ -152,8 +181,7 @@ customElements.define('budget-app',
     #getVerifyAndDisplayStoredBudgetAndExpenses() {
       const { isStoredBudget } = this.budgetAppHandler.getStoredBudgetAndExpenses()
 
-      this.#getAndDisplayYearMonth()
-      this.#getAndDisplayBudget()
+      this.#displayYearMonthBudget()
 
       if (!isStoredBudget) {
         this.#refreshDisplayWithNoAddedBudget()
@@ -187,7 +215,7 @@ customElements.define('budget-app',
 
     #displayAddedExpenses() {
       const allExpenses = this.budgetAppHandler.getAllAddedExpenses()
-      this.allAddedExpenses.replaceChildren()
+      this.columnOfAddedExpenses.replaceChildren()
 
       allExpenses.forEach(({ expenseAmount, currency, index }) => {
         const pElement = document.createElement('p')
@@ -205,7 +233,7 @@ customElements.define('budget-app',
         deleteButton.dataset.expenseIndex = index
         pElement.appendChild(deleteButton)
 
-        this.allAddedExpenses.appendChild(pElement)
+        this.columnOfAddedExpenses.appendChild(pElement)
       })
     }
 
@@ -217,7 +245,7 @@ customElements.define('budget-app',
     }
 
     #displayRemainingBudget() {
-      this.remainingOfBudget.replaceChildren()
+      this.columnOfRemainingBudget.replaceChildren()
 
       const { currency } = this.budgetAppHandler.getBudget()
       const collectionOfRemainingValues = this.budgetAppHandler.getRemainingValuesOfBudget()
@@ -225,7 +253,7 @@ customElements.define('budget-app',
       collectionOfRemainingValues.forEach((value) => {
         const pElement = document.createElement('p')
         pElement.textContent = `${value} ${currency}`
-        this.remainingOfBudget.appendChild(pElement)
+        this.columnOfRemainingBudget.appendChild(pElement)
       })
     }
 
@@ -268,6 +296,11 @@ customElements.define('budget-app',
       this.expenseFormDiv.style.display = 'flex'
     }
 
+    /**
+     * Retrieves the edit or delete button of selected expense to edit or delete an expense from the list of all expenses.
+     *
+     * @param {MouseEvent} event - The event triggered when click on edit or delete button of expense.  
+     */
     #editOrDeleteExpense(event) {
       const editButton = event.target.classList.contains('edit-button')
       const deleteButton = event.target.classList.contains('delete-button')
@@ -310,10 +343,8 @@ customElements.define('budget-app',
       this.displayPieButton.textContent = 'Display pie?'
 
       this.currentBudget.textContent = ''
-      this.allAddedExpenses.replaceChildren()
-      this.allAddedExpenses.textContent = ''
-      this.remainingOfBudget.replaceChildren()
-      this.remainingOfBudget.textContent = ''
+      this.columnOfAddedExpenses.replaceChildren()
+      this.columnOfRemainingBudget.replaceChildren()
       this.#getAndDisplayYearMonth()
     }
 
@@ -332,12 +363,18 @@ customElements.define('budget-app',
       document.dispatchEvent(updateAllowance)
     }
 
+    /**
+     * @param {Error} error - The error object containing custom userMessage for user display.
+     */
     #handleError(error) {
       console.error('An error occured:', error.message, error)
       const userMessage = error.userMessage
       this.#dispatchErrorMessage(userMessage)
     }
 
+    /**
+     * @param {string} userMessage - The user friendly message when error occurs.
+     */
     #dispatchErrorMessage(userMessage) {
       const errorOccurred = new CustomEvent('errorOccurred', {
         detail: {
