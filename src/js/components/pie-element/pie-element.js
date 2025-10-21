@@ -14,7 +14,6 @@ import { PieRender } from "pie-render"
 customElements.define("pie-element",
 
   class extends HTMLElement {
-    #pieRender
 
     constructor() {
       super()
@@ -27,7 +26,7 @@ customElements.define("pie-element",
       // References to the elements in the DOM for reusability and readability.
       this.canvas = this.shadowRoot.querySelector("#canvasElement")
       
-      this.#pieRender
+      this.pieRender
     }
 
     /**
@@ -36,7 +35,7 @@ customElements.define("pie-element",
      * @param {number} budget - The base amount of the pie representing the set budget.
      */
     initializePieRenderWithBudget(budget) {
-      this.#pieRender = new PieRender(this.canvas, budget)
+      this.pieRender = new PieRender(this.canvas, budget)
     }
 
     /**
@@ -47,7 +46,7 @@ customElements.define("pie-element",
      */
     displaySliceOnPieBasedOnExpense(expense) {
       this.#checkPieExistence()
-      this.#pieRender.createSlice(expense)
+      this.pieRender.createSlice(expense)
     }
 
     /**
@@ -59,7 +58,7 @@ customElements.define("pie-element",
      */
     setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
       this.#checkPieExistence()
-      this.#pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
+      this.pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
     }
 
     /**
@@ -71,7 +70,7 @@ customElements.define("pie-element",
      */
     setColoursOfWarningAndDangerBoundaries(warningColour, dangerColour) {
       this.#checkPieExistence()
-      this.#pieRender.setStateColours(warningColour, dangerColour)
+      this.pieRender.setStateColours(warningColour, dangerColour)
     }
 
     /**
@@ -82,7 +81,7 @@ customElements.define("pie-element",
      */
     setColourOfBudget(colourOfBudget) {
       this.#checkPieExistence()
-      this.#pieRender.setPieColour(colourOfBudget)
+      this.pieRender.setPieColour(colourOfBudget)
     }
 
     /**
@@ -93,7 +92,7 @@ customElements.define("pie-element",
      */
     setColourOfExpense(colourOfExpense) {
       this.#checkPieExistence()
-      this.#pieRender.setSliceColour(colourOfExpense)
+      this.pieRender.setSliceColour(colourOfExpense)
     }
 
     /**
@@ -104,7 +103,7 @@ customElements.define("pie-element",
      */
     displayRemainingPercentOfBudget(boolean) {
       this.#checkPieExistence()
-      this.#pieRender.displayPercentText(boolean)
+      this.pieRender.displayPercentText(boolean)
     }
 
     /**
@@ -115,7 +114,7 @@ customElements.define("pie-element",
      */
     setPercentTextColour(colourOfText) {
       this.#checkPieExistence()
-      this.#pieRender.setFontColour(colourOfText)
+      this.pieRender.setFontColour(colourOfText)
     }
 
     /**
@@ -126,11 +125,11 @@ customElements.define("pie-element",
      */
     setPercentTextSize(sizeOfText) {
       this.#checkPieExistence()
-      this.#pieRender.setFontSize(sizeOfText)
+      this.pieRender.setFontSize(sizeOfText)
     }
 
     #checkPieExistence() {
-      if (!this.#pieRender) {
+      if (!this.pieRender) {
         throw new Error('The pie-render has not yet been initialized')
       }
     }
