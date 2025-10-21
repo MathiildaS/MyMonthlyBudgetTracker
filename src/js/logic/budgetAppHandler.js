@@ -84,9 +84,9 @@ export class BudgetAppHandler {
   /**
    * Removes an expense from given index and updates the indexation of the expenses in the collection of expenses.
    *
-   * @param {number} expenseIndex - The index of the expense to be deleted.
+   * @param {number} expenseIndex - The index of the expense to be removed.
    */
-  deleteExpense(expenseIndex) {
+  deleteExpenseIndex(expenseIndex) {
     this.#collectedExpenses.splice(expenseIndex, 1)
 
     this.#updateIndexOfExpenses()
@@ -187,19 +187,19 @@ export class BudgetAppHandler {
   }
 
   /**
-   * @returns {number} - The daily allowance of the current month based on remaining budget and days of month.
-   */
-  getDailyAllowance() {
-    return this.#calculateDailyAllowance()
-  }
-
-  /**
    * @returns {object} - The loaded, stored object.
    */
   #loadBudgetWithKey() {
     const yearMonthKey = this.getYearMonth()
     const storedBudget = this.#storageHandler.loadBudget(yearMonthKey)
     return storedBudget
+  }
+
+  /**
+   * @returns {number} - The daily allowance of the current month based on remaining budget and days of month.
+   */
+  getDailyAllowance() {
+    return this.#calculateDailyAllowance()
   }
 
   /**

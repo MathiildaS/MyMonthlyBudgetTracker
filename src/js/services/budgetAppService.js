@@ -10,7 +10,7 @@ import { BudgetAppHandler } from '../logic/budgetAppHandler.js'
 import { StorageHandler } from '../logic/storageHandler.js'
 
 /**
- * The class acts as Factory and provides DateHandler and StorageHandler instances used as dependency injections to the BudgetAppHandler.
+ * The class provides DateHandler and StorageHandler instances used as dependency injections to the BudgetAppHandler.
  */
 export class BudgetAppService {
     #dateHandler
