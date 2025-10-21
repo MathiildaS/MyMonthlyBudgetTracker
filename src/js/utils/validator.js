@@ -7,52 +7,41 @@ export class Validator {
 
   validateNumber(value) {
     if (typeof value !== 'number' || !Number.isFinite(value)) {
-      const error = new Error('The value must be a number, not positive Infinity, not negative Infinity or NaN.')
-      error.userMessage = 'Please enter a valid number.'
-      throw error
+      this.#throwError('The value must be a number, not positive Infinity, not negative Infinity or NaN.', 'Please enter a valid number.')
     }
     if (value <= 0) {
-      const error = Error('The value must be larger than or zero.')
-      error.userMessage = 'Please enter a value larger than zero.'
-      throw error
+      this.#throwError('The value must be larger than or zero.', 'Please enter a value larger than zero.')
     }
     if (Number.isNaN(value)) {
-      const error = Error('The value cannot be NaN.')
-      error.userMessage = 'Please enter a valid number.'
-      throw error
+      this.#throwError('The value cannot be NaN.', 'Please enter a valid number.')
     }
     if (typeof value === 'string') {
-      const error = Error('The value must not be a string.')
-      error.userMessage = 'Please enter a valid number.'
-      throw error
+      this.#throwError('The value must not be a string.', 'Please enter a valid number.')
     }
     if (value === null || value === undefined) {
-      const error = Error('The value is missing or undefined.')
-      error.userMessage = 'Please enter value in input field before submitting.'
-      throw error
+      this.#throwError('The value is missing or undefined.', 'Please enter value in input field before submitting.')
     }
     if (value > 10000000) {
-      const error = Error('The value must be less than 10.000.000')
-      error.userMessage = 'Please enter a numer less than 10.000.000'
-      throw error
+      this.#throwError('The value must be less than 10.000.000', 'Please enter a numer less than 10.000.000')
     }
   }
 
   validateString(value) {
     if (typeof value !== 'string') {
-      const error = Error('The value must be a string.')
-      error.userMessage = 'Please enter a valid word.'
-      throw error
+      this.#throwError('The value must be a string.', 'Please enter a valid word.')
+
     }
     if (value === null || value === undefined) {
-      const error = Error('The value is missing or undefined.')
-      error.userMessage = 'Please enter a valid word.'
-      throw error
+      this.#throwError('The value is missing or undefined.', 'Please enter a valid word.')
     }
     if (typeof value === 'string' && value.trim() === '') {
-      const error = Error('The value must not be empty.')
-      error.userMessage = 'Please enter value in input field before submitting.'
-      throw error
+      this.#throwError('The value must not be empty.', 'Please enter value in input field before submitting.')
     }
+  }
+
+  #throwError(message, userMessage) {
+    const error = new Error(message)
+    error.userMessage = userMessage
+    throw error
   }
 }
