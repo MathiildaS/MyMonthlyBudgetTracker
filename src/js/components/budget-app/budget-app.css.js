@@ -10,9 +10,10 @@ cssTemplate.innerHTML = `
 <style>
   .main {
     display: grid;
-    grid-template-columns: 250px 800px 300px;
+    grid-template-columns: 300px 800px 300px;
     grid-template-areas: "left middle right";
     gap: 1rem;
+    color: #2f2f3a;
   }
 
   .left, .middle, .right {
@@ -21,23 +22,56 @@ cssTemplate.innerHTML = `
 
   .left { 
     grid-area: left;
-    background-color: #ffffff;
+    background-color: #ede9ff;
     border-radius: 8px;
-    box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
     height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
     overflow: auto;
+  }
+
+  .allowance > daily-allowance {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    padding: 1rem;
+    border: 2px solid rgba(31,35,48,.08);
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+     background: #faf9fe;
+  }
+
+  .reset {
+    margin-top: auto;
   }
 
   .middle { 
     grid-area: middle;
+    background-color: #ede9ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
   }
 
   .right { 
     grid-area: right;
-    background-color: #ffffff;
+    background-color: #ede9ff;
     border-radius: 8px;
-    box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
     height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
     overflow: auto;
   }
 
@@ -49,7 +83,7 @@ cssTemplate.innerHTML = `
 
   .expenseForm {
     display: none;
-        align-items: center;
+    align-items: center;
     justify-content: center;
   }
 
@@ -70,7 +104,7 @@ cssTemplate.innerHTML = `
   }
 
   button:hover {
-    background-color: #9fa0d6;
+    background-color: #b0a8d6;
   }
 
   .budgetPie {
@@ -79,10 +113,11 @@ cssTemplate.innerHTML = `
 
   .expenses-remaining {
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
+    grid-template-columns: auto 1fr;
     column-gap: 1rem;
     row-gap: .25rem;
     align-items: start;
+    justify-items: start; 
   }
 
   .expenses-remaining p {
@@ -96,19 +131,21 @@ cssTemplate.innerHTML = `
 
   #expensesValue {
     grid-row: 2;
+    justify-self: start;
   }
 
   #remaining {
-  grid-row: 1;
+    grid-row: 1;
   }
 
   #remainingValue {
     grid-row: 2;
+    justify-self: center;
   }
 
   .edit-button, .delete-button {
     font-family: "DynaPuff";
-    background-color: #b0a8d6b9;
+    background-color: #b0a8d6;
     font-size: 0.6rem;
     color:  #ffffff;
     padding: 0.2rem 0.4rem;

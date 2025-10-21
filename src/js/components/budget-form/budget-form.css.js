@@ -21,7 +21,7 @@ cssTemplate.innerHTML = `
   }
 
   button:hover {
-    background-color: #9fa0d6;
+    background-color: #b0a8d6;
   }
 
   input, select {
@@ -61,7 +61,7 @@ cssTemplate.innerHTML = `
   }
 
   #currency:hover {
-    background-color: #9fa0d6;
+    background-color: #b0a8d6;
   }
 </style>
 `

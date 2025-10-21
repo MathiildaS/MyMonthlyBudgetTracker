@@ -41,7 +41,7 @@ customElements.define("pie-element",
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     displaySliceOnPieBasedOnExpense(expense) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.createSlice(expense)
     }
 
@@ -53,7 +53,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     setWarningAndDangerBoundariesForPie(warningBoundary, dangerBoundary) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.setPieBoundaries(warningBoundary, dangerBoundary)
     }
 
@@ -65,7 +65,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     setColoursOfWarningAndDangerBoundaries(warningColour, dangerColour) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.setStateColours(warningColour, dangerColour)
     }
 
@@ -76,7 +76,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     setColourOfBudget(colourOfBudget) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.setPieColour(colourOfBudget)
     }
 
@@ -87,7 +87,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     setColourOfExpense(colourOfExpense) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.setSliceColour(colourOfExpense)
     }
 
@@ -98,7 +98,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     displayRemainingPercentOfBudget(boolean) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.displayPercentText(boolean)
     }
 
@@ -109,7 +109,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     setPercentTextColour(colourOfText) {
- this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.setFontColour(colourOfText)
     }
 
@@ -120,7 +120,7 @@ this.#checkPieExistence()
      * @throws {Error} If the PieRender instance has not yet been initialized.
      */
     setPercentTextSize(sizeOfText) {
-this.#checkPieExistence()
+      this.#checkPieExistence()
       this.#pieRender.setFontSize(sizeOfText)
     }
 

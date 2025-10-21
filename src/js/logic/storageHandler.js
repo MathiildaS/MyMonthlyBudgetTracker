@@ -41,8 +41,8 @@ export class StorageHandler {
         return parsedValues
       } catch (error) {
         console.error('An error occurred when collecting stored values', error.message)
-      error.userMessage = 'The saved budget could not be loaded.'
-      throw error
+        error.userMessage = 'The saved budget could not be loaded.'
+        throw error
       }
     }
   }
