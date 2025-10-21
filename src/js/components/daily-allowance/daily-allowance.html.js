@@ -9,8 +9,8 @@ export const htmlTemplate = document.createElement('template')
 htmlTemplate.innerHTML = `
 <div class="dailyAllowance">
   <h2>Daily Allowance</h2>
-  <p>This month you can spend<br>
-  <span id="allowance"></span><br>
+  <p>This month you <br>can spend<br>
+  <h3><span id="allowance"></span></h3>
   to stay within your budget.</p>
 </div>
 `

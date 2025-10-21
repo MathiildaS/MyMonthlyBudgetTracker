@@ -10,7 +10,7 @@ cssTemplate.innerHTML = `
 <style>
   .main {
     display: grid;
-    grid-template-columns: 300px 800px 300px;
+    grid-template-columns: 300px minmax(800px, 1fr) 300px;
     grid-template-areas: "left middle right";
     gap: 1rem;
     color: #2f2f3a;
@@ -37,7 +37,7 @@ cssTemplate.innerHTML = `
   .allowance > daily-allowance {
     display: block;
     width: 100%;
-    max-width: 200px;
+    max-width: 90%;
     padding: 1rem;
     border: 2px solid rgba(31,35,48,.08);
     border-radius: 10px;
@@ -109,6 +109,13 @@ cssTemplate.innerHTML = `
 
   .budgetPie {
     display: none;
+    width: 100%;
+    max-width: 50%;
+    padding: 1rem;
+    border: 2px solid rgba(31,35,48,.08);
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+     background: #faf9fe;
   }
 
   .expenses-remaining {
@@ -118,6 +125,13 @@ cssTemplate.innerHTML = `
     row-gap: .25rem;
     align-items: start;
     justify-items: start; 
+    width: 100%;
+    max-width: 90%;
+    padding: 1rem;
+    border: 2px solid rgba(31,35,48,.08);
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    background: #faf9fe;
   }
 
   .expenses-remaining p {
@@ -154,22 +168,94 @@ cssTemplate.innerHTML = `
 
   @media (max-width: 1200px) {
     .main {
-      grid-template-columns: 1fr 1.5fr 1fr;
+      grid-template-columns: 250px 1fr 250px;
       grid-template-areas: 'left middle right';
     }
+
+      body, .left, .middle, .right {
+    font-size: 0.95rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.9rem;
+  }
   }
 
   @media (max-width: 1000px) {
     .main {
-      grid-template-columns: 0.5fr 1fr 0.6fr;
+      grid-template-columns: 200px 1fr 200px;
       grid-template-areas: 'left middle right';
+    }
+
+      body, .left, .middle, .right {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  }
+
+  @media (max-width: 800px) {
+    .main {
+      grid-template-columns: 150px 1fr 150px;;
+      grid-template-areas: 'left middle right';
+    }
+
+  body, .left, .middle, .right {
+    font-size: 0.85rem;
+  }
+
+  button {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+    .left, .middle, .right {
+      padding: 0.75rem;
+      height: auto;
+    }
+
+    .allowance > daily-allowance,
+    .budgetPie,
+    .expenses-remaining {
+      padding: 0.75rem;
+      border-width: 1px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    }
+
+    
+    .edit-button, .delete-button {
+      font-size: 0.55rem;
+      padding: 0.15rem 0.35rem;
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 650px) {
     .main {
       grid-template-columns: 1fr;
       grid-template-areas: 'left' 'middle' 'right';
+    }
+
+      body, .left, .middle, .right {
+    font-size: 0.8rem;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+    .left, .middle, .right {
+      padding: 0.6rem;
+    }
+
+    .allowance > daily-allowance,
+    .budgetPie,
+    .expenses-remaining {
+      padding: 0.6rem;
     }
   }
 
