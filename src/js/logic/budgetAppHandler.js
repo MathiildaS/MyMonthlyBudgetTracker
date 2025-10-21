@@ -1,5 +1,6 @@
 /**
- * @file A module for the BudgetAppHandler.
+ * @file A module for the BudgetAppHandler. This class is responsible for the internal logic of the application.
+ * This includes keeping track of budget, expenses, remaining value of budget and a daily allowance and also handles storage management through the StorageHandler class.
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
@@ -13,7 +14,8 @@ export class BudgetAppHandler {
   #collectedExpenses = []
 
   /**
-   * Creates and initializes an instance of the class BudgetAppHandler with an instance of DateHandler and StorageHandler classes 
+   * Creates and initializes an instance of the class BudgetAppHandler with an instance of DateHandler and StorageHandler classes to
+   * help manage date logic and storage logic.
    *
    * @param {Parser} parser - An isntance of the Parser-class.
    * @param {} validator - An instance of the Validator-class.
@@ -23,11 +25,20 @@ export class BudgetAppHandler {
     this.#storageHandler = storageHandler
   }
 
-  setBudget(budgetAddedEvent) {
-    this.#budgetAmount = budgetAddedEvent.detail.budget
-    this.#budgetCurrency = budgetAddedEvent.detail.currency
+  /**
+   * Sets the state of the amount and currency of the budget.
+   *
+   * @param {number} budgetAmount - The parsed and validated budget value of the month.
+   * @param {string} budgetCurrency - The currency of the budget.
+   */
+  setBudget(budgetAmount, budgetCurrency) {
+    this.#budgetAmount = budgetAmount
+    this.#budgetCurrency = budgetCurrency
   }
 
+  /**
+   * @returns {object} - The current amount and currency of the budget.
+   */
   getBudget() {
     const budget = {
       budgetAmount: this.#budgetAmount,
@@ -36,8 +47,13 @@ export class BudgetAppHandler {
     return budget
   }
 
-  addExpense(expenseAddedEvent) {
-    const amount = expenseAddedEvent.detail.expense
+  /**
+   * Adds an expense to the collection of expenses. 
+   *
+   * @param {number} - The amount of the expense.
+   */
+  addExpense(expenseAmount) {
+    const amount = expenseAmount
 
     const expense = {
       expenseAmount: amount,
@@ -45,38 +61,80 @@ export class BudgetAppHandler {
       index: this.#collectedExpenses.length
     }
 
-    this.#addExpenseToCollection(expense)
+    this.#addExpenseToExpenses(expense)
   }
 
-
-
+  /**
+   * @returns {Array} - The collection of all added expenses.
+   */
   getAllAddedExpenses() {
     if (this.#collectedExpenses.length === 0) {
       return []
     }
-
     return this.#collectedExpenses
   }
 
-  getRemainingOfBudget() {
+  /**
+   * Updates the amount value of an added expense.
+   *
+   * @param {number} expenseAmount - The new expense amount value.
+   * @param {number} expenseIndex - The index of the expense to be updated.
+   */
+  editExpense(expenseAmount, expenseIndex) {
+    this.#collectedExpenses[expenseIndex].expenseAmount = expenseAmount
+  }
+
+  /**
+   * Removes an expense from given index and updates the indexation of the expenses in the collection of expenses.
+   *
+   * @param {number} expenseIndex - The index of the expense to be deleted.
+   */
+  deleteExpense(expenseIndex) {
+    this.#collectedExpenses.splice(expenseIndex, 1)
+
+    this.#updateIndexOfExpenses()
+  }
+
+  /**
+   * Substracts each expense from the budget and collects each remaining value of the budget.
+   *
+   * @returns {Array} - The collection of all remaining values.
+   */
+  getRemainingValuesOfBudget() {
     const { budgetAmount } = this.getBudget()
     let remainingValue = budgetAmount
-    const collectionOfRemainingValues = []
+    const remainingValues = []
 
     const allExpenses = this.getAllAddedExpenses()
 
     allExpenses.forEach(({ expenseAmount }) => {
       remainingValue -= expenseAmount
-      collectionOfRemainingValues.push(remainingValue)
+      remainingValues.push(remainingValue)
     })
-    return collectionOfRemainingValues
+    return remainingValues
   }
 
+  /**
+   * @returns {string} - The current year and month e.g. "2025-October"
+   */
   getYearMonth() {
     return this.#dateHandler.getCurrentYearMonthString()
   }
 
+  /**
+   * Saves the budget with a created key-value pair through the StorageHandler-instance.
+   */
   storeBudgetAndExpenses() {
+    const { yearMonthKey, budgetPayload } = this.#createBudgetPayload()
+    this.#storageHandler.saveBudget(yearMonthKey, budgetPayload)
+  }
+
+  /**
+   * Creates the key-value pair used when storing the current budget. 
+   *
+   * @returns {object} - The key and budget payload containing budget, expenses and currency.
+   */
+  #createBudgetPayload() {
     const yearMonthKey = this.getYearMonth()
     const { budgetAmount, currency } = this.getBudget()
     const budgetPayload = {
@@ -84,88 +142,121 @@ export class BudgetAppHandler {
       expenses: this.#collectedExpenses,
       currency: currency
     }
-    this.#storageHandler.saveBudget(yearMonthKey, budgetPayload)
+    return { yearMonthKey, budgetPayload }
   }
 
-  removeStoredBudgetAndExpenses() {
+  /**
+   * Deletes the key created for current month through the StorageHandler-instance.
+   */
+  removeStoredAndResetBudget() {
     this.#storageHandler.deleteStoredBudget(this.getYearMonth())
-
-    this.#budgetAmount = 0
-    this.#collectedExpenses = []
+    this.#setDefaultBudget()
   }
 
-  editExpense(expenseEditedEvent) {
-    const expense = expenseEditedEvent.detail.expense
-    const index = expenseEditedEvent.detail.index
-
-    this.#collectedExpenses[index].expenseAmount = expense
-  }
-
-  deleteExpense(expenseIndex) {
-    this.#collectedExpenses.splice(expenseIndex, 1)
-
-    this.#collectedExpenses.forEach((expense, expenseIndex) => {
-      expense.index = expenseIndex
-    })
-  }
-
+  /**
+   * Loads existing, saved budget. Updates the state with stored budget-values if existing.
+   *
+   * @returns {object} - The budget payload with default values or stored values.
+   */
   getStoredBudgetAndExpenses() {
-    const yearMonthKey = this.getYearMonth()
-    const storedValues = this.#storageHandler.loadBudget(yearMonthKey)
+    const storedBudget = this.#loadBudgetWithKey()
+    let storedBudgetPayload = {}
 
-    let storedBudget = {}
+    if (!storedBudget) {
+      storedBudgetPayload = {
+        budgetAmount: 0,
+        expenses: [],
+        currency: this.#budgetCurrency,
+        isStoredValues: false
+      }
+
+      return storedBudgetPayload
+    }
+
     let amount
     let currency
     let expenses
 
-    if (!storedValues) {
-      amount = 0
-      expenses = []
-      currency = this.#budgetCurrency
-
-      storedBudget = {
-        budgetAmount: amount,
-        expenses: expenses,
-        currency: currency,
-        isStoredValues: false
-      }
-
-      return storedBudget
-    }
-
-    amount = storedValues.budget
-    expenses = storedValues.expenses
-    currency = storedValues.currency
+    amount = storedBudget.budget
+    expenses = storedBudget.expenses
+    currency = storedBudget.currency
 
     this.#budgetAmount = amount
     this.#collectedExpenses = expenses
     this.#budgetCurrency = currency
 
-    storedBudget = {
+    storedBudgetPayload = {
       budgetAmount: amount,
       expenses: expenses,
       currency: currency,
       isStoredValues: true
     }
 
+    return storedBudgetPayload
+  }
+
+  #loadBudgetWithKey() {
+    const yearMonthKey = this.getYearMonth()
+    const storedBudget = this.#storageHandler.loadBudget(yearMonthKey)
     return storedBudget
   }
 
+  /**
+   * @returns {number} - The daily allowance of the current month based on remaining budget and days of month.
+   */
   getDailyAllowance() {
+    return this.#calculateDailyAllowance()
+  }
+
+  /**
+   * @returns {number} - The daily allowance based on remaining budget / remaining days of current month with prevention of divison by zero.
+   */
+  #calculateDailyAllowance() {
+    return Math.max(this.#getRemainingValueOfBudget(), 0) / this.#getRemainingDaysOfMonth()
+  }
+
+  /**
+   * @returns {number} - The amount of days left of current month with minimum 1 day left.
+   */
+  #getRemainingDaysOfMonth() {
+    return Math.max(this.#dateHandler.getRemainingDaysOfCurrentMonth(), 1)
+  }
+
+  /**
+   * @returns {number} - The remainig budget.
+   */
+  #getRemainingValueOfBudget() {
     const allExpenses = this.getAllAddedExpenses()
-    let remainingBudget = this.#budgetAmount
+    return this.#calculateRemainingValueOfBudget(allExpenses)
+  }
 
+  /**
+   * @param {Array} allExpenses - The collection of all added expenses.
+   * @returns {number} - The amount of current budget.
+   */
+  #calculateRemainingValueOfBudget(allExpenses) {
+    let currentBudget = this.#budgetAmount
     allExpenses.forEach(({ expenseAmount }) => {
-      remainingBudget -= expenseAmount
+      currentBudget -= expenseAmount
     })
+    return currentBudget
+  }
 
-    const remainingDaysOfMonth = Math.max(this.#dateHandler.getRemainingDaysOfCurrentMonth(), 1)
-    const dailyAllowance = Math.max(remainingBudget, 0) / remainingDaysOfMonth
-
-    return dailyAllowance
-  }  
-  
-  #addExpenseToCollection(expense) {
+  /**
+   * @param {object} expense - The expense object containing amount, currency and index.
+   */
+  #addExpenseToExpenses(expense) {
     this.#collectedExpenses.push(expense)
+  }
+
+  #updateIndexOfExpenses() {
+    this.#collectedExpenses.forEach((expense, expenseIndex) => {
+      expense.index = expenseIndex
+    })
+  }
+
+  #setDefaultBudget() {
+    this.#budgetAmount = 0
+    this.#collectedExpenses = []
   }
 }
