@@ -1,10 +1,14 @@
 /**
- * @file A module with methods to validate input.
+ * @file A module for the Validator. This class provides methods to validate number and string inputs. Throws error messages for developer and user.
  * @author Mathilda Segerlund <ms228qs@student.lnu.se>
  * @version 1.0.0
  */
 export class Validator {
 
+  /**
+   * @param {} value - The unknown value to validate as number.
+   * @throws {Error} - Throws error with a developer message and a user-friendly message.
+   */
   validateNumber(value) {
     if (typeof value !== 'number' || !Number.isFinite(value)) {
       this.#throwError('The value must be a number, not positive Infinity, not negative Infinity or NaN.', 'Please enter a valid number.')
@@ -26,6 +30,10 @@ export class Validator {
     }
   }
 
+  /**
+   * @param {} value - The unknown value to validate as string.
+   * @throws {Error} - Throws error with a developer message and a user-friendly message.
+   */
   validateString(value) {
     if (typeof value !== 'string') {
       this.#throwError('The value must be a string.', 'Please enter a valid word.')
@@ -39,6 +47,11 @@ export class Validator {
     }
   }
 
+  /**
+   * @param {string} message - The message for the developer.
+   * @param {string} userMessage - The user friendly message.
+   * @throws {Error} - Throws error with the developer message and the user-friendly message.
+   */
   #throwError(message, userMessage) {
     const error = new Error(message)
     error.userMessage = userMessage
