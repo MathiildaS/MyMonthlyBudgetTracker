@@ -162,8 +162,8 @@ cssTemplate.innerHTML = `
     background-color: #b0a8d6;
     font-size: 0.6rem;
     color:  #ffffff;
-    padding: 0.2rem 0.4rem;
-    margin-left: 0.2rem;
+    padding: 0.1rem 0.2rem;
+    margin-left: 0.16rem;
     }
 
   @media (max-width: 1200px) {
@@ -172,14 +172,14 @@ cssTemplate.innerHTML = `
       grid-template-areas: 'left middle right';
     }
 
-      body, .left, .middle, .right {
-    font-size: 0.95rem;
-  }
+    body, .left, .middle, .right {
+      font-size: 0.95rem;
+    }
 
-  button {
-    font-size: 0.95rem;
-    padding: 0.45rem 0.9rem;
-  }
+    button {
+      font-size: 0.95rem;
+      padding: 0.45rem 0.9rem;
+    }
   }
 
   @media (max-width: 1000px) {
@@ -188,14 +188,14 @@ cssTemplate.innerHTML = `
       grid-template-areas: 'left middle right';
     }
 
-      body, .left, .middle, .right {
-    font-size: 0.9rem;
-  }
+    body, .left, .middle, .right {
+      font-size: 0.9rem;
+    }
 
-  button {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
-  }
+    button {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+    }
   }
 
   @media (max-width: 800px) {
@@ -204,14 +204,14 @@ cssTemplate.innerHTML = `
       grid-template-areas: 'left middle right';
     }
 
-  body, .left, .middle, .right {
-    font-size: 0.85rem;
-  }
+    body, .left, .middle, .right {
+      font-size: 0.85rem;
+    }
 
-  button {
-    font-size: 0.85rem;
-    padding: 0.35rem 0.75rem;
-  }
+    button {
+      font-size: 0.85rem;
+      padding: 0.35rem 0.75rem;
+    }
 
     .left, .middle, .right {
       padding: 0.75rem;
@@ -226,7 +226,6 @@ cssTemplate.innerHTML = `
       box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
     }
 
-    
     .edit-button, .delete-button {
       font-size: 0.55rem;
       padding: 0.15rem 0.35rem;
@@ -239,14 +238,14 @@ cssTemplate.innerHTML = `
       grid-template-areas: 'left' 'middle' 'right';
     }
 
-      body, .left, .middle, .right {
-    font-size: 0.8rem;
-  }
+    body, .left, .middle, .right {
+      font-size: 0.8rem;
+    }
 
-  button {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.7rem;
-  }
+    button {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.7rem;
+    }
 
     .left, .middle, .right {
       padding: 0.6rem;
