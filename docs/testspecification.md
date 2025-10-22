@@ -1,29 +1,36 @@
 # Test Specification
-This is a specification of all the test cases for the project. Please see the [Requirement Specification](./requirementspec.md) for traceability to the corresponding requirement.
+This is a specification of all the test cases for the project.  
+Please see the [Requirement Specification](./requirementspec.md) for traceability to the corresponding requirement.
 
 The project has been manually tested to ensure that the implemented functionality works as intended.
 
 ## Table Of Contents
-- [How to read the documentation](#how-to-read-the-documentation)  
-- [Test Cases](#test-cases)  
--- [TC1-Frontpage](#tc1-frontpage)  
---- [TC1-Development](#tc1-development)  
---- [TC1-Production](#tc1-production)  
--- [TC2-Display of Year and Month](#tc2-display-of-year-and-month)  
---- [TC2-Development](#development)  
---- [TC2-Production](#production)  
--- [TC3-Budget](#tc3-budget-form)  
---- [TC3-Development](#development)  
---- [TC3-Production](#production)  
--- [TC4-Budget](#tc4-budget-form)  
---- [TC4-Development](#development)  
---- [TC4-Production](#production)
--- [TC5-Budget](#tc4-budget-form)  
---- [TC5-Development](#development)  
---- [TC5-Production](#production)
--- [TC6-Budget](#tc4-budget-form)  
---- [TC6-Development](#development)  
---- [TC6-Production](#production)        
+- [How to read the documentation](#how-to-read-the-documentation)
+- [Test Cases](#test-cases)
+
+- [TC1-Frontpage](#tc1-frontpage)
+  - [TC1-Development](#tc1-development)
+  - [TC1-Production](#tc1-production)
+
+- [TC2-Display of Year and Month](#tc2-display-of-year-and-month)
+  - [TC2-Development](#tc2-development)
+  - [TC2-Production](#tc2-production)
+
+- [TC3-Budget](#tc3-budget)
+  - [TC3-Development](#tc3-development)
+  - [TC3-Production](#tc3-production)
+
+- [TC4-Expenses](#tc4-expenses)
+  - [TC4-Development](#tc4-development)
+  - [TC4-Production](#tc4-production)
+
+- [TC5-Daily Allowance](#tc5-daily-allowance)
+  - [TC5-Development](#tc5-development)
+  - [TC5-Production](#tc5-production)
+
+- [TC6-Stored Budget](#tc6-stored-budget)
+  - [TC6-Development](#tc6-development)
+  - [TC6-Production](#tc6-production)  
 
 ## How to read the documentation
 The test cases has been documented during the development of the project.
@@ -38,12 +45,12 @@ The test cases has been documented during the development of the project.
 | **Expected result** | What should happen |
 
 # Test Cases
-**TC1** - Test the appliaction startup and view.
-**TC2** - Test the view of the current Date.
-**TC3** - Test the budget input and validation.
-**TC4** - Test the expense input, update and validation.
-**TC5** - Tests the daily allowance.
-**TC6** - Tests the storage functionality.
+**TC1** - Test the appliaction startup and view.  
+**TC2** - Test the view of the current Date.  
+**TC3** - Test the budget input and validation.  
+**TC4** - Test the expense input, update and validation.  
+**TC5** - Tests the daily allowance.  
+**TC6** - Tests the storage functionality.  
 
 ## TC1-Frontpage 
 ### TC1-Development
@@ -585,4 +592,5 @@ The test cases has been documented during the development of the project.
 | **Preconditions** | * The application has been deployed at ... |
 | **Input data** | --- |
 | **Steps** | 1. Visit ... 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Click on the `Reset Budget` button 5. Open the inspector 6. Click on the `Storage` menu and click on the `Local Storage` submenu 7. Click on localhost and control that there's no data stored for the current Year-Month key|
+
 | **Expected result** | The budget has been deleted and the `localhost` in `Local Storage` does not contain a Year-Month key.
