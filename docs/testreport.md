@@ -25,7 +25,7 @@ Please see the [Test Specification](testspecification.md) for details of each ma
 | TC4 -  See expense visualized on the budget pie | OK | OK |  |
 | TC4 -  See several expenses visualized on the budget pie | OK | OK |  |
 | TC4 -  See a list of added expenses and remaining value of budget | OK | OK |  |
-| TC4 -  Edit an added expense and see the remaining value and the pie update | OK | OK |  |
+| TC4 -  Edit an added expense and see the remaining value and the pie update | OK | OK | The expense is updated correctly, but the found expense amount is undefined |
 | TC4 -  Delete an added expense and see the remaining value and the pie update | OK | OK |  |
 | TC5 - Display daily allowance with no budget | OK | OK |  |
 | TC5 - Display daily allowance with added budget | OK | OK |  |
@@ -41,3 +41,4 @@ Please see the [Test Specification](testspecification.md) for details of each ma
 
 
 ![TestDate](./images/testdate.png)
+
