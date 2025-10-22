@@ -4,7 +4,7 @@ Please see the [Test Specification](testspecification.md) for details of each ma
 ## Report
 ### Manually tested
 | **Test case** | **Result Development** | **Result Production** | **Comments** |
-|---------------|------------|--------------|--------------|--------------|
+|---------------|------------------------|------------------------|---------------|
 | TC1 -  Application is running | OK | OK |  |
 | TC2 -  Display current year and month  | OK | OK |  |
 | TC3 -  Display form to add a budget | OK | OK |  |
@@ -38,5 +38,6 @@ Please see the [Test Specification](testspecification.md) for details of each ma
 ![Test](./images/unittests.png)
 
 ![TestPieModule](./images/pie-test.png)
+
 
 ![TestDate](./images/testdate.png)
