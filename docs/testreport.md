@@ -1,9 +1,8 @@
 # Test Report
-Please see the [Test Specification](testspecification.md) for details of each tested case.
+Please see the [Test Specification](testspecification.md) for details of each manually tested case.
 
 ## Report
-
-### pie-element
+### Manually tested
 | **Test case** | **Result Development** | **Result Production** | **Comments** |
 |---------------|------------|--------------|--------------|--------------|
 | TC1 -  Application is running | OK | OK |  |
@@ -34,3 +33,10 @@ Please see the [Test Specification](testspecification.md) for details of each te
 | TC6 - Store added budget | OK | OK |  |
 | TC6 - Load stored budget | OK | OK |  |
 | TC6 - Delete stored budget | OK | OK |  |
+
+### Automated testing
+![Test](./images/unittests.png)
+
+![TestPieModule](./images/pie-test.png)
+
+![TestDate](./images/testdate.png)
