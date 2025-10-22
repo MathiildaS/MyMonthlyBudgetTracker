@@ -15,7 +15,7 @@ Then in your HTML
 ```
 
 ## Example 
-// TODO: Insert image
+![Error PupUp](../../../images/error.png)
 
 ## Files and Structure
 error-popup.js - Main web component logic that defines the custom element.

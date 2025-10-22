@@ -21,7 +21,7 @@ Then in your HTML
 Can be used as the root component of the application.
 
 ## Example 
-// TODO: Insert image
+![Budget App](../../../images/screenshot.png)
 
 ## Files and Structure
 budget-app.js - Main web component logic that defines the custom element.

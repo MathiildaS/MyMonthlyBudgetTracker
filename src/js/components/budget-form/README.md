@@ -17,7 +17,7 @@ Then in your HTML
 ```
 
 ## Example 
-// TODO: Insert image
+![Add budget](../../../images/budget-form.png)
 
 ## Files and Structure
 budget-form.js - Main web component logic that defines the custom element.

@@ -16,7 +16,7 @@ Then in your HTML
 ```
 
 ## Example 
-// TODO: Insert image
+![Daily Allowance](../../../images/allowance.png)
 
 ## Files and Structure
 daily-allowance.js - Main web component logic that defines the custom element.

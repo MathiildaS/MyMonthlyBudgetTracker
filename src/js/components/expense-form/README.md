@@ -17,7 +17,8 @@ Then in your HTML
 ```
 
 ## Example 
-// TODO: Insert image
+![Add expense](../../../images/expense-form.png)
+![Edit expense](../../../images/editexpenseform.png)
 
 ## Files and Structure
 expense-form.js - Main web component logic that defines the custom element.

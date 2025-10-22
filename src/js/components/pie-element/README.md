@@ -14,7 +14,9 @@ Then in your HTML
 ```
 
 ## Example 
-// TODO: Insert image and code
+![Pie OK State](../../../images/pie.png)
+![Pie Warning State](../../../images/piewarning.png)
+![Pie Danger State](../../../images/piedangerr.png)
 
 ## Files and Structure
 pie-element.js - Main file that defines the custom web component element.
