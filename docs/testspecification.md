@@ -2,6 +2,8 @@
 This is a specification of all the test cases for the project.  
 Please see the [Requirement Specification](./requirementspec.md) for traceability to the corresponding requirement.
 
+You will find a report of the manually and automated tests here [Test Report](./testreport.md)
+
 The project has been manually tested to ensure that the implemented functionality works as intended.
 
 ## Table Of Contents
@@ -594,4 +596,5 @@ The test cases has been documented during the development of the project.
 | **Steps** | 1. Visit [mymonthlybudgettracker.netlify.app](https://mymonthlybudgettracker.netlify.app/) 2. Click on the `Reset budget` button 3. Type input data `1000` in the budget form and press `Enter`-key 4. Click on the `Reset Budget` button 5. Open the inspector 6. Click on the `Storage` menu and click on the `Local Storage` submenu 7. Click on localhost and control that there's no data stored for the current Year-Month key|
 
 | **Expected result** | The budget has been deleted and the `localhost` in `Local Storage` does not contain a Year-Month key.
+
 
