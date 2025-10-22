@@ -35,7 +35,7 @@ src/
 ```
 
 ## Usage and Examples
-[MyMonthlyBudgetTracker](./src/images/screenshot.png)
+![MyMonthlyBudgetTracker](./src/images/screenshot.png)
 
 ## Getting Started
 Follow this installation guide to run this application locally.
