@@ -4,7 +4,7 @@ By setting a base value representing this months budget and adding expenses as t
 
 This application was developed as part of a course at Linnaeus University and focuses on applying Clean Code-principles.
 
-This application is available at: INSERT LINK
+This application is available at: [https://mymonthlybudgettracker.netlify.app/](https://mymonthlybudgettracker.netlify.app/)
 
 ## Features
 **Set a monthly budget** – Define a monthly budget for the current month.  
