@@ -1,17 +1,18 @@
 # MyMonthlyBudgetTracker
-MyMonthlyBudgetTracker is a web application that helps users manage their monthly budget in a visual way. By setting a base value representing this months budget and adding expenses as they occur during the month, users can easily keep track of how much they have spent, their daily allowance and how much of their budget remains.
+MyMonthlyBudgetTracker is a web application that helps users manage their monthly budget in a visual way. 
+By setting a base value representing this months budget and adding expenses as they occur during the month, users can easily keep track of how much they have spent, their daily allowance and how much of their budget remains.
 
 This application was developed as part of a course at Linnaeus University and focuses on applying Clean Code-principles.
 
 This application is available at: INSERT LINK
 
 ## Features
-**Set a monthly budget** – Define a monthly budget for the current month.
-**Manage expenses** – Add expenses, edit or delete them.
-**Monthly visualization** - See the monthly budget appear as a decreasing percentual pie as you add expenses.
-**Daily Allowance** - See your daily allowance to stay within budget at the end of the month.
-**Local data storage** – No account needed. Data is stored locally.
-**Responsive design** – Adaptive to different screens.  
+**Set a monthly budget** – Define a monthly budget for the current month.  
+**Manage expenses** – Add expenses, edit or delete them.  
+**Monthly visualization** - See the monthly budget appear as a decreasing percentual pie as you add expenses.  
+**Daily Allowance** - See your daily allowance to stay within budget at the end of the month.  
+**Local data storage** – No account needed. Data is stored locally.  
+**Responsive design** – Adaptive to different screens.    
 
 ## Upcoming Features
 **View monthly history** – Navigate and see past months budget and spendings.
@@ -23,7 +24,7 @@ This application is available at: INSERT LINK
 
 ### Architecture
 
-```pgsql
+```java
 src/
  ├─ components/       → Custom Web Components
  ├─ logic/            → Business logic and data management
